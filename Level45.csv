@@ -1,0 +1,26 @@
+dist,var,app,application
+binomial,aa1,appbio1.png,Weights of people at a third grade father-daughter dance.
+binomial,aa2,appbio2.png, The total snowfall next year in a randomly selected town from either Alaska or Georgia. 
+binomial,aa3,appbio3.png,"bills ($) paid at a restaurant that  serves breakfast and dinner but not lunch. 
+"
+binomial,aa4,appbio4.png,"Height of heels on shoes of all of the students at a high school
+ prom 
+"
+binomial,aa5,appbio5.png,Amount of salt per liter from  random bodies of water at least 1000 acres in size 
+left,aa6,appl1.png,"Age at death from natural  causes in Germany 
+
+"
+left,aa7,appl2.png,Apgar score of random newborn (Apgar = 0 to 10 rating on health with 10 = perfect health) 
+left,aa8,appl3.png,length of fish returned to lake by recreational fisherman not allowed to keep fish under 6 inches
+left,aa9,appl4.png,Grades on an easy test 
+right,aa10,appl5.png,Age of randomly chosen car on the road
+right,aa11,appr1.png,"Incomes of households in Baltimore, Maryland "
+right,aa12,appr2.png, # of cigarettes smoked yesterday by random student
+right,aa13,appr3.png,# of Tweets today by randomly chosen Twitter account 
+right,aa14,appr4.png,Hours spent watching television today for students in Pennsylvania 
+right,aa15,appr5.png,Miles driven this year by Uber drivers 
+normal,aa16,appn1.png,Difference between heights of two randomly selected women 
+normal,aa17,appn2.png,Weights of cartons of large eggs at a grocery store 
+normal,aa18,appn3.png,Packages of pretzels handed out  for the planes leaving JFK airport tomorrow. 
+normal,aa19,appn4.png, Number of seconds until your digital clock advances to the next minute when you wake up
+normal,aa20,appn5.png,Distance to next mile marker on turnpike for all the cars that break down this year 
