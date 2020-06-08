@@ -41,6 +41,7 @@ shinyServer(function(input, output, session) {
   # observeEvent(input$go, {
   #   show(selector = "#navMain li a[data-value=b]")
   # })
+  ### Show pages by buttons like 'next', 'previous'.
   observe({
     if(input$go == 0){
       hide(selector = "#navMain li a[data-value=b]")
@@ -57,99 +58,117 @@ shinyServer(function(input, output, session) {
   })
   
   observe({
-    hide(selector = "#navMain li a[data-value=e]")
+    hide(selector = "#navMain li a[data-value=d]")
   })
   observeEvent(input$next2, {
+    show(selector = "#navMain li a[data-value=d]")
+  })
+  
+  observe({
+    hide(selector = "#navMain li a[data-value=e]")
+  })
+  observeEvent(input$next3, {
     show(selector = "#navMain li a[data-value=e]")
   })
   
   observe({
     hide(selector = "#navMain li a[data-value=f]")
   })
-  observeEvent(input$next3, {
+  observeEvent(input$next4, {
     show(selector = "#navMain li a[data-value=f]")
   })
   
   observe({
     hide(selector = "#navMain li a[data-value=g]")
   })
-  observeEvent(input$next4, {
+  observeEvent(input$next5, {
     show(selector = "#navMain li a[data-value=g]")
   })
   
   observe({
     hide(selector = "#navMain li a[data-value=h]")
   })
-  observeEvent(input$next5, {
-    show(selector = "#navMain li a[data-value=h]")
-  })
-  
-  observe({
-    hide(selector = "#navMain li a[data-value=i]")
-  })
   observeEvent(input$finish, {
-    show(selector = "#navMain li a[data-value=i]")
+    show(selector = "#navMain li a[data-value=h]")
   })
   ###########  ###########  ###########  ###########  ###########  ###########  ###########
   
+  observeEvent(input$start, {
+    updateTabItems(session, "tabs", "game")
+  })
   
-  #Create six pagers
+  ### Next buttons
   observeEvent(input$go,{
-    updateNavbarPage(session = session,"navMain", selected = "b")
+    updateTabsetPanel(session = session,"navMain", selected = "b")
   })
   observeEvent(input$next1,{
-    updateNavbarPage(session = session,"navMain", selected = "c")
+    updateTabsetPanel(session = session,"navMain", selected = "c")
   })
   observeEvent(input$next2,{
-    updateNavbarPage(session = session,"navMain", selected = "e")
+    updateTabsetPanel(session = session,"navMain", selected = "d")
   })
   observeEvent(input$next3,{
-    updateNavbarPage(session = session,"navMain", selected = "f")
+    updateTabsetPanel(session = session,"navMain", selected = "e")
   })
   observeEvent(input$next4,{
-    updateNavbarPage(session = session,"navMain", selected = "g")
+    updateTabsetPanel(session = session,"navMain", selected = "f")
   })
   observeEvent(input$next5,{
-    updateNavbarPage(session = session,"navMain", selected = "h")
+    updateTabsetPanel(session = session,"navMain", selected = "g")
   })
   observeEvent(input$finish,{
-    updateNavbarPage(session = session,"navMain", selected = "i")
+    updateTabsetPanel(session = session,"navMain", selected = "h")
+  })
+  observeEvent(input$stop1,{ #go right ahead to the score session
+    updateTabsetPanel(session = session,"navMain", selected = "h")
+  })
+  observeEvent(input$stop2,{ #go right ahead to the score session
+    updateTabsetPanel(session = session,"navMain", selected = "h")
+  })
+  observeEvent(input$stop3,{ #go right ahead to the score session
+    updateTabsetPanel(session = session,"navMain", selected = "h")
+  })
+  observeEvent(input$stop4,{ #go right ahead to the score session
+    updateTabsetPanel(session = session,"navMain", selected = "h")
+  })
+  observeEvent(input$stop5,{ #go right ahead to the score session
+    updateTabsetPanel(session = session,"navMain", selected = "h")
   })
   
   ############# ############# ############# ############# ############# ############# ############# #############
   
   
-  
+  ### Previous buttons
   observeEvent(input$previous7,{
-    updateNavbarPage(session = session,"navMain", selected = "a")
+    updateTabsetPanel(session = session,"navMain", selected = "a")
   })
   observeEvent(input$previous6,{
-    updateNavbarPage(session = session,"navMain", selected = "b")
+    updateTabsetPanel(session = session,"navMain", selected = "b")
   })
   observeEvent(input$previous5,{
-    updateNavbarPage(session = session,"navMain", selected = "c")
+    updateTabsetPanel(session = session,"navMain", selected = "c")
   })
   observeEvent(input$previous4,{
-    updateNavbarPage(session = session,"navMain", selected = "e")
+    updateTabsetPanel(session = session,"navMain", selected = "d")
   })
   observeEvent(input$previous3,{
-    updateNavbarPage(session = session,"navMain", selected = "f")
+    updateTabsetPanel(session = session,"navMain", selected = "e")
   })
   observeEvent(input$previous2,{
-    updateNavbarPage(session = session,"navMain", selected = "g")
+    updateTabsetPanel(session = session,"navMain", selected = "f")
   })
-  observeEvent(input$check, {
-    updateButton(session,"check",disabled = TRUE)
-  })
+  #observeEvent(input$check, {
+  #  updateButton(session,"check",disabled = TRUE)
+  #})
   
   ##Set timer with start, stop, restart, stop, and termination; and show the timer
   time<-reactiveValues(inc=0, timer=reactiveTimer(1000), started=FALSE)
   
+  ### When student click submit, timer stops and rerun on next level when the person click 'Next'.
   observeEvent(input$go, {time$started<-TRUE})
   observeEvent(input$submitA, {time$started <- FALSE})
-  
   observeEvent(input$submitB, {time$started <- FALSE})
-  observeEvent(input$submitG, {time$started <- FALSE})
+  observeEvent(input$submitC, {time$started <- FALSE})
   observeEvent(input$submitD, {time$started <- FALSE})
   observeEvent(input$submitE, {time$started <- FALSE})
   observeEvent(input$submitF, {time$started <- FALSE})
@@ -208,6 +227,8 @@ shinyServer(function(input, output, session) {
   output$timer8 <- renderPrint({
     cat("you have used:", time$inc, "secs")})
   
+  
+  ### Icon buttons for questions and hints.
   observeEvent(input$bq1 == FALSE, {
     toggle('hint1q')
     output$hint1 <- renderPrint({
@@ -246,7 +267,11 @@ shinyServer(function(input, output, session) {
       cat("Remember that negative values are smaller than positive values.
           So your largest positive correlation goes under 'highest' and your most negative correlation goes under 'lowest'")})
   })
-  ##################################################################################################  
+  
+  
+  ################################################################################################## 
+  ####################### Contents - This is where all drop UIs came from. #########################
+  ################################################################################################## 
   numbersA <- reactiveValues(right= c(), left= c(), normal = c(), random = c(), indexA = c(), questionA = data.frame())
   observeEvent(input$go,{
     numbersA$right = sample(1:3,1)
@@ -616,340 +641,448 @@ shinyServer(function(input, output, session) {
   
   
   #################################################################################
+  ### Submit button and show Penalty box.
   observeEvent(input$submitA,{
     updateButton(session,"submitA",disabled = TRUE)
+    updateButton(session,"clearA",disabled = FALSE)
   })
   observeEvent(input$clearA,{
     updateButton(session,"submitA",disabled = FALSE)
+    updateButton(session,"clearA",disabled = TRUE)
   })
+  
   observeEvent(input$submitB,{
     updateButton(session,"submitB",disabled = TRUE)
+    updateButton(session,"clearB",disabled = FALSE)
   })
   observeEvent(input$clearB,{
     updateButton(session,"submitB",disabled = FALSE)
+    updateButton(session,"clearB",disabled = TRUE)
   })
+  
+  observeEvent(input$submitC,{
+    updateButton(session,"submitC",disabled = TRUE)
+    updateButton(session,"clearC",disabled = FALSE)
+  })
+  observeEvent(input$clearC,{
+    updateButton(session,"submitC",disabled = FALSE)
+    updateButton(session,"clearC",disabled = TRUE)
+  })
+  
   observeEvent(input$submitD,{
     updateButton(session,"submitD",disabled = TRUE)
+    updateButton(session,"clearD",disabled = FALSE)
   })
   observeEvent(input$clearD,{
     updateButton(session,"submitD",disabled = FALSE)
+    updateButton(session,"clearD",disabled = TRUE)
   })
+  
   observeEvent(input$submitE,{
     updateButton(session,"submitE",disabled = TRUE)
+    updateButton(session,"clearE",disabled = FALSE)
   })
   observeEvent(input$clearE,{
     updateButton(session,"submitE",disabled = FALSE)
+    updateButton(session,"clearE",disabled = TRUE)
   })
+  
   observeEvent(input$submitF,{
     updateButton(session,"submitF",disabled = TRUE)
+    updateButton(session,"clearF",disabled = FALSE)
   })
   observeEvent(input$clearF,{
     updateButton(session,"submitF",disabled = FALSE)
-  })
-  observeEvent(input$submitG,{
-    updateButton(session,"submitG",disabled = TRUE)
-  })
-  observeEvent(input$clearG,{
-    updateButton(session,"submitG",disabled = FALSE)
+    updateButton(session,"clearF",disabled = TRUE)
   })
   ###################################################################################
   
   
-  observeEvent(input$submitA,{  
-    observeEvent(input$clearA,{
-      output$answer1 <- renderUI({
-        img(src = NULL,width = 30)
-      })
-    })
-    observe({
-      output$answer1 <- renderUI({
-        if (!is.null(input$drp1)){
-          if (input$drp1 == numbersA$questionA[numbersA$questionA[1]== "right", 6]){
-            img(src = "check.png",width = 30)
-          }else{
-            img(src = "cross.png",width = 30)
-          }
+  ### After click Submit buttons. Watch out for the clear code that might occur the error
+  #First, click Submit button and it will show whether the answer is correct or not
+  observeEvent(input$submitA,{
+    output$answer1 <- renderUI({
+      if (!is.null(input$drp1)){
+        if (input$drp1 == numbersA$questionA[numbersA$questionA[1]== "right", 6]){
+          img(src = "check.png",width = 30)
+        }else{
+          img(src = "cross.png",width = 30)
         }
-      })
+      }
     })
   })
-  observeEvent(input$submitA,{  
-    observeEvent(input$clearA,{
-      output$answer2 <- renderUI({
+  #Second, drag wrong drop box into the penalty box and click 'Re-attempt' button to clear cross marks.
+  observeEvent(input$clearA,{
+    output$answer1 <- renderUI({
+      #if (input$drp1 == numbersA$questionA[numbersA$questionA[1]== "right", 6]){
+      #  img(src = "check.png",width = 30)
+      #}else{
+      #  img(src = NULL,width = 30)
+      #}
         img(src = NULL,width = 30)
-      })
-    })
-    observe({
-      output$answer2 <- renderUI({
-        if (!is.null(input$drp2)){
-          if (input$drp2 == numbersA$questionA[numbersA$questionA[1]== "left", 6]){
-            img(src = "check.png",width = 30)
-          }else{
-            img(src = "cross.png",width = 30)
-          }
-        }
-      })
     })
   })
-  observeEvent(input$submitA,{  
-    observeEvent(input$clearA,{
-      output$answer3 <- renderUI({
-        img(src = NULL,width = 30)
-      })
-    })
-    observe({
-      output$answer3 <- renderUI({
-        if (!is.null(input$drp3)){
-          if (input$drp3 == numbersA$questionA[numbersA$questionA[1]== "normal", 6]){
-            img(src = "check.png",width = 30)
-          }else{
-            img(src = "cross.png",width = 30)
-          }
+  
+  observeEvent(input$submitA,{
+    output$answer2 <- renderUI({
+      if (!is.null(input$drp2)){
+        if (input$drp2 == numbersA$questionA[numbersA$questionA[1]== "left", 6]){
+          img(src = "check.png",width = 30)
+        }else{
+          img(src = "cross.png",width = 30)
         }
-      })
+      }
+    })
+  })
+  observeEvent(input$clearA,{
+    output$answer2 <- renderUI({
+      #if (input$drp2 == numbersA$questionA[numbersA$questionA[1]== "left", 6]){
+      #  img(src = "check.png",width = 30)
+      #}else{
+      #  img(src = NULL,width = 30)
+      #}
+         img(src = NULL,width = 30)
     })
   })
   
   observeEvent(input$submitA,{  
-    observeEvent(input$clearA,{
-      output$answer4 <- renderUI({
-        img(src = NULL,width = 30)
-      })
-    })
-    observe({
-      output$answer4 <- renderUI({
-        if (!is.null(input$drp4)){
-          if (input$drp4 == numbersA$questionA[numbersA$questionA[1]== "random", 6]){
-            img(src = "check.png",width = 30)
-          }else{
-            img(src = "cross.png",width = 30)
-          }
+    output$answer3 <- renderUI({
+      if (!is.null(input$drp3)){
+        if (input$drp3 == numbersA$questionA[numbersA$questionA[1]== "normal", 6]){
+          img(src = "check.png",width = 30)
+        }else{
+          img(src = "cross.png",width = 30)
         }
-      })
+      }
+    })
+  })
+  
+  observeEvent(input$clearA,{
+    output$answer3 <- renderUI({
+      #if (input$drp3 == numbersA$questionA[numbersA$questionA[1]== "normal", 6]){
+      #  img(src = "check.png",width = 30)
+      #}else{
+      #  img(src = NULL,width = 30)
+      #}
+        img(src = NULL,width = 30)
+    })
+  })
+  
+  
+  observeEvent(input$submitA,{  
+    output$answer4 <- renderUI({
+      if (!is.null(input$drp4)){
+        if (input$drp4 == numbersA$questionA[numbersA$questionA[1]== "random", 6]){
+          img(src = "check.png",width = 30)
+        }else{
+          img(src = "cross.png",width = 30)
+        }
+      }
+    })
+  })
+  
+  observeEvent(input$clearA,{
+    output$answer4 <- renderUI({
+      #if (input$drp4 == numbersA$questionA[numbersA$questionA[1]== "random", 6]){
+      #  img(src = "check.png",width = 30)
+      #}else{
+      #  img(src = NULL,width = 30)
+      #}
+          img(src = NULL,width = 30)
     })
   })
   
   
   ####################################################################
-  
+  # Level 2
   
   observeEvent(input$submitB,{  
-    observeEvent(input$clearB,{
-      output$answer5 <- renderUI({
-        img(src = NULL,width = 30)
-      })
-    })
-    observe({
-      output$answer5 <- renderUI({
-        if (!is.null(input$drp5)){
-          if (input$drp5 ==numbersB$questionB[numbersB$questionB[1]== "mean1", 4]){
-            img(src = "check.png",width = 30)
-          }else{
-            img(src = "cross.png",width = 30)
-          }
+    output$answer5 <- renderUI({
+      if (!is.null(input$drp5)){
+        if (input$drp5 ==numbersB$questionB[numbersB$questionB[1]== "mean1", 4]){
+          img(src = "check.png",width = 30)
+        }else{
+          img(src = "cross.png",width = 30)
         }
-      })
+      }
     })
   })
-  observeEvent(input$submitB,{  
-    observeEvent(input$clearB,{
-      output$answer6 <- renderUI({
-        img(src = NULL,width = 30)
-      })
-    })
-    observe({
-      output$answer6 <- renderUI({
-        if (!is.null(input$drp6)){
-          if (input$drp6 == numbersB$questionB[numbersB$questionB[1]== "mean2", 4]){
-            img(src = "check.png",width = 30)
-          }else{
-            img(src = "cross.png",width = 30)
-          }
-        }
-      })
-    })
-  })
-  observeEvent(input$submitB,{  
-    observeEvent(input$clearB,{
-      output$answer7 <- renderUI({
-        img(src = NULL,width = 30)
-      })
-    })
-    observe({
-      output$answer7 <- renderUI({
-        if (!is.null(input$drp7)){
-          if (input$drp7 == numbersB$questionB[numbersB$questionB[1]== "mean3", 4]){
-            img(src = "check.png",width = 30)
-          }else{
-            img(src = "cross.png",width = 30)
-          }
-        }
-      })
+  observeEvent(input$clearB,{
+    output$answer5 <- renderUI({
+      img(src = NULL,width = 30)
     })
   })
   
+  
   observeEvent(input$submitB,{  
-    observeEvent(input$clearB,{
-      output$answer8 <- renderUI({
-        img(src = NULL,width = 30)
-      })
-    })
-    observe({
-      output$answer8 <- renderUI({
-        if (!is.null(input$drp8)){
-          if (input$drp8 == numbersB$questionB[numbersB$questionB[1]== "mean4", 4]){
-            img(src = "check.png",width = 30)
-          }else{
-            img(src = "cross.png",width = 30)
-          }
+    output$answer6 <- renderUI({
+      if (!is.null(input$drp6)){
+        if (input$drp6 == numbersB$questionB[numbersB$questionB[1]== "mean2", 4]){
+          img(src = "check.png",width = 30)
+        }else{
+          img(src = "cross.png",width = 30)
         }
-      })
+      }
+    })
+  })
+  observeEvent(input$clearB,{
+    output$answer6 <- renderUI({
+      img(src = NULL,width = 30)
+    })
+  })
+  
+  
+  observeEvent(input$submitB,{
+    output$answer7 <- renderUI({
+      if (!is.null(input$drp7)){
+        if (input$drp7 == numbersB$questionB[numbersB$questionB[1]== "mean3", 4]){
+          img(src = "check.png",width = 30)
+        }else{
+          img(src = "cross.png",width = 30)
+        }
+      }
+    })
+  })
+  observeEvent(input$clearB,{
+    output$answer7 <- renderUI({
+      img(src = NULL,width = 30)
+    })
+  })
+  
+  
+  observeEvent(input$submitB,{
+    output$answer8 <- renderUI({
+      if (!is.null(input$drp8)){
+        if (input$drp8 == numbersB$questionB[numbersB$questionB[1]== "mean4", 4]){
+          img(src = "check.png",width = 30)
+        }else{
+          img(src = "cross.png",width = 30)
+        }
+      }
+    })
+  })
+  observeEvent(input$clearB,{
+    output$answer8 <- renderUI({
+      img(src = NULL,width = 30)
     })
   })
   
   ####################################################################
   
   
-  observeEvent(input$submitD,{  
-    observeEvent(input$clearD,{
-      output$answer13 <- renderUI({
-        img(src = NULL,width = 30)
-      })
-    })
-    observe({
-      output$answer13 <- renderUI({
-        if (!is.null(input$drp13)){
-          if (input$drp13 ==numbersC$questionC[numbersC$questionC[1] == "left",4]){
-            img(src = "check.png",width = 30)
-          }else{
-            img(src = "cross.png",width = 30)
-          }
+  observeEvent(input$submitC,{  
+    output$answer13 <- renderUI({
+      if (!is.null(input$drp13)){
+        if (input$drp13 ==numbersC$questionC[numbersC$questionC[1] == "left",4]){
+          img(src = "check.png",width = 30)
+        }else{
+          img(src = "cross.png",width = 30)
         }
-      })
+      }
     })
   })
-  observeEvent(input$submitD,{  
-    observeEvent(input$clearD,{
-      output$answer14 <- renderUI({
-        img(src = NULL,width = 30)
-      })
-    })
-    observe({
-      output$answer14 <- renderUI({
-        if (!is.null(input$drp14)){
-          if (input$drp14 == numbersC$questionC[numbersC$questionC[1] == "right",4]){
-            img(src = "check.png",width = 30)
-          }else{
-            img(src = "cross.png",width = 30)
-          }
-        }
-      })
-    })
-  })
-  observeEvent(input$submitD,{  
-    observeEvent(input$clearD,{
-      output$answer15 <- renderUI({
-        img(src = NULL,width = 30)
-      })
-    })
-    observe({
-      output$answer15 <- renderUI({
-        if (!is.null(input$drp15)){
-          if (input$drp15 == numbersC$questionC[numbersC$questionC[1] == "normal",4]){
-            img(src = "check.png",width = 30)
-          }else{
-            img(src = "cross.png",width = 30)
-          }
-        }
-      })
+  observeEvent(input$clearC,{
+    output$answer13 <- renderUI({
+      img(src = NULL,width = 30)
     })
   })
   
-  observeEvent(input$submitD,{  
-    observeEvent(input$clearD,{
-      output$answer16 <- renderUI({
-        img(src = NULL,width = 30)
-      })
-    })
-    observe({
-      output$answer16 <- renderUI({
-        if (!is.null(input$drp16)){
-          if (input$drp16 == numbersC$questionC[numbersC$questionC[1] == "uniform",4]){
-            img(src = "check.png",width = 30)
-          }else{
-            img(src = "cross.png",width = 30)
-          }
+  observeEvent(input$submitC,{  
+    output$answer14 <- renderUI({
+      if (!is.null(input$drp14)){
+        if (input$drp14 == numbersC$questionC[numbersC$questionC[1] == "right",4]){
+          img(src = "check.png",width = 30)
+        }else{
+          img(src = "cross.png",width = 30)
         }
-      })
+      }
     })
   })
+  observeEvent(input$clearC,{
+    output$answer14 <- renderUI({
+      img(src = NULL,width = 30)
+    })
+  })
+  
+  observeEvent(input$submitC,{  
+    output$answer15 <- renderUI({
+      if (!is.null(input$drp15)){
+        if (input$drp15 == numbersC$questionC[numbersC$questionC[1] == "normal",4]){
+          img(src = "check.png",width = 30)
+        }else{
+          img(src = "cross.png",width = 30)
+        }
+      }
+    })
+  })
+  observeEvent(input$clearC,{
+    output$answer15 <- renderUI({
+      img(src = NULL,width = 30)
+    })
+  })
+  
+  observeEvent(input$submitC,{  
+    output$answer16 <- renderUI({
+      if (!is.null(input$drp16)){
+        if (input$drp16 == numbersC$questionC[numbersC$questionC[1] == "uniform",4]){
+          img(src = "check.png",width = 30)
+        }else{
+          img(src = "cross.png",width = 30)
+        }
+      }
+    })
+  })
+  observeEvent(input$clearC,{
+    output$answer16 <- renderUI({
+      img(src = NULL,width = 30)
+    })
+  })
+  
   #######################################
   
-  observeEvent(input$submitE,{  
-    observeEvent(input$clearE,{
-      output$answer17 <- renderUI({
-        img(src = NULL,width = 30)
-      })
-    })
-    observe({
-      output$answer17 <- renderUI({
-        if (!is.null(input$drp17)){
-          if (input$drp17 ==numbersD$questionD[numbersD$questionD[3] == "neg",4]){
-            img(src = "check.png",width = 30)
-          }else{
-            img(src = "cross.png",width = 30)
-          }
+  observeEvent(input$submitD,{  
+    output$answer17 <- renderUI({
+      if (!is.null(input$drp17)){
+        if (input$drp17 ==numbersD$questionD[numbersD$questionD[3] == "neg",4]){
+          img(src = "check.png",width = 30)
+        }else{
+          img(src = "cross.png",width = 30)
         }
-      })
+      }
     })
   })
-  observeEvent(input$submitE,{  
-    observeEvent(input$clearE,{
-      output$answer18 <- renderUI({
-        img(src = NULL,width = 30)
-      })
-    })
-    observe({
-      output$answer18 <- renderUI({
-        if (!is.null(input$drp18)){
-          if (input$drp18 == numbersD$questionD[numbersD$questionD[3] == "pos",4]){
-            img(src = "check.png",width = 30)
-          }else{
-            img(src = "cross.png",width = 30)
-          }
-        }
-      })
-    })
-  })
-  observeEvent(input$submitE,{  
-    observeEvent(input$clearE,{
-      output$answer19 <- renderUI({
-        img(src = NULL,width = 30)
-      })
-    })
-    observe({
-      output$answer19 <- renderUI({
-        if (!is.null(input$drp19)){
-          if (input$drp19 == numbersD$questionD[numbersD$questionD[3] == "out",4]){
-            img(src = "check.png",width = 30)
-          }else{
-            img(src = "cross.png",width = 30)
-          }
-        }
-      })
+  observeEvent(input$clearD,{
+    output$answer17 <- renderUI({
+      img(src = NULL,width = 30)
     })
   })
   
-  observeEvent(input$submitE,{  
-    observeEvent(input$clearE,{
-      output$answer20 <- renderUI({
-        img(src = NULL,width = 30)
-      })
+  observeEvent(input$submitD,{  
+    output$answer18 <- renderUI({
+      if (!is.null(input$drp18)){
+        if (input$drp18 == numbersD$questionD[numbersD$questionD[3] == "pos",4]){
+          img(src = "check.png",width = 30)
+        }else{
+          img(src = "cross.png",width = 30)
+        }
+      }
     })
-    observe({
-      output$answer20 <- renderUI({
-        if (!is.null(input$drp20)){
-          if (input$drp20 == numbersD$questionD[numbersD$questionD[3] == "hhh",4]){
+  })
+  observeEvent(input$clearD,{
+    output$answer18 <- renderUI({
+      img(src = NULL,width = 30)
+    })
+  })
+  
+  observeEvent(input$submitD,{  
+    output$answer19 <- renderUI({
+      if (!is.null(input$drp19)){
+        if (input$drp19 == numbersD$questionD[numbersD$questionD[3] == "out",4]){
+          img(src = "check.png",width = 30)
+        }else{
+          img(src = "cross.png",width = 30)
+        }
+      }
+    })
+  })
+  observeEvent(input$clearD,{
+    output$answer19 <- renderUI({
+      img(src = NULL,width = 30)
+    })
+  })
+  
+  observeEvent(input$submitD,{  
+    output$answer20 <- renderUI({
+      if (!is.null(input$drp20)){
+        if (input$drp20 == numbersD$questionD[numbersD$questionD[3] == "hhh",4]){
+          img(src = "check.png",width = 30)
+        }else{
+          img(src = "cross.png",width = 30)
+        }
+      }
+    })
+  })
+  observeEvent(input$clearD,{
+    output$answer20 <- renderUI({
+      img(src = NULL,width = 30)
+    })
+  })
+  
+  #############
+  observeEvent(input$submitE,{
+    output$answer21 <- renderUI({
+      if (!is.null(input$drp21)){
+        if (input$drp21 ==numbersE$questionE[numbersE$questionE[1] == "normal",5]){
+          img(src = "check.png",width = 30)
+        }else{
+          img(src = "cross.png",width = 30)
+        }
+      }
+    })
+  })
+  observeEvent(input$clearE,{
+    output$answer21 <- renderUI({
+      img(src = NULL,width = 30)
+    })
+  })
+  
+  observeEvent(input$submitE,{
+    output$answer22 <- renderUI({
+      if (!is.null(input$drp22)){
+        if (input$drp22 ==numbersE$questionE[numbersE$questionE[1] == "right",5]){
+          img(src = "check.png",width = 30)
+        }else{
+          img(src = "cross.png",width = 30)
+        }
+      }
+    })
+  })
+  observeEvent(input$clearE,{
+    output$answer22 <- renderUI({
+      img(src = NULL,width = 30)
+    })
+  })
+  
+  observeEvent(input$submitE,{
+    output$answer23 <- renderUI({
+      if (!is.null(input$drp23)){
+        if (input$drp23 == numbersE$questionE[numbersE$questionE[1] == "left",5]){
+          img(src = "check.png",width = 30)
+        }else{
+          img(src = "cross.png",width = 30)
+        }
+      }
+    })
+  })
+  observeEvent(input$clearE,{
+    output$answer23 <- renderUI({
+      img(src = NULL,width = 30)
+    })
+  })
+  
+  observeEvent(input$submitE,{
+    output$answer24 <- renderUI({
+      if (!is.null(input$drp24)){
+        if (input$drp24 == numbersE$questionE[numbersE$questionE[1] == "binomial",5]){
+          img(src = "check.png",width = 30)
+        }else{
+          img(src = "cross.png",width = 30)
+        }
+      }
+    })
+  })
+  observeEvent(input$clearE,{
+    output$answer24 <- renderUI({
+      img(src = NULL,width = 30)
+    })
+  })
+  
+  #############
+  if(choice==1){
+    observeEvent(input$submitF,{
+      output$answer25 <- renderUI({
+        if (!is.null(input$drp25)){
+          if (input$drp25 == numbersF1$questionF1[numbersF1$questionF1[2] == "1",3]){
             img(src = "check.png",width = 30)
           }else{
             img(src = "cross.png",width = 30)
@@ -957,387 +1090,276 @@ shinyServer(function(input, output, session) {
         }
       })
     })
-  })
-  #############
-  if(choice==1){
-    observeEvent(input$submitG,{
-      observeEvent(input$clearG,{
-        output$answer25 <- renderUI({
-          img(src = NULL,width = 30)
-        })
-      })
-      observe({
-        output$answer25 <- renderUI({
-          if (!is.null(input$drp25)){
-            if (input$drp25 == numbersF1$questionF1[numbersF1$questionF1[2] == "1",3]){
-              img(src = "check.png",width = 30)
-            }else{
-              img(src = "cross.png",width = 30)
-            }
-          }
-        })
-      })
-    })
-    observeEvent(input$submitG,{
-      observeEvent(input$clearG,{
-        output$answer26 <- renderUI({
-          img(src = NULL,width = 30)
-        })
-      })
-      observe({
-        output$answer26 <- renderUI({
-          if (!is.null(input$drp26)){
-            if (input$drp26 ==numbersF1$questionF1[numbersF1$questionF1[2] == "2",3]){
-              img(src = "check.png",width = 30)
-            }else{
-              img(src = "cross.png",width = 30)
-            }
-          }
-        })
-      })
-    })
-    observeEvent(input$submitG,{
-      observeEvent(input$clearG,{
-        output$answer27 <- renderUI({
-          img(src = NULL,width = 30)
-        })
-      })
-      observe({
-        output$answer27 <- renderUI({
-          if (!is.null(input$drp27)){
-            if (input$drp27 == numbersF1$questionF1[numbersF1$questionF1[2] == "3",3]){
-              img(src = "check.png",width = 30)
-            }else{
-              img(src = "cross.png",width = 30)
-            }
-          }
-        })
+    observeEvent(input$clearF,{
+      output$answer25 <- renderUI({
+        img(src = NULL,width = 30)
       })
     })
     
-    observeEvent(input$submitG,{
-      observeEvent(input$clearG,{
-        output$answer28 <- renderUI({
-          img(src = NULL,width = 30)
-        })
-      })
-      observe({
-        output$answer28 <- renderUI({
-          if (!is.null(input$drp28)){
-            if (input$drp28 == numbersF1$questionF1[numbersF1$questionF1[2] == "4",3]){
-              img(src = "check.png",width = 30)
-            }else{
-              img(src = "cross.png",width = 30)
-            }
+    observeEvent(input$submitF,{
+      output$answer26 <- renderUI({
+        if (!is.null(input$drp26)){
+          if (input$drp26 ==numbersF1$questionF1[numbersF1$questionF1[2] == "2",3]){
+            img(src = "check.png",width = 30)
+          }else{
+            img(src = "cross.png",width = 30)
           }
-        })
+        }
+      })
+    })
+    observeEvent(input$clearF,{
+      output$answer26 <- renderUI({
+        img(src = NULL,width = 30)
+      })
+    })
+    
+    observeEvent(input$submitF,{
+      output$answer27 <- renderUI({
+        if (!is.null(input$drp27)){
+          if (input$drp27 == numbersF1$questionF1[numbersF1$questionF1[2] == "3",3]){
+            img(src = "check.png",width = 30)
+          }else{
+            img(src = "cross.png",width = 30)
+          }
+        }
+      })
+    })
+    observeEvent(input$clearF,{
+      output$answer27 <- renderUI({
+        img(src = NULL,width = 30)
+      })
+    })
+    
+    observeEvent(input$submitF,{
+      output$answer28 <- renderUI({
+        if (!is.null(input$drp28)){
+          if (input$drp28 == numbersF1$questionF1[numbersF1$questionF1[2] == "4",3]){
+            img(src = "check.png",width = 30)
+          }else{
+            img(src = "cross.png",width = 30)
+          }
+        }
+      })
+    })
+    observeEvent(input$clearF,{
+      output$answer28 <- renderUI({
+        img(src = NULL,width = 30)
       })
     })}
   
   if(choice==2){
-    observeEvent(input$submitG,{
-      observeEvent(input$clearG,{
-        output$answer25 <- renderUI({
-          img(src = NULL,width = 30)
-        })
-      })
-      observe({
-        output$answer25 <- renderUI({
-          if (!is.null(input$drp25)){
-            if (input$drp25 ==numbersF2$questionF2[numbersF2$questionF2[2] == "1",3]){
-              img(src = "check.png",width = 30)
-            }else{
-              img(src = "cross.png",width = 30)
-            }
+    observeEvent(input$submitF,{
+      output$answer25 <- renderUI({
+        if (!is.null(input$drp25)){
+          if (input$drp25 ==numbersF2$questionF2[numbersF2$questionF2[2] == "1",3]){
+            img(src = "check.png",width = 30)
+          }else{
+            img(src = "cross.png",width = 30)
           }
-        })
+        }
       })
     })
-    observeEvent(input$submitG,{
-      observeEvent(input$clearG,{
-        output$answer26 <- renderUI({
-          img(src = NULL,width = 30)
-        })
-      })
-      observe({
-        output$answer26 <- renderUI({
-          if (!is.null(input$drp26)){
-            if (input$drp26 ==numbersF2$questionF2[numbersF2$questionF2[2] == "2",3]){
-              img(src = "check.png",width = 30)
-            }else{
-              img(src = "cross.png",width = 30)
-            }
-          }
-        })
-      })
-    })
-    observeEvent(input$submitG,{
-      observeEvent(input$clearG,{
-        output$answer27 <- renderUI({
-          img(src = NULL,width = 30)
-        })
-      })
-      observe({
-        output$answer27 <- renderUI({
-          if (!is.null(input$drp27)){
-            if (input$drp27 == numbersF2$questionF2[numbersF2$questionF2[2] == "3",3]){
-              img(src = "check.png",width = 30)
-            }else{
-              img(src = "cross.png",width = 30)
-            }
-          }
-        })
+    observeEvent(input$clearF,{
+      output$answer25 <- renderUI({
+        img(src = NULL,width = 30)
       })
     })
     
-    observeEvent(input$submitG,{
-      observeEvent(input$clearG,{
-        output$answer28 <- renderUI({
-          img(src = NULL,width = 30)
-        })
-      })
-      observe({
-        output$answer28 <- renderUI({
-          if (!is.null(input$drp28)){
-            if (input$drp28 == numbersF2$questionF2[numbersF2$questionF2[2] == "4",3]){
-              img(src = "check.png",width = 30)
-            }else{
-              img(src = "cross.png",width = 30)
-            }
+    observeEvent(input$submitF,{
+      output$answer26 <- renderUI({
+        if (!is.null(input$drp26)){
+          if (input$drp26 ==numbersF2$questionF2[numbersF2$questionF2[2] == "2",3]){
+            img(src = "check.png",width = 30)
+          }else{
+            img(src = "cross.png",width = 30)
           }
-        })
+        }
+      })
+    })
+    observeEvent(input$clearF,{
+      output$answer26 <- renderUI({
+        img(src = NULL,width = 30)
+      })
+    })
+    
+    observeEvent(input$submitF,{
+      output$answer27 <- renderUI({
+        if (!is.null(input$drp27)){
+          if (input$drp27 == numbersF2$questionF2[numbersF2$questionF2[2] == "3",3]){
+            img(src = "check.png",width = 30)
+          }else{
+            img(src = "cross.png",width = 30)
+          }
+        }
+      })
+    })
+    observeEvent(input$clearF,{
+      output$answer27 <- renderUI({
+        img(src = NULL,width = 30)
+      })
+    })
+    
+    observeEvent(input$submitF,{
+      output$answer28 <- renderUI({
+        if (!is.null(input$drp28)){
+          if (input$drp28 == numbersF2$questionF2[numbersF2$questionF2[2] == "4",3]){
+            img(src = "check.png",width = 30)
+          }else{
+            img(src = "cross.png",width = 30)
+          }
+        }
+      })
+    })
+    observeEvent(input$clearF,{
+      output$answer28 <- renderUI({
+        img(src = NULL,width = 30)
       })
     })}
   
   if(choice==3){
-    observeEvent(input$submitG,{
-      observeEvent(input$clearG,{
-        output$answer25 <- renderUI({
-          img(src = NULL,width = 30)
-        })
-      })
-      observe({
-        output$answer25 <- renderUI({
-          if (!is.null(input$drp25)){
-            if (input$drp25 ==numbersF3$questionF3[numbersF3$questionF3[2] == "1",3]){
-              img(src = "check.png",width = 30)
-            }else{
-              img(src = "cross.png",width = 30)
-            }
+    observeEvent(input$submitF,{
+      output$answer25 <- renderUI({
+        if (!is.null(input$drp25)){
+          if (input$drp25 ==numbersF3$questionF3[numbersF3$questionF3[2] == "1",3]){
+            img(src = "check.png",width = 30)
+          }else{
+            img(src = "cross.png",width = 30)
           }
-        })
+        }
       })
     })
-    observeEvent(input$submitG,{
-      observeEvent(input$clearG,{
-        output$answer26 <- renderUI({
-          img(src = NULL,width = 30)
-        })
-      })
-      observe({
-        output$answer26 <- renderUI({
-          if (!is.null(input$drp26)){
-            if (input$drp26 ==numbersF3$questionF3[numbersF3$questionF3[2] == "2",3]){
-              img(src = "check.png",width = 30)
-            }else{
-              img(src = "cross.png",width = 30)
-            }
-          }
-        })
-      })
-    })
-    observeEvent(input$submitG,{
-      observeEvent(input$clearG,{
-        output$answer27 <- renderUI({
-          img(src = NULL,width = 30)
-        })
-      })
-      observe({
-        output$answer27 <- renderUI({
-          if (!is.null(input$drp27)){
-            if (input$drp27 == numbersF3$questionF3[numbersF3$questionF3[2] == "3",3]){
-              img(src = "check.png",width = 30)
-            }else{
-              img(src = "cross.png",width = 30)
-            }
-          }
-        })
+    observeEvent(input$clearF,{
+      output$answer25 <- renderUI({
+        img(src = NULL,width = 30)
       })
     })
     
-    observeEvent(input$submitG,{
-      observeEvent(input$clearG,{
-        output$answer28 <- renderUI({
-          img(src = NULL,width = 30)
-        })
-      })
-      observe({
-        output$answer28 <- renderUI({
-          if (!is.null(input$drp28)){
-            if (input$drp28 == numbersF3$questionF3[numbersF3$questionF3[2] == "4",3]){
-              img(src = "check.png",width = 30)
-            }else{
-              img(src = "cross.png",width = 30)
-            }
+    observeEvent(input$submitF,{
+      output$answer26 <- renderUI({
+        if (!is.null(input$drp26)){
+          if (input$drp26 ==numbersF3$questionF3[numbersF3$questionF3[2] == "2",3]){
+            img(src = "check.png",width = 30)
+          }else{
+            img(src = "cross.png",width = 30)
           }
-        })
+        }
+      })
+    })
+    observeEvent(input$clearF,{
+      output$answer26 <- renderUI({
+        img(src = NULL,width = 30)
+      })
+    })
+    
+    observeEvent(input$submitF,{
+      output$answer27 <- renderUI({
+        if (!is.null(input$drp27)){
+          if (input$drp27 == numbersF3$questionF3[numbersF3$questionF3[2] == "3",3]){
+            img(src = "check.png",width = 30)
+          }else{
+            img(src = "cross.png",width = 30)
+          }
+        }
+      })
+    })
+    observeEvent(input$clearF,{
+      output$answer27 <- renderUI({
+        img(src = NULL,width = 30)
+      })
+    })
+    
+    observeEvent(input$submitF,{
+      output$answer28 <- renderUI({
+        if (!is.null(input$drp28)){
+          if (input$drp28 == numbersF3$questionF3[numbersF3$questionF3[2] == "4",3]){
+            img(src = "check.png",width = 30)
+          }else{
+            img(src = "cross.png",width = 30)
+          }
+        }
+      })
+    })
+    observeEvent(input$clearF,{
+      output$answer28 <- renderUI({
+        img(src = NULL,width = 30)
       })
     })}
   
   
   if(choice==4){
-    observeEvent(input$submitG,{
-      observeEvent(input$clearG,{
-        output$answer25 <- renderUI({
-          img(src = NULL,width = 30)
-        })
-      })
-      observe({
-        output$answer25 <- renderUI({
-          if (!is.null(input$drp25)){
-            if (input$drp25 ==numbersF4$questionF4[numbersF4$questionF4[2] == "1",3]){
-              img(src = "check.png",width = 30)
-            }else{
-              img(src = "cross.png",width = 30)
-            }
+    observeEvent(input$submitF,{
+      output$answer25 <- renderUI({
+        if (!is.null(input$drp25)){
+          if (input$drp25 ==numbersF4$questionF4[numbersF4$questionF4[2] == "1",3]){
+            img(src = "check.png",width = 30)
+          }else{
+            img(src = "cross.png",width = 30)
           }
-        })
+        }
       })
     })
-    observeEvent(input$submitG,{
-      observeEvent(input$clearG,{
-        output$answer26 <- renderUI({
-          img(src = NULL,width = 30)
-        })
-      })
-      observe({
-        output$answer26 <- renderUI({
-          if (!is.null(input$drp26)){
-            if (input$drp26 ==numbersF4$questionF4[numbersF4$questionF4[2] == "2",3]){
-              img(src = "check.png",width = 30)
-            }else{
-              img(src = "cross.png",width = 30)
-            }
-          }
-        })
-      })
-    })
-    observeEvent(input$submitG,{
-      observeEvent(input$clearG,{
-        output$answer27 <- renderUI({
-          img(src = NULL,width = 30)
-        })
-      })
-      observe({
-        output$answer27 <- renderUI({
-          if (!is.null(input$drp27)){
-            if (input$drp27 == numbersF4$questionF4[numbersF4$questionF4[2] == "3",3]){
-              img(src = "check.png",width = 30)
-            }else{
-              img(src = "cross.png",width = 30)
-            }
-          }
-        })
+    observeEvent(input$clearF,{
+      output$answer25 <- renderUI({
+        img(src = NULL,width = 30)
       })
     })
     
-    observeEvent(input$submitG,{
-      observeEvent(input$clearG,{
-        output$answer28 <- renderUI({
-          img(src = NULL,width = 30)
-        })
-      })
-      observe({
-        output$answer28 <- renderUI({
-          if (!is.null(input$drp28)){
-            if (input$drp28 == numbersF4$questionF4[numbersF4$questionF4[2] == "4",3]){
-              img(src = "check.png",width = 30)
-            }else{
-              img(src = "cross.png",width = 30)
-            }
+    observeEvent(input$submitF,{
+      output$answer26 <- renderUI({
+        if (!is.null(input$drp26)){
+          if (input$drp26 ==numbersF4$questionF4[numbersF4$questionF4[2] == "2",3]){
+            img(src = "check.png",width = 30)
+          }else{
+            img(src = "cross.png",width = 30)
           }
-        })
+        }
+      })
+    })
+    observeEvent(input$clearF,{
+      output$answer26 <- renderUI({
+        img(src = NULL,width = 30)
+      })
+    })
+    
+    observeEvent(input$submitF,{
+      output$answer27 <- renderUI({
+        if (!is.null(input$drp27)){
+          if (input$drp27 == numbersF4$questionF4[numbersF4$questionF4[2] == "3",3]){
+            img(src = "check.png",width = 30)
+          }else{
+            img(src = "cross.png",width = 30)
+          }
+        }
+      })
+    })
+    observeEvent(input$clearF,{
+      output$answer27 <- renderUI({
+        img(src = NULL,width = 30)
+      })
+    })
+    
+    observeEvent(input$submitF,{
+      output$answer28 <- renderUI({
+        if (!is.null(input$drp28)){
+          if (input$drp28 == numbersF4$questionF4[numbersF4$questionF4[2] == "4",3]){
+            img(src = "check.png",width = 30)
+          }else{
+            img(src = "cross.png",width = 30)
+          }
+        }
+      })
+    })
+    observeEvent(input$clearF,{
+      output$answer28 <- renderUI({
+        img(src = NULL,width = 30)
       })
     })}
   
   
-  #############
-  observeEvent(input$submitF,{
-    observeEvent(input$clearF,{
-      output$answer21 <- renderUI({
-        img(src = NULL,width = 30)
-      })
-    })
-    observe({
-      output$answer21 <- renderUI({
-        if (!is.null(input$drp21)){
-          if (input$drp21 ==numbersE$questionE[numbersE$questionE[1] == "normal",5]){
-            img(src = "check.png",width = 30)
-          }else{
-            img(src = "cross.png",width = 30)
-          }
-        }
-      })
-    })
-  })
-  observeEvent(input$submitF,{
-    observeEvent(input$clearF,{
-      output$answer22 <- renderUI({
-        img(src = NULL,width = 30)
-      })
-    })
-    observe({
-      output$answer22 <- renderUI({
-        if (!is.null(input$drp22)){
-          if (input$drp22 ==numbersE$questionE[numbersE$questionE[1] == "right",5]){
-            img(src = "check.png",width = 30)
-          }else{
-            img(src = "cross.png",width = 30)
-          }
-        }
-      })
-    })
-  })
-  observeEvent(input$submitF,{
-    observeEvent(input$clearF,{
-      output$answer23 <- renderUI({
-        img(src = NULL,width = 30)
-      })
-    })
-    observe({
-      output$answer23 <- renderUI({
-        if (!is.null(input$drp23)){
-          if (input$drp23 == numbersE$questionE[numbersE$questionE[1] == "left",5]){
-            img(src = "check.png",width = 30)
-          }else{
-            img(src = "cross.png",width = 30)
-          }
-        }
-      })
-    })
-  })
   
-  observeEvent(input$submitF,{
-    observeEvent(input$clearF,{
-      output$answer24 <- renderUI({
-        img(src = NULL,width = 30)
-      })
-    })
-    observe({
-      output$answer24 <- renderUI({
-        if (!is.null(input$drp24)){
-          if (input$drp24 == numbersE$questionE[numbersE$questionE[1] == "binomial",5]){
-            img(src = "check.png",width = 30)
-          }else{
-            img(src = "cross.png",width = 30)
-          }
-        }
-      })
-    })
-  })
   
   #####################################################
-  
+  ####################### Score #######################
   #####################################################
   
   
@@ -1383,9 +1405,13 @@ shinyServer(function(input, output, session) {
     
     summation$summationA[input$submitA] <- sum(c(score1,score2, score3, score4))
   })
-  output$scoreA <- renderPrint({
-    cat("Current score of this level is",summation$summationA[input$submitA])
+  output$scoreA <- renderUI({
+    str1 <- paste("Your current score on this level is:")
+    str2 <- paste(summation$summationA[input$submitA]," out of 8.")
+    HTML(paste(str1, str2, sep = '<br/>'))
+    #cat("Current score of this level is",summation$summationA[input$submitA])
   })
+  
   ############################################## 
   observeEvent(input$submitB,{
     score5 = c()
@@ -1426,26 +1452,41 @@ shinyServer(function(input, output, session) {
     
     summation$summationB[input$submitB] <- sum(c(score5,score6, score7, score8))
   })
-  output$scoreB <- renderPrint({
-    cat("Current score of this level is",summation$summationB[input$submitB])
+  output$scoreB <- renderUI({
+    str3 <- paste("Your current score on this level is:")
+    str4 <- paste(summation$summationB[input$submitB]," out of 8.")
+    HTML(paste(str3, str4, sep = '<br/>'))
+    #cat("Current score of this level is",summation$summationB[input$submitB])
   })
   
-  output$scoreC <- renderPrint({
-    cat("Current score of this level is",summation$summationC[input$submitD])
+  output$scoreC <- renderUI({
+    str5 <- paste("Your current score on this level is:")
+    str6 <- paste(summation$summationC[input$submitC]," out of 16.")
+    HTML(paste(str5, str6, sep = '<br/>'))
+    #cat("Current score of this level is",summation$summationC[input$submitC])
   })
-  output$scoreD <- renderPrint({
-    cat("Current score of this level is",summation$summationD[input$submitE])
+  output$scoreD <- renderUI({
+    str7 <- paste("Your current score on this level is:")
+    str8 <- paste(summation$summationD[input$submitD]," out of 20.")
+    HTML(paste(str7, str8, sep = '<br/>'))
+    #cat("Current score of this level is",summation$summationD[input$submitD])
   })
-  output$scoreE <- renderPrint({
-    cat("Current score of this level is",summation$summationE[input$submitF])
+  output$scoreE <- renderUI({
+    str9 <- paste("Your current score on this level is:")
+    str10 <- paste(summation$summationE[input$submitE]," out of 24.")
+    HTML(paste(str9, str10, sep = '<br/>'))
+    #cat("Current score of this level is",summation$summationE[input$submitE])
   })
-  output$scoreF <- renderPrint({
-    cat("Current score of this level is",summation$summationF[input$submitG])
+  output$scoreF <- renderUI({
+    str11 <- paste("Your current score on this level is:")
+    str12 <- paste(summation$summationF[input$submitF]," out of 24.")
+    HTML(paste(str11, str12, sep = '<br/>'))
+    #cat("Current score of this level is",summation$summationF[input$submitF])
   })
   
   
   ############################################## 
-  observeEvent(input$submitD,{
+  observeEvent(input$submitC,{
     score9 = c()
     score10 = c()
     score11 = c()
@@ -1482,12 +1523,12 @@ shinyServer(function(input, output, session) {
     
     
     
-    summation$summationC[input$submitD] <- sum(c(score9,score10, score11, score12))
+    summation$summationC[input$submitC] <- sum(c(score9,score10, score11, score12))
   })
   ######################################################
   
   ############################################## 
-  observeEvent(input$submitE,{
+  observeEvent(input$submitD,{
     score13 = c()
     score14 = c()
     score15 = c()
@@ -1518,13 +1559,13 @@ shinyServer(function(input, output, session) {
       if (i == numbersD$questionD[numbersD$questionD[3]== "hhh", 4]){
         score16 = c(score16,5)
       }else{
-        score6 = c(score16,-3)
+        score16 = c(score16,-3)
       }
     }
-    summation$summationD[input$submitE] <- sum(c(score13,score14, score15, score16))
+    summation$summationD[input$submitD] <- sum(c(score13,score14, score15, score16))
   })
   ###############################
-  observeEvent(input$submitF,{
+  observeEvent(input$submitE,{
     score17 = c()
     score18 = c()
     score19 = c()
@@ -1558,12 +1599,12 @@ shinyServer(function(input, output, session) {
         score20 = c(score20,-3)
       }
     }
-    summation$summationE[input$submitF] <- sum(c(score17,score18, score19, score20))
+    summation$summationE[input$submitE] <- sum(c(score17,score18, score19, score20))
   })
   
   ##############################
   ###############################
-  observeEvent(input$submitG,{
+  observeEvent(input$submitF,{
     score21 = c()
     score22 = c()
     score23 = c()
@@ -1684,442 +1725,256 @@ shinyServer(function(input, output, session) {
           score24 = c(score24,-3)
         }
       } }
-    summation$summationF[input$submitG] <- sum(c(score21,score22, score23, score24))
+    summation$summationF[input$submitF] <- sum(c(score21,score22, score23, score24))
     
     
   })
-  ##############################
-  
-  
-  ############################### ##############################
+  ###########################################################################################
+  ### Penalty box text
   values = reactiveValues(
     count = 0
   )
+  
+  # Level 1
   observeEvent(input$submitA,{
     if(summation$summationA[input$submitA] == 8){
       updateButton(session, "next1",disabled = FALSE)
-      
+      updateButton(session, "stop1",disabled = FALSE)
     }})
-  #####PENALTY BOX TEXT#####
+
   
+  #####PENALTY BOX TEXT#####
   output$warning1 <- reactive({
     if(summation$summationA[input$submitA] == 8){
       output$warning1 <- renderText({"Congratulations! You are ready to move on!"})
     }
     else if((summation$summationA[input$submitA] < 8)) {
-      output$warning1 <- renderText({"Please drag the wrong answers into this PENALTY box and click the CLEAR button to restart."})
+      output$warning1 <- renderText({"Please drag wrong answers into this PENALTY box and drag back to try again."})
     }
   })
   
+  # Level 2
   observeEvent(input$submitB,{
     if(summation$summationB[input$submitB] == 8){
       updateButton(session, "next2",disabled = FALSE)
+      updateButton(session, "stop2",disabled = FALSE)
       #values$count = values$count + 80
-    }
-    
-  })
+    }})
+
   #####PENALTY BOX TEXT#####
   output$warning2 <- reactive({
     if(summation$summationB[input$submitB] == 8){
       output$warning2 <- renderText({"Congratulations! You are ready to move on!"})
     }
     else if((summation$summationB[input$submitB] < 8)) {
-      output$warning2 <- renderText({"Please drag the wrong answers into this PENALTY box and click the CLEAR button to restart."})
+      output$warning2 <- renderText({"Please drag wrong answers into this PENALTY box and drag back to try again."})
     }
   })
   
-  observeEvent(input$submitD,{
-    if(summation$summationC[input$submitD] == 16){
+  # Level 3
+  observeEvent(input$submitC,{
+    if(summation$summationC[input$submitC] == 16){
       updateButton(session, "next3",disabled = FALSE)
+      updateButton(session, "stop3",disabled = FALSE)
       #values$count = values$count + 80
-    }
-    
-  })
+    }})
+
   #####PENALTY BOX TEXT#####
   output$warning3 <- reactive({
-    if(summation$summationC[input$submitD] == 16){
+    if(summation$summationC[input$submitC] == 16){
       output$warning3 <- renderText({"Congratulations! You are ready to move on!"})
     }
-    else if((summation$summationC[input$submitD] < 16)) {
-      output$warning3 <- renderText({"Please drag the wrong answers into this PENALTY box and click the CLEAR button to restart."})
-    }
-  })
-  observeEvent(input$submitE,{
-    if(summation$summationD[input$submitE] == 20){
-      updateButton(session, "next4",disabled = FALSE)
-      #values$count = values$count + 80
-    }
-    
-  })
-  #####PENALTY BOX TEXT#####
-  output$warning4 <- reactive({
-    if(summation$summationD[input$submitE] == 20){
-      output$warning4 <- renderText({"Congratulations! You are ready to move on!"})
-    }
-    else if((summation$summationD[input$submitE] < 20)) {
-      output$warning4 <- renderText({"Please drag the wrong answers into this PENALTY box and click the CLEAR button to restart."})
-    }
-  })
-  observeEvent(input$submitF,{
-    if(summation$summationE[input$submitF] == 24){
-      updateButton(session, "next5",disabled = FALSE)
-      #values$count = values$count + 80
-    }
-    
-  })
-  #####PENALTY BOX TEXT#####
-  output$warning5 <- reactive({
-    if(summation$summationE[input$submitF] == 24){
-      output$warning5 <- renderText({"Congratulations! You are ready to move on!"})
-    }
-    else if((summation$summationD[input$submitE] < 24)) {
-      output$warning5 <- renderText({"Please drag the wrong answers into this PENALTY box and click the CLEAR button to restart."})
+    else if((summation$summationC[input$submitC] < 16)) {
+      output$warning3 <- renderText({"Please drag wrong answers into this PENALTY box and drag back to try again."})
     }
   })
   
-  observeEvent(input$submitG,{
-    if(summation$summationF[input$submitG] == 24){
+  # Level 4
+  observeEvent(input$submitD,{
+    if(summation$summationD[input$submitD] == 20){
+      updateButton(session, "next4",disabled = FALSE)
+      updateButton(session, "stop4",disabled = FALSE)
+      #values$count = values$count + 80
+    }})
+
+  
+  #####PENALTY BOX TEXT#####
+  output$warning4 <- reactive({
+    if(summation$summationD[input$submitD] == 20){
+      output$warning4 <- renderText({"Congratulations! You are ready to move on!"})
+    }
+    else if((summation$summationD[input$submitD] < 20)) {
+      output$warning4 <- renderText({"Please drag wrong answers into this PENALTY box and drag back to try again."})
+    }
+  })
+  
+  # Level 5
+  observeEvent(input$submitE,{
+    if(summation$summationE[input$submitE] == 24){
+      updateButton(session, "next5",disabled = FALSE)
+      updateButton(session, "stop5",disabled = FALSE)
+      #values$count = values$count + 80
+    }})
+
+  
+  #####PENALTY BOX TEXT#####
+  output$warning5 <- reactive({
+    if(summation$summationE[input$submitE] == 24){
+      output$warning5 <- renderText({"Congratulations! You are ready to move on!"})
+    }
+    else if((summation$summationE[input$submitE] < 24)) {
+      output$warning5 <- renderText({"Please drag wrong answers into this PENALTY box and drag back to try again."})
+    }
+  })
+  
+  # Level 6
+  observeEvent(input$submitF,{
+    if(summation$summationF[input$submitF] == 24){
       updateButton(session, "finish",disabled = FALSE)
       #values$count = values$count + 80
     }
     else{
       updateButton(session, "finish", disabled = TRUE)
     }
-    
   })
   #####PENALTY BOX TEXT#####
   output$warning6 <- reactive({
-    if(summation$summationF[input$submitG] == 24){
+    if(summation$summationF[input$submitF] == 24){
       output$warning6 <- renderText({"Congratulations! You are ready to move on!"})
     }
-    else if((summation$summationF[input$submitG] < 24)) {
-      output$warning6 <- renderText({"Please drag the wrong answers into this PENALTY box and click the CLEAR button to restart."})
+    else if((summation$summationF[input$submitF] < 24)) {
+      output$warning6 <- renderText({"Please drag wrong answers into this PENALTY box and drag back to try again."})
     }
   })
   
   
-  observeEvent(input$finish,{
-    summation$summationA[which(summation$summationA == 0)] = summation$summationA[input$submitA]
-    summation$summationB[which(summation$summationB == 0)] = summation$summationB[input$submitB]
-    summation$summationC[which(summation$summationC == 0)] = summation$summationC[input$submitD]
-    summation$summationD[which(summation$summationD == 0)] = summation$summationD[input$submitE]
-    summation$summationE[which(summation$summationE == 0)] = summation$summationE[input$submitF]
-    summation$summationF[which(summation$summationF == 0)] = summation$summationF[input$submitG]
-    
-    summation$summationScore = summation$summationA+ summation$summationB+ summation$summationC+ summation$summationD +summation$summationE+ summation$summationF
-  })
   
+  ################################ Score Section #####################################
+  ### Initial score
   output$init <- renderPrint({
     
+    if(any(summation$summationA[1] != 0) & any(summation$summationB[1] == 0) & any(summation$summationC[1] == 0) 
+       & any(summation$summationD[1] == 0) & any(summation$summationE[1] == 0) & any(summation$summationF[1] == 0))
+    {initialScore = summation$summationA[1]}
     
-    if (any(summation$summationA != 0) & any(summation$summationB != 0) 
-        & any(summation$summationC != 0)&any(summation$summationD != 0)&any(summation$summationE != 0)&
-        any(summation$summationF != 0)){
-      initialScore = summation$summationScore[which(summation$summationScore != 0)][1]
-    }else{
+    else if(any(summation$summationA[1] != 0) & any(summation$summationB[1] != 0) & any(summation$summationC[1] == 0) 
+            & any(summation$summationD[1] == 0) & any(summation$summationE[1] == 0) & any(summation$summationF[1] == 0))
+    {initialScore = summation$summationA[1] + summation$summationB[1]}
+    
+    else if(any(summation$summationA[1] != 0) & any(summation$summationB[1] != 0) & any(summation$summationC[1] != 0) 
+            & any(summation$summationD[1] == 0) & any(summation$summationE[1] == 0) & any(summation$summationF[1] == 0))
+    {initialScore = summation$summationA[1] + summation$summationB[1] + summation$summationC[1]}
+    
+    else if(any(summation$summationA[1] != 0) & any(summation$summationB[1] != 0) & any(summation$summationC[1] != 0) 
+            & any(summation$summationD[1] != 0) & any(summation$summationE[1] == 0) & any(summation$summationF[1] == 0))
+    {initialScore = summation$summationA[1] + summation$summationB[1] + summation$summationC[1] + summation$summationD[1]}
+    
+    else if(any(summation$summationA[1] != 0) & any(summation$summationB[1] != 0) & any(summation$summationC[1] != 0) 
+            & any(summation$summationD[1] != 0) & any(summation$summationE[1] != 0) & any(summation$summationF[1] == 0))
+    {initialScore = summation$summationA[1] + summation$summationB[1] + summation$summationC[1] + summation$summationD[1]
+    + summation$summationE[1]}
+    
+    else if(any(summation$summationA[1] != 0) & any(summation$summationB[1] != 0) & any(summation$summationC[1] != 0) 
+            & any(summation$summationD[1] != 0) & any(summation$summationE[1] != 0) & any(summation$summationF[1] != 0))
+    {initialScore = summation$summationA[1] + summation$summationB[1] + summation$summationC[1] + summation$summationD[1]
+    + summation$summationE[1] + summation$summationF[1]}
+    
+    else{
       initialScore = 0
     }
     
-    cat("Initial",initialScore)
+    cat("First:",initialScore)
   })
   
-  final <- reactiveValues(final = 0)
-  observeEvent(input$finish,{
-    score1 = c()
-    score2 = c()
-    score3 = c()
-    score4 = c()
-    score5 = c()
-    score6 = c()
-    score7 = c()
-    score8 = c()
-    score9 = c()
-    score10 = c()
-    score11 = c()
-    score12 = c()
-    score13 = c()
-    score14 = c()
-    score15 = c()
-    score16 = c()
-    score17 = c()
-    score18 = c()
-    score19 = c()
-    score20 = c()
-    score21 = c()
-    score22 = c()
-    score23 = c()
-    score24 = c()
+  
+  
+  ### subsequent scores
+  output$subsequent <- renderPrint({
+    if(any(summation$summationA[1] != 0) & any(summation$summationB[1] == 0) & any(summation$summationC[1] == 0) 
+       & any(summation$summationD[1] == 0) & any(summation$summationE[1] == 0) & any(summation$summationF[1] == 0))
+    {subsequentScore = 8}
     
-    for (i in input$drp1){
-      if (i == numbersA$questionA[numbersA$questionA[1]== "right", 6]){
-        score1 = c(score1,2)
-      }else{
-        score1 = c(score1,-1)
-      }
-    }
-    for (i in input$drp2){
-      if (i == numbersA$questionA[numbersA$questionA[1]== "left", 6]){
-        score2 = c(score2,2)
-      }else{
-        score2 = c(score2,-1)
-      }
-    }
-    for (i in input$drp3){
-      if (i == numbersA$questionA[numbersA$questionA[1]== "normal", 6]){
-        score3 = c(score3,2)
-      }else{
-        score3 = c(score3,-1)
-      }
-    }
-    for (i in input$drp4){
-      if (i == numbersA$questionA[numbersA$questionA[1]== "random", 6]){
-        score4 = c(score4,2)
-      }else{
-        score4 = c(score4,-1)
-      }
-    }
-    for (i in input$drp5){
-      if (i == numbersB$questionB[numbersB$questionB[1]== "mean1", 4]){
-        score5 = c(score5,2)
-      }else{
-        score5 = c(score5,-1)
-      }
-    }
-    for (i in input$drp6){
-      if (i == numbersB$questionB[numbersB$questionB[1]== "mean2", 4]){
-        score6 = c(score6,2)
-      }else{
-        score6 = c(score6,-1)
-      }
-    }
-    for (i in input$drp7){
-      if (i == numbersB$questionB[numbersB$questionB[1]== "mean3", 4]){
-        score7 = c(score7,2)
-      }else{
-        score7 = c(score7,-1)
-      }
-    }
-    for (i in input$drp8){
-      if (i == numbersB$questionB[numbersB$questionB[1]== "mean4", 4]){
-        score8 = c(score8,2)
-      }else{
-        score8 = c(score8,-1)
-      }
-    }
-    for (i in input$drp13){
-      if (i ==  numbersC$questionC[numbersC$questionC[1] == "left",4]){
-        score9 = c(score9,4)
-      }else{
-        score9 = c(score9,-2)
-      }
-    }
-    for (i in input$drp14){
-      if (i ==  numbersC$questionC[numbersC$questionC[1] == "right",4]){
-        score10 = c(score10,4)
-      }else{
-        score10 = c(score10,-2)
-      }
-    }
-    for (i in input$drp15){
-      if (i ==  numbersC$questionC[numbersC$questionC[1] == "normal",4]){
-        score11 = c(score11,4)
-      }else{
-        score11 = c(score11,-2)
-      }
-    }
-    for (i in input$drp16){
-      if (i ==  numbersC$questionC[numbersC$questionC[1] == "uniform",4]){
-        score12 = c(score12,4)
-      }else{
-        score12 = c(score12,-2)
-      }
-    }
-    for (i in input$drp17){
-      if (i == numbersD$questionD[numbersD$questionD[3]== "neg", 4]){
-        score13 = c(score13,5)
-      }else{
-        score13 = c(score13,-3)
-      }
-    }
-    for (i in input$drp18){
-      if (i ==  numbersD$questionD[numbersD$questionD[3]== "pos", 4]){
-        score14 = c(score14,5)
-      }else{
-        score14 = c(score14,-3)
-      }
-    }
-    for (i in input$drp19){
-      if (i ==  numbersD$questionD[numbersD$questionD[3]== "out", 4]){
-        score15 = c(score15,5)
-      }else{
-        score15 = c(score15,-3)
-      }
-    }
-    for (i in input$drp20){
-      if (i == numbersD$questionD[numbersD$questionD[3]== "hhh", 4]){
-        score16 = c(score16,5)
-      }else{
-        score6 = c(score16,-3)
-      }
-    }
-    for (i in input$drp21){
-      if (i == numbersE$questionE[numbersE$questionE[1] == "normal",5]){
-        score17 = c(score17,6)
-      }else{
-        score17 = c(score17,-3)
-      }
-    }
-    for (i in input$drp22){
-      if (i ==  numbersE$questionE[numbersE$questionE[1] == "right",5]){
-        score18 = c(score18,6)
-      }else{
-        score18 = c(score18,-3)
-      }
-    }
-    for (i in input$drp23){
-      if (i ==  numbersE$questionE[numbersE$questionE[1] == "left",5]){
-        score19 = c(score19,6)
-      }else{
-        score19 = c(score19,-3)
-      }
-    }
-    for (i in input$drp24){
-      if (i == numbersE$questionE[numbersE$questionE[1] == "binomial",5]){
-        score20 = c(score20,6)
-      }else{
-        score20 = c(score20,-3)
-      }
-    }
-    if(choice==1){  
-      for (i in input$drp25){
-        if (i == numbersF1$questionF1[numbersF1$questionF1[2] == "1",3]){
-          score21 = c(score21,6)
-        }else{
-          score21 = c(score21,-3)
-        }
-      }
-      for (i in input$drp26){
-        if (i ==  numbersF1$questionF1[numbersF1$questionF1[2] == "2",3]){
-          score22 = c(score22,6)
-        }else{
-          score22 = c(score22,-3)
-        }
-      }
-      for (i in input$drp27){
-        if (i ==  numbersF1$questionF1[numbersF1$questionF1[2] == "3",3]){
-          score23 = c(score23,6)
-        }else{
-          score23 = c(score23,-3)
-        }
-      }
-      for (i in input$drp28){
-        if (i == numbersF1$questionF1[numbersF1$questionF1[2] == "4",3]){
-          score24 = c(score24,6)
-        }else{
-          score24 = c(score24,-3)
-        }
-      } }
-    else if(choice==2){  
-      for (i in input$drp25){
-        if (i == numbersF2$questionF2[numbersF2$questionF2[2] == "1",3]){
-          score21 = c(score21,6)
-        }else{
-          score21 = c(score21,-3)
-        }
-      }
-      for (i in input$drp26){
-        if (i ==  numbersF2$questionF2[numbersF2$questionF2[2] == "2",3]){
-          score22 = c(score22,6)
-        }else{
-          score22 = c(score22,-3)
-        }
-      }
-      for (i in input$drp27){
-        if (i ==  numbersF2$questionF2[numbersF2$questionF2[2] == "3",3]){
-          score23 = c(score23,6)
-        }else{
-          score23 = c(score23,-3)
-        }
-      }
-      for (i in input$drp28){
-        if (i == numbersF2$questionF2[numbersF2$questionF2[2] == "4",3]){
-          score24 = c(score24,6)
-        }else{
-          score24 = c(score24,-3)
-        }
-      } }
-    else if(choice==3){  
-      for (i in input$drp25){
-        if (i == numbersF3$questionF3[numbersF3$questionF3[2] == "1",3]){
-          score21 = c(score21,6)
-        }else{
-          score21 = c(score21,-3)
-        }
-      }
-      for (i in input$drp26){
-        if (i ==  numbersF3$questionF3[numbersF3$questionF3[2] == "2",3]){
-          score22 = c(score22,6)
-        }else{
-          score22 = c(score22,-3)
-        }
-      }
-      for (i in input$drp27){
-        if (i ==  numbersF3$questionF3[numbersF3$questionF3[2] == "3",3]){
-          score23 = c(score23,6)
-        }else{
-          score23 = c(score23,-3)
-        }
-      }
-      for (i in input$drp28){
-        if (i == numbersF3$questionF3[numbersF3$questionF3[2] == "4",3]){
-          score24 = c(score24,6)
-        }else{
-          score24 = c(score24,-3)
-        }
-      } }
-    else if(choice==4){  
-      for (i in input$drp25){
-        if (i == numbersF4$questionF4[numbersF4$questionF4[2] == "1",3]){
-          score21 = c(score21,6)
-        }else{
-          score21 = c(score21,-3)
-        }
-      }
-      for (i in input$drp26){
-        if (i == numbersF4$questionF4[numbersF4$questionF4[2] == "2",3]){
-          score22 = c(score22,6)
-        }else{
-          score22 = c(score22,-3)
-        }
-      }
-      for (i in input$drp27){
-        if (i ==  numbersF4$questionF4[numbersF4$questionF4[2] == "3",3]){
-          score23 = c(score23,6)
-        }else{
-          score23 = c(score23,-3)
-        }
-      }
-      for (i in input$drp28){
-        if (i == numbersF4$questionF4[numbersF4$questionF4[2] == "4",3]){
-          score24 = c(score24,6)
-        }else{
-          score24 = c(score24,-3)
-        }
-      } }
-    final$final = sum(c(score1,score2,score3,score4,score5, score6, score7, score8, score9, score10,
-                        score11, score12, score13, score14, score15, score16, score17, score18, score19, score20,
-                        score21, score22, score23, score24))
+    else if(any(summation$summationA[1] != 0) & any(summation$summationB[1] != 0) & any(summation$summationC[1] == 0) 
+            & any(summation$summationD[1] == 0) & any(summation$summationE[1] == 0) & any(summation$summationF[1] == 0))
+    {subsequentScore = 16}
     
+    else if(any(summation$summationA[1] != 0) & any(summation$summationB[1] != 0) & any(summation$summationC[1] != 0) 
+            & any(summation$summationD[1] == 0) & any(summation$summationE[1] == 0) & any(summation$summationF[1] == 0))
+    {subsequentScore = 32}
     
-  })
-  output$end <- renderPrint({
-    cat("Improve","\n", final$final)
+    else if(any(summation$summationA[1] != 0) & any(summation$summationB[1] != 0) & any(summation$summationC[1] != 0) 
+            & any(summation$summationD[1] != 0) & any(summation$summationE[1] == 0) & any(summation$summationF[1] == 0))
+    {subsequentScore = 52}
+    
+    else if(any(summation$summationA[1] != 0) & any(summation$summationB[1] != 0) & any(summation$summationC[1] != 0) 
+            & any(summation$summationD[1] != 0) & any(summation$summationE[1] != 0) & any(summation$summationF[1] == 0))
+    {subsequentScore = 76}
+    
+    else if(any(summation$summationA[1] != 0) & any(summation$summationB[1] != 0) & any(summation$summationC[1] != 0) 
+            & any(summation$summationD[1] != 0) & any(summation$summationE[1] != 0) & any(summation$summationF[1] != 0))
+    {subsequentScore = 100}
+    
+    else{
+      subsequentScore = 0
+    }
+    
+    cat("Subsequent:",subsequentScore)
   })
   
+  
+  
+  ### Final Scores
   output$totalScore <- renderPrint({
-    cat("Total","\n",round(as.numeric(summation$summationScore[1]) * (2/3) + as.numeric(final$final) * (1/3), digits = 1))
+    
+    if(any(summation$summationA[1] != 0) & any(summation$summationB[1] == 0) & any(summation$summationC[1] == 0) 
+       & any(summation$summationD[1] == 0) & any(summation$summationE[1] == 0) & any(summation$summationF[1] == 0))
+    {summationScore = round(as.numeric(summation$summationA[1]) * (2/3) + 2.67, digits = 1)}
+    
+    else if(any(summation$summationA[1] != 0) & any(summation$summationB[1] != 0) & any(summation$summationC[1] == 0) 
+            & any(summation$summationD[1] == 0) & any(summation$summationE[1] == 0) & any(summation$summationF[1] == 0))
+    {summationScore = round(as.numeric(summation$summationA[1] + summation$summationB[1]) * (2/3) + 5.33, digit = 1)}
+    
+    else if(any(summation$summationA[1] != 0) & any(summation$summationB[1] != 0) & any(summation$summationC[1] != 0) 
+            & any(summation$summationD[1] == 0) & any(summation$summationE[1] == 0) & any(summation$summationF[1] == 0))
+    {summationScore = round(as.numeric(summation$summationA[1] + summation$summationB[1] + summation$summationC[1]) * (2/3) + 10.67, digits = 1)}
+    
+    else if(any(summation$summationA[1] != 0) & any(summation$summationB[1] != 0) & any(summation$summationC[1] != 0) 
+            & any(summation$summationD[1] != 0) & any(summation$summationE[1] == 0) & any(summation$summationF[1] == 0))
+    {summationScore = round(as.numeric(summation$summationA[1] + summation$summationB[1] + summation$summationC[1] + summation$summationD[1]) * (2/3)
+                      + 17.33, digits = 1)}
+    
+    else if(any(summation$summationA[1] != 0) & any(summation$summationB[1] != 0) & any(summation$summationC[1] != 0) 
+            & any(summation$summationD[1] != 0) & any(summation$summationE[1] != 0) & any(summation$summationF[1] == 0))
+    {summationScore = round(as.numeric(summation$summationA[1] + summation$summationB[1] + summation$summationC[1] + summation$summationD[1]
+    + summation$summationE[1]) * (2/3) + 25.33, digits = 1)}
+    
+    else if(any(summation$summationA[1] != 0) & any(summation$summationB[1] != 0) & any(summation$summationC[1] != 0) 
+            & any(summation$summationD[1] != 0) & any(summation$summationE[1] != 0) & any(summation$summationF[1] != 0))
+    {summationScore = round(as.numeric(summation$summationA[1] + summation$summationB[1] + summation$summationC[1] + summation$summationD[1]
+    + summation$summationE[1] + summation$summationF[1]) * (2/3) + 33.33, digits = 1)}
+    
+    else{
+      summationScore = 0
+    }
+    
+    cat("Final: ", summationScore)
+    #cat("Final: ",round(as.numeric(summation$summationScore[1]) * (2/3) + as.numeric(final$final) * (1/3), digits = 1))
   })
-  # #######################################################
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  # After this line, it will deal with the leaderboard thing.
+  # ##############################################################################################################
   # output$checkName <- renderText({
   #   df = data.frame(data())
   #   df = df[,1]

@@ -2,12 +2,12 @@ mean,sd,ssd
 mean1,Mean =  0.00; Standard Deviation = 1.00,ssd1.PNG
 mean1,Mean =  5.00; Standard Deviation = 1.00,ssd2.PNG
 mean1,Mean =  2.00; Standard Deviation = 1.00,ssd3.PNG
-mean2,Mean = 0.00 ; Standard Deviation = 3.00,ssd4.PNG
+mean2,Mean =  0.00; Standard Deviation = 3.00,ssd4.PNG
 mean2,Mean =  5.00; Standard Deviation = 3.00,ssd5.PNG
 mean2,Mean =  2.00; Standard Deviation = 3.00,ssd6.PNG
-mean3,Mean = 5.00 ; Standard Deviation = 5.00,ssd7.PNG
+mean3,Mean =  5.00; Standard Deviation = 5.00,ssd7.PNG
 mean3,Mean =  0.00; Standard Deviation = 5.00,ssd8.PNG
-mean3,Mean = 2.00 ; Standard Deviation = 5.00,ssd9.PNG
+mean3,Mean =  2.00; Standard Deviation = 5.00,ssd9.PNG
 mean4,Mean =  0.00; Standard Deviation = 10.00,ssd10.PNG
 mean4,Mean =  2.00; Standard Deviation = 10.00,ssd11.PNG
-mean4,Mean =  5.00 ; Standard Deviation = 10.00,ssd12.PNG
+mean4,Mean =  5.00; Standard Deviation = 10.00,ssd12.PNG
