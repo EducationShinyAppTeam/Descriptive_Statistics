@@ -4,9 +4,6 @@ library(shinyjs)
 library(shinyBS)
 library(V8)
 
-# bank <- read.csv("questionBank.csv")
-# bank = data.frame(lapply(bank, as.character), stringsAsFactors = FALSE)
-
 bankA = read.csv("Level1.csv")
 bankA = data.frame(lapply(bankA, as.character), stringsAsFactors = FALSE)
 bankB = read.csv("Level2.csv")
@@ -27,20 +24,10 @@ bankF3 = read.csv("Level73.csv")
 bankF3 = data.frame(lapply(bankF3, as.character), stringsAsFactors = FALSE)
 bankF4 = read.csv("Level74.csv")
 bankF4 = data.frame(lapply(bankF4, as.character), stringsAsFactors = FALSE)
-# bankA <- read.csv("Level1.csv")
-# bankA = data.frame(lapply(bankA, as.character), stringsAsFactors = FALSE)
-
 
 
 shinyServer(function(input, output, session) {
   
-  #########  ###########  ###########  ###########  ###########  ###########
-  # observe({
-  #   hide(selector = "#navMain li a[data-value=b]")
-  # })
-  # observeEvent(input$go, {
-  #   show(selector = "#navMain li a[data-value=b]")
-  # })
   ### Show pages by buttons like 'next', 'previous'.
   observe({
     if(input$go == 0){
@@ -189,6 +176,7 @@ shinyServer(function(input, output, session) {
     if(isolate(time$started))
       time$inc<-isolate(time$inc)+1
   })
+  
   #show the timer
   observeEvent(input$bt1 == TRUE, {
     toggle('timer1h')
@@ -270,7 +258,7 @@ shinyServer(function(input, output, session) {
   
   
   ################################################################################################## 
-  ####################### Contents - This is where all drop UIs came from. #########################
+  ####################### Contents - This is where all dragUIs came from. #########################
   ################################################################################################## 
   numbersA <- reactiveValues(right= c(), left= c(), normal = c(), random = c(), indexA = c(), questionA = data.frame())
   observeEvent(input$go,{
@@ -698,7 +686,6 @@ shinyServer(function(input, output, session) {
   ###################################################################################
   
   
-  ### After click Submit buttons. Watch out for the clear code that might occur the error
   #First, click Submit button and it will show whether the answer is correct or not
   observeEvent(input$submitA,{
     output$answer1 <- renderUI({
@@ -711,14 +698,10 @@ shinyServer(function(input, output, session) {
       }
     })
   })
+  
   #Second, drag wrong drop box into the penalty box and click 'Re-attempt' button to clear cross marks.
   observeEvent(input$clearA,{
     output$answer1 <- renderUI({
-      #if (input$drp1 == numbersA$questionA[numbersA$questionA[1]== "right", 6]){
-      #  img(src = "check.png",width = 30)
-      #}else{
-      #  img(src = NULL,width = 30)
-      #}
         img(src = NULL,width = 30)
     })
   })
@@ -736,11 +719,6 @@ shinyServer(function(input, output, session) {
   })
   observeEvent(input$clearA,{
     output$answer2 <- renderUI({
-      #if (input$drp2 == numbersA$questionA[numbersA$questionA[1]== "left", 6]){
-      #  img(src = "check.png",width = 30)
-      #}else{
-      #  img(src = NULL,width = 30)
-      #}
          img(src = NULL,width = 30)
     })
   })
@@ -759,11 +737,6 @@ shinyServer(function(input, output, session) {
   
   observeEvent(input$clearA,{
     output$answer3 <- renderUI({
-      #if (input$drp3 == numbersA$questionA[numbersA$questionA[1]== "normal", 6]){
-      #  img(src = "check.png",width = 30)
-      #}else{
-      #  img(src = NULL,width = 30)
-      #}
         img(src = NULL,width = 30)
     })
   })
@@ -783,11 +756,6 @@ shinyServer(function(input, output, session) {
   
   observeEvent(input$clearA,{
     output$answer4 <- renderUI({
-      #if (input$drp4 == numbersA$questionA[numbersA$questionA[1]== "random", 6]){
-      #  img(src = "check.png",width = 30)
-      #}else{
-      #  img(src = NULL,width = 30)
-      #}
           img(src = NULL,width = 30)
     })
   })
@@ -868,7 +836,7 @@ shinyServer(function(input, output, session) {
   })
   
   ####################################################################
-  
+  # Level 3
   
   observeEvent(input$submitC,{  
     output$answer13 <- renderUI({
@@ -938,7 +906,8 @@ shinyServer(function(input, output, session) {
     })
   })
   
-  #######################################
+  ####################################################################
+  # Level 4
   
   observeEvent(input$submitD,{  
     output$answer17 <- renderUI({
@@ -1008,7 +977,9 @@ shinyServer(function(input, output, session) {
     })
   })
   
-  #############
+  ####################################################################
+  # Level 5
+  
   observeEvent(input$submitE,{
     output$answer21 <- renderUI({
       if (!is.null(input$drp21)){
@@ -1077,7 +1048,9 @@ shinyServer(function(input, output, session) {
     })
   })
   
-  #############
+  ####################################################################
+  # Level 6
+  
   if(choice==1){
     observeEvent(input$submitF,{
       output$answer25 <- renderUI({
@@ -1366,6 +1339,9 @@ shinyServer(function(input, output, session) {
   summation <- reactiveValues(summationA = c(rep(0,8)), summationB = c(rep(0,8)),summationC = c(rep(0,16)), summationD = c(rep(0,20)),
                               summationE = c(rep(0,24)), summationF = c(rep(0,24)), summationScore = c(rep(0,100)))
   
+  ####################################################################
+  # Level 1
+  
   observeEvent(input$submitA,{
     score1 = c()
     score2 = c()
@@ -1400,19 +1376,17 @@ shinyServer(function(input, output, session) {
         score4 = c(score4,-1)
       }
     }
-    
-    
-    
     summation$summationA[input$submitA] <- sum(c(score1,score2, score3, score4))
   })
   output$scoreA <- renderUI({
     str1 <- paste("Your current score on this level is:")
     str2 <- paste(summation$summationA[input$submitA]," out of 8.")
     HTML(paste(str1, str2, sep = '<br/>'))
-    #cat("Current score of this level is",summation$summationA[input$submitA])
   })
   
-  ############################################## 
+  ####################################################################
+  # Level 2
+  
   observeEvent(input$submitB,{
     score5 = c()
     score6 = c()
@@ -1447,45 +1421,18 @@ shinyServer(function(input, output, session) {
         score8 = c(score8,-1)
       }
     }
-    
-    
-    
     summation$summationB[input$submitB] <- sum(c(score5,score6, score7, score8))
   })
   output$scoreB <- renderUI({
     str3 <- paste("Your current score on this level is:")
     str4 <- paste(summation$summationB[input$submitB]," out of 8.")
     HTML(paste(str3, str4, sep = '<br/>'))
-    #cat("Current score of this level is",summation$summationB[input$submitB])
-  })
-  
-  output$scoreC <- renderUI({
-    str5 <- paste("Your current score on this level is:")
-    str6 <- paste(summation$summationC[input$submitC]," out of 16.")
-    HTML(paste(str5, str6, sep = '<br/>'))
-    #cat("Current score of this level is",summation$summationC[input$submitC])
-  })
-  output$scoreD <- renderUI({
-    str7 <- paste("Your current score on this level is:")
-    str8 <- paste(summation$summationD[input$submitD]," out of 20.")
-    HTML(paste(str7, str8, sep = '<br/>'))
-    #cat("Current score of this level is",summation$summationD[input$submitD])
-  })
-  output$scoreE <- renderUI({
-    str9 <- paste("Your current score on this level is:")
-    str10 <- paste(summation$summationE[input$submitE]," out of 24.")
-    HTML(paste(str9, str10, sep = '<br/>'))
-    #cat("Current score of this level is",summation$summationE[input$submitE])
-  })
-  output$scoreF <- renderUI({
-    str11 <- paste("Your current score on this level is:")
-    str12 <- paste(summation$summationF[input$submitF]," out of 24.")
-    HTML(paste(str11, str12, sep = '<br/>'))
-    #cat("Current score of this level is",summation$summationF[input$submitF])
   })
   
   
-  ############################################## 
+  ####################################################################
+  # Level 3
+  
   observeEvent(input$submitC,{
     score9 = c()
     score10 = c()
@@ -1520,14 +1467,17 @@ shinyServer(function(input, output, session) {
         score12 = c(score12,-2)
       }
     }
-    
-    
-    
     summation$summationC[input$submitC] <- sum(c(score9,score10, score11, score12))
   })
-  ######################################################
+  output$scoreC <- renderUI({
+    str5 <- paste("Your current score on this level is:")
+    str6 <- paste(summation$summationC[input$submitC]," out of 16.")
+    HTML(paste(str5, str6, sep = '<br/>'))
+  })
   
-  ############################################## 
+  ####################################################################
+  # Level 4
+  
   observeEvent(input$submitD,{
     score13 = c()
     score14 = c()
@@ -1564,7 +1514,15 @@ shinyServer(function(input, output, session) {
     }
     summation$summationD[input$submitD] <- sum(c(score13,score14, score15, score16))
   })
-  ###############################
+  output$scoreD <- renderUI({
+    str7 <- paste("Your current score on this level is:")
+    str8 <- paste(summation$summationD[input$submitD]," out of 20.")
+    HTML(paste(str7, str8, sep = '<br/>'))
+  })
+  
+  ####################################################################
+  # Level 5
+  
   observeEvent(input$submitE,{
     score17 = c()
     score18 = c()
@@ -1601,9 +1559,15 @@ shinyServer(function(input, output, session) {
     }
     summation$summationE[input$submitE] <- sum(c(score17,score18, score19, score20))
   })
+  output$scoreE <- renderUI({
+    str9 <- paste("Your current score on this level is:")
+    str10 <- paste(summation$summationE[input$submitE]," out of 24.")
+    HTML(paste(str9, str10, sep = '<br/>'))
+  })
   
-  ##############################
-  ###############################
+  ####################################################################
+  # Level 6
+  
   observeEvent(input$submitF,{
     score21 = c()
     score22 = c()
@@ -1726,11 +1690,15 @@ shinyServer(function(input, output, session) {
         }
       } }
     summation$summationF[input$submitF] <- sum(c(score21,score22, score23, score24))
-    
-    
   })
+  output$scoreF <- renderUI({
+    str11 <- paste("Your current score on this level is:")
+    str12 <- paste(summation$summationF[input$submitF]," out of 24.")
+    HTML(paste(str11, str12, sep = '<br/>'))
+  })
+  
   ###########################################################################################
-  ### Penalty box text
+  # Penalty box
   values = reactiveValues(
     count = 0
   )
@@ -1958,7 +1926,6 @@ shinyServer(function(input, output, session) {
     }
     
     cat("Final: ", summationScore)
-    #cat("Final: ",round(as.numeric(summation$summationScore[1]) * (2/3) + as.numeric(final$final) * (1/3), digits = 1))
   })
   
   
@@ -1975,6 +1942,7 @@ shinyServer(function(input, output, session) {
   
   # After this line, it will deal with the leaderboard thing.
   # ##############################################################################################################
+  
   # output$checkName <- renderText({
   #   df = data.frame(data())
   #   df = df[,1]
@@ -1986,114 +1954,114 @@ shinyServer(function(input, output, session) {
   #     print("The nickname is usable.")
   #   }
   # })
-  
-  
-  outputDir = "scores"
-  
-  # options(warn = -1)
-  values = reactiveValues()
-  
-  update = reactive({
-    value = data.frame("Name" = as.character(input$name),
-                       "Score1" = as.numeric(summation$summationScore[1]),
-                       "Score2" = as.numeric(final$final),
-                       "TotalScore" = as.numeric(summation$summationScore[1]) * (2/3) + as.numeric(final$final) * (1/3),
-                       "TimeTaken" = as.numeric(time$inc))
-    
-    
-  })
-  values$df = data.frame()
-  
-  
-  saveQuestions <- function(data) {
-    # data <- t(data)
-    # Create a unique file name
-    fileName <- sprintf("%s_%s.csv", as.integer(Sys.Date()), digest::digest(data))
-    # Write the file to the local system
-    write.csv(
-      x = data,
-      file = file.path(outputDir, fileName), 
-      row.names = FALSE, quote = TRUE
-    )
-  }
-  
-  loadData <- function() {
-    # Read all the files into a list
-    files <- list.files(outputDir, full.names = TRUE)
-    data <- lapply(files, read.csv, stringsAsFactors = FALSE) 
-    # Concatenate all data together into one data.frame
-    data <- do.call(rbind, data)
-    data
-  }
-  # First pattern try
-  # paste0("^", Sys.Date(), sep = '')
-  x = as.character(as.numeric(Sys.Date()))
-  y = as.character(as.numeric(Sys.Date() - 7))
-  if(substring(x, 5, 5) >= 7){
-    pattern = paste0(substring(x, 1, 4), "[", substring(y, 5, 5), "-", substring(x, 5, 5), "]", sep = '')
-  }
-  else{
-    pattern = paste0(substring(y, 1, 4), "[",substring(y, 5, 5), "-9]|", substring(x,1,4), "[0-", substring(x, 5, 5), "]")
-  }
-  
-  
-  loadDataWeek <- function() {
-    files = list.files(outputDir, pattern = pattern, full.names = TRUE)
-    data = lapply(files, read.csv, stringsAsFactors = FALSE)
-    data = do.call(rbind, data)
-    data
-  }
-  
-  data = reactive({
-    data = loadData()
-    data = data[order(-data[,"TotalScore"], data[,"TimeTaken"]),]
-    # data
-  })
-  
-  data2 = reactive({
-    data = loadDataWeek()
-    data = data[order(-data[,"TotalScore"], data[,"TimeTaken"]),]
-  })
-  
-  output$total = renderText({
-    as.numeric(summation$summationScore[1]) * (2/3) + as.numeric(final$final) * (1/3)
-  })
-  
-  observeEvent(input$check, {
-    scores = update()
-    values$df = rbind(values$df, scores)
-    saveQuestions(values$df)
-  })
-  observeEvent(input$weekhigh, {
-    output$highscore = renderDataTable({
-      # head(data(), 5)
-      if(is.null(loadDataWeek()) == TRUE){
-        "No Highscores This week"
-      }
-      else{
-        data2()  
-      } 
-      
-    })
-  })
-  
-  observeEvent(input$totalhigh, {
-    output$highscore = renderDataTable({
-      if(is.null(loadData()) == TRUE){
-        "No Highscores"
-      }
-      else{
-        data()
-      }
-    })
-  })
-  ########################################################################################
-  
-  
+  # 
+  # 
+  # outputDir = "scores"
+  # 
+  # # options(warn = -1)
+  # values = reactiveValues()
+  # 
+  # update = reactive({
+  #   value = data.frame("Name" = as.character(input$name),
+  #                      "Score1" = as.numeric(summation$summationScore[1]),
+  #                      "Score2" = as.numeric(final$final),
+  #                      "TotalScore" = as.numeric(summation$summationScore[1]) * (2/3) + as.numeric(final$final) * (1/3),
+  #                      "TimeTaken" = as.numeric(time$inc))
+  # 
+  # 
+  # })
+  # values$df = data.frame()
+  # 
+  # 
+  # saveQuestions <- function(data) {
+  #   # data <- t(data)
+  #   # Create a unique file name
+  #   fileName <- sprintf("%s_%s.csv", as.integer(Sys.Date()), digest::digest(data))
+  #   # Write the file to the local system
+  #   write.csv(
+  #     x = data,
+  #     file = file.path(outputDir, fileName),
+  #     row.names = FALSE, quote = TRUE
+  #   )
+  # }
+  # 
+  # loadData <- function() {
+  #   # Read all the files into a list
+  #   files <- list.files(outputDir, full.names = TRUE)
+  #   data <- lapply(files, read.csv, stringsAsFactors = FALSE)
+  #   # Concatenate all data together into one data.frame
+  #   data <- do.call(rbind, data)
+  #   data
+  # }
+  # # First pattern try
+  # # paste0("^", Sys.Date(), sep = '')
+  # x = as.character(as.numeric(Sys.Date()))
+  # y = as.character(as.numeric(Sys.Date() - 7))
+  # if(substring(x, 5, 5) >= 7){
+  #   pattern = paste0(substring(x, 1, 4), "[", substring(y, 5, 5), "-", substring(x, 5, 5), "]", sep = '')
+  # }
+  # else{
+  #   pattern = paste0(substring(y, 1, 4), "[",substring(y, 5, 5), "-9]|", substring(x,1,4), "[0-", substring(x, 5, 5), "]")
+  # }
+  # 
+
+  # loadDataWeek <- function() {
+  #   files = list.files(outputDir, pattern = pattern, full.names = TRUE)
+  #   data = lapply(files, read.csv, stringsAsFactors = FALSE)
+  #   data = do.call(rbind, data)
+  #   data
+  # }
+  # 
+  # data = reactive({
+  #   data = loadData()
+  #   data = data[order(-data[,"TotalScore"], data[,"TimeTaken"]),]
+  #   # data
+  # })
+  # 
+  # data2 = reactive({
+  #   data = loadDataWeek()
+  #   data = data[order(-data[,"TotalScore"], data[,"TimeTaken"]),]
+  # })
+  # 
+  # output$total = renderText({
+  #   as.numeric(summation$summationScore[1]) * (2/3) + as.numeric(final$final) * (1/3)
+  # })
+  # 
+  # observeEvent(input$check, {
+  #   scores = update()
+  #   values$df = rbind(values$df, scores)
+  #   saveQuestions(values$df)
+  # })
+  # observeEvent(input$weekhigh, {
+  #   output$highscore = renderDataTable({
+  #     # head(data(), 5)
+  #     if(is.null(loadDataWeek()) == TRUE){
+  #       "No Highscores This week"
+  #     }
+  #     else{
+  #       data2()
+  #     }
+  # 
+  #   })
+  # })
+  # 
+  # observeEvent(input$totalhigh, {
+  #   output$highscore = renderDataTable({
+  #     if(is.null(loadData()) == TRUE){
+  #       "No Highscores"
+  #     }
+  #     else{
+  #       data()
+  #     }
+  #   })
+  # })
+  # ########################################################################################
+  # 
+  # 
   # observeEvent(input$check,{
   #   updateButton(session,"check",disabled = TRUE)
   # })
-  
+
   # output$badge = renderUI({
   #   score = round(summation$summationScore[1] * (2/3) + final$final * (1/3))
   #   if(is.null(input$name) == T){
@@ -2107,7 +2075,7 @@ shinyServer(function(input, output, session) {
   #     #   }
   #     # }
   #     if(score > data2()[3,4]){
-  #       
+  #
   #       if(score > data2()[2,4]){
   #         if(score > data2()[1,4]){
   #           place = 1
@@ -2140,20 +2108,20 @@ shinyServer(function(input, output, session) {
   #       place = 0
   #     }
   #   }
-  #   
-  #   
-  #   
-  #   
+  #
+  #
+  #
+  #
   #   if(place == 1){
   #     # 1st place image
   #     img(src = "trophy1st.png")
   #   }
-  #   
+  #
   #   else if(place == 2){
   #     # 2nd place
   #     img(src = "trophy2nd.png")
   #   }
-  #   
+  #
   #   else if(place == 3){
   #     # 3rd place
   #     img(src = "trophy3rd.png")
@@ -2161,7 +2129,7 @@ shinyServer(function(input, output, session) {
   #   else{
   #     ""
   #   }
-  #  
+  #
   # })
   
   
