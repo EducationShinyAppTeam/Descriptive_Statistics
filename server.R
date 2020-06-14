@@ -2,7 +2,6 @@ library(shiny)
 library(shinyDND)
 library(shinyjs)
 library(shinyBS)
-library(V8)
 
 bankA = read.csv("Level1.csv")
 bankA = data.frame(lapply(bankA, as.character), stringsAsFactors = FALSE)
@@ -30,53 +29,53 @@ shinyServer(function(input, output, session) {
   
   ### Show pages by buttons like 'next', 'previous'.
   observe({
-    if(input$go == 0){
-      hide(selector = "#navMain li a[data-value=b]")
+    if(input$start == 0){
+      hide(selector = "#navMain li a[data-value=a]")
     }
     else{
-      show(selector = "#navMain li a[data-value=b]")
+      show(selector = "#navMain li a[data-value=a]")
     }
   })
   observe({
-    hide(selector = "#navMain li a[data-value=c]")
+    hide(selector = "#navMain li a[data-value=b]")
   })
   observeEvent(input$next1, {
+    show(selector = "#navMain li a[data-value=b]")
+  })
+  
+  observe({
+    hide(selector = "#navMain li a[data-value=c]")
+  })
+  observeEvent(input$next2, {
     show(selector = "#navMain li a[data-value=c]")
   })
   
   observe({
     hide(selector = "#navMain li a[data-value=d]")
   })
-  observeEvent(input$next2, {
+  observeEvent(input$next3, {
     show(selector = "#navMain li a[data-value=d]")
   })
   
   observe({
     hide(selector = "#navMain li a[data-value=e]")
   })
-  observeEvent(input$next3, {
+  observeEvent(input$next4, {
     show(selector = "#navMain li a[data-value=e]")
   })
   
   observe({
     hide(selector = "#navMain li a[data-value=f]")
   })
-  observeEvent(input$next4, {
+  observeEvent(input$next5, {
     show(selector = "#navMain li a[data-value=f]")
   })
   
   observe({
     hide(selector = "#navMain li a[data-value=g]")
   })
-  observeEvent(input$next5, {
-    show(selector = "#navMain li a[data-value=g]")
-  })
-  
-  observe({
-    hide(selector = "#navMain li a[data-value=h]")
-  })
   observeEvent(input$finish, {
-    show(selector = "#navMain li a[data-value=h]")
+    show(selector = "#navMain li a[data-value=g]")
   })
   ###########  ###########  ###########  ###########  ###########  ###########  ###########
   
@@ -85,64 +84,61 @@ shinyServer(function(input, output, session) {
   })
   
   ### Next buttons
-  observeEvent(input$go,{
-    updateTabsetPanel(session = session,"navMain", selected = "b")
+  observeEvent(input$start,{
+    updateTabsetPanel(session = session,"navMain", selected = "a")
   })
   observeEvent(input$next1,{
-    updateTabsetPanel(session = session,"navMain", selected = "c")
+    updateTabsetPanel(session = session,"navMain", selected = "b")
   })
   observeEvent(input$next2,{
-    updateTabsetPanel(session = session,"navMain", selected = "d")
+    updateTabsetPanel(session = session,"navMain", selected = "c")
   })
   observeEvent(input$next3,{
-    updateTabsetPanel(session = session,"navMain", selected = "e")
+    updateTabsetPanel(session = session,"navMain", selected = "d")
   })
   observeEvent(input$next4,{
-    updateTabsetPanel(session = session,"navMain", selected = "f")
+    updateTabsetPanel(session = session,"navMain", selected = "e")
   })
   observeEvent(input$next5,{
-    updateTabsetPanel(session = session,"navMain", selected = "g")
+    updateTabsetPanel(session = session,"navMain", selected = "f")
   })
   observeEvent(input$finish,{
-    updateTabsetPanel(session = session,"navMain", selected = "h")
+    updateTabsetPanel(session = session,"navMain", selected = "g")
   })
   observeEvent(input$stop1,{ #go right ahead to the score session
-    updateTabsetPanel(session = session,"navMain", selected = "h")
+    updateTabsetPanel(session = session,"navMain", selected = "g")
   })
   observeEvent(input$stop2,{ #go right ahead to the score session
-    updateTabsetPanel(session = session,"navMain", selected = "h")
+    updateTabsetPanel(session = session,"navMain", selected = "g")
   })
   observeEvent(input$stop3,{ #go right ahead to the score session
-    updateTabsetPanel(session = session,"navMain", selected = "h")
+    updateTabsetPanel(session = session,"navMain", selected = "g")
   })
   observeEvent(input$stop4,{ #go right ahead to the score session
-    updateTabsetPanel(session = session,"navMain", selected = "h")
+    updateTabsetPanel(session = session,"navMain", selected = "g")
   })
   observeEvent(input$stop5,{ #go right ahead to the score session
-    updateTabsetPanel(session = session,"navMain", selected = "h")
+    updateTabsetPanel(session = session,"navMain", selected = "g")
   })
   
   ############# ############# ############# ############# ############# ############# ############# #############
   
   
   ### Previous buttons
-  observeEvent(input$previous7,{
+  observeEvent(input$previous6,{
     updateTabsetPanel(session = session,"navMain", selected = "a")
   })
-  observeEvent(input$previous6,{
+  observeEvent(input$previous5,{
     updateTabsetPanel(session = session,"navMain", selected = "b")
   })
-  observeEvent(input$previous5,{
+  observeEvent(input$previous4,{
     updateTabsetPanel(session = session,"navMain", selected = "c")
   })
-  observeEvent(input$previous4,{
+  observeEvent(input$previous3,{
     updateTabsetPanel(session = session,"navMain", selected = "d")
   })
-  observeEvent(input$previous3,{
-    updateTabsetPanel(session = session,"navMain", selected = "e")
-  })
   observeEvent(input$previous2,{
-    updateTabsetPanel(session = session,"navMain", selected = "f")
+    updateTabsetPanel(session = session,"navMain", selected = "e")
   })
   #observeEvent(input$check, {
   #  updateButton(session,"check",disabled = TRUE)
@@ -152,7 +148,7 @@ shinyServer(function(input, output, session) {
   time<-reactiveValues(inc=0, timer=reactiveTimer(1000), started=FALSE)
   
   ### When student click submit, timer stops and rerun on next level when the person click 'Next'.
-  observeEvent(input$go, {time$started<-TRUE})
+  observeEvent(input$start, {time$started<-TRUE})
   observeEvent(input$submitA, {time$started <- FALSE})
   observeEvent(input$submitB, {time$started <- FALSE})
   observeEvent(input$submitC, {time$started <- FALSE})
@@ -166,8 +162,6 @@ shinyServer(function(input, output, session) {
   observeEvent(input$next3, {time$started <- TRUE})
   observeEvent(input$next4, {time$started <- TRUE})
   observeEvent(input$next5, {time$started <- TRUE})
-  #observeEvent(input$next6, {time$started <- TRUE})
-  
   
   observeEvent(input$finish, {time$timer<-reactiveTimer(Inf)})
   
@@ -261,7 +255,7 @@ shinyServer(function(input, output, session) {
   ####################### Contents - This is where all dragUIs came from. #########################
   ################################################################################################## 
   numbersA <- reactiveValues(right= c(), left= c(), normal = c(), random = c(), indexA = c(), questionA = data.frame())
-  observeEvent(input$go,{
+  observeEvent(input$start,{
     numbersA$right = sample(1:3,1)
     numbersA$left = sample(4:6,1)
     numbersA$normal = sample(7:12,1)
@@ -322,7 +316,7 @@ shinyServer(function(input, output, session) {
   
   #################################################################################################
   numbersB <- reactiveValues(mean1= c(), mean2= c(), mean3 = c(), mean4 = c(), indexB = c(), questionB = data.frame())
-  observeEvent(input$go,{
+  observeEvent(input$start,{
     numbersB$mean1 = sample(1:3,1)
     numbersB$mean2 = sample(4:6,1)
     numbersB$mean3 = sample(7:9,1)
@@ -367,7 +361,7 @@ shinyServer(function(input, output, session) {
   
   ##############################################################################################
   numbersC <- reactiveValues(left= c(), right= c(), normal = c(), uniform = c(), indexC = c(), questionC = data.frame())
-  observeEvent(input$go,{
+  observeEvent(input$start,{
     numbersC$left = sample(1:4,1)
     numbersC$right = sample(5:9,1)
     numbersC$normal = sample(10:12,1)
@@ -406,7 +400,7 @@ shinyServer(function(input, output, session) {
   
   ##############################################################################################
   numbersD <- reactiveValues(neg= c(), pos= c(), out = c(), hhh = c(), indexD = c(), questionD = data.frame())
-  observeEvent(input$go,{
+  observeEvent(input$start,{
     numbersD$neg = sample(1:6,1)
     numbersD$pos = sample(7:12,1)
     numbersD$out = sample(13:16,1)
@@ -480,7 +474,7 @@ shinyServer(function(input, output, session) {
   })
   ############################################################################################### 
   numbersE <- reactiveValues(bimodal= c(), left= c(), right= c(), normal = c(), indexE = c(), questionE = data.frame())
-  observeEvent(input$go,{
+  observeEvent(input$start,{
     numbersE$bimodal = sample(1:5,1)
     numbersE$left = sample(6:10,1)
     numbersE$right = sample(11:15,1)
@@ -510,7 +504,7 @@ shinyServer(function(input, output, session) {
   })
   ############################################################################################### 
   numbersF1 <- reactiveValues(first = c(), indexF1 = c(), questionF1 = data.frame())
-  observeEvent(input$go,{
+  observeEvent(input$start,{
     numbersF1$first = c(1,2,3,4)
     
     
@@ -540,7 +534,7 @@ shinyServer(function(input, output, session) {
     })}
   # ############################################################################################### 
   numbersF2 <- reactiveValues(second = c(), indexF2 = c(), questionF2 = data.frame())
-  observeEvent(input$go,{
+  observeEvent(input$start,{
     numbersF2$second = c(1,2,3,4)
     
     
@@ -569,7 +563,7 @@ shinyServer(function(input, output, session) {
   }
   # ############################################################################################### 
   numbersF3 <- reactiveValues(third = c(), indexF3 = c(), questionF3 = data.frame())
-  observeEvent(input$go,{
+  observeEvent(input$start,{
     numbersF3$third = c(1,2,3,4)
     
     
@@ -597,7 +591,7 @@ shinyServer(function(input, output, session) {
     })}
   # ############################################################################################### 
   numbersF4 <- reactiveValues(last = c(), indexF4 = c(), questionF4 = data.frame())
-  observeEvent(input$go,{
+  observeEvent(input$start,{
     numbersF4$last = c(1,2,3,4)
     
     

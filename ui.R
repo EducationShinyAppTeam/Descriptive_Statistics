@@ -1,13 +1,10 @@
-#library(discrimARTs)
-#library(RUnit)
-#library(grid)
 library(shiny)
 library(shinyjs)
 library(shinyBS)
 library(shinydashboard)
 library(boastUtils)
 library(shinyDND)
-library(V8)
+
 
 
 
@@ -16,7 +13,7 @@ shinyUI(
   skin = "yellow",
   
   dashboardHeader(
-    titleWidth = 300,
+    titleWidth = 250,
     title = "Descriptive Statistics",
     tags$li(
       class = "dropdown",
@@ -26,7 +23,7 @@ shinyUI(
   ),
   
   dashboardSidebar(
-    width = 300,
+    width = 250,
     sidebarMenu(
       id = 'tabs',
       menuItem("Overview", tabName = "overview", icon = icon("tachometer-alt")),
@@ -54,17 +51,26 @@ shinyUI(
 
         h1("Descriptive Statistics"),
         p("This App is designed to help you better understand the concept of Descriptive Statistics"),
-        br(),
+        
+        h2("Levels"),
+        tags$ol(
+          p("Level1: Match the distribution to mean & median."),
+          p("Level2: Match the distribution to mean & standard deviation."),
+          p("Level3: Match histogram to boxplot."),
+          p("Level4: Match the scatterplot to correlation."),
+          p("Level5: Match the application to correlation."),
+          p("Level6: Order the correlation from the highest to the lowest.")
+        ),
         
         h2("Instructions"),
         tags$ol(
-          tags$li("You can check time and hint by clicking the icon."),
-          tags$li("Drag and drop A,B,C,D into the drop box."),
-          tags$li("Submit your answer only after finishing all the questions."),
-          tags$li("You will need to click 'Re-attempt' button to try again."),
-          tags$li("You have to use 'Penalty Box' to correct a wrong answer."),
-          tags$li("You can stop and check your score any level, once you get every question correct."),
-          tags$li("You may go to the next level only when you correct any wrong answer.")
+          p("1. You can check time and hint by clicking the icon."),
+          p("2. Drag and drop A,B,C,D into the drop box."),
+          p("3. Submit your answer only after finishing all the questions."),
+          p("4. You will need to click 'Re-attempt' button to try again."),
+          p("5. You have to use 'Penalty Box' to correct a wrong answer."),
+          p("6. You can stop and check your score any level, once you get every question correct."),
+          p("7. You may go to the next level only when you correct any wrong answer.")
         ),
         
         div(
@@ -72,8 +78,8 @@ shinyUI(
           bsButton(
             inputId = "start",
             label = "GO!",
-            size = "medium",
-            icon("gamepad"),
+            size = "large",
+            icon("bolt"),
             style = "warning"
           )
         ),
@@ -89,7 +95,7 @@ shinyUI(
           br(),
           br(),
           br(),
-          div(class = "updated", "Last Update: 06/12/2020 by DHG.")
+          div(class = "updated", "Last Update: 06/14/2020 by DHG.")
         )
       ),
       
@@ -98,85 +104,49 @@ shinyUI(
         tabName = "game",
         useShinyjs(), #this is for level tabs. Students can only move to the next level when they finish the previous level. 
         
-        tabsetPanel(
-          id = "navMain", #id to use the updateTabsetPanel()
+        #in-line css style guides for Scores, Timer, and score boxes(init, subsequent, total)
+        # tags$style(type='text/css', '#scoreA {font-size: 25px; font-weight: bold;font family:Sans-serif; height: 140px}'),
+        # tags$style(type='text/css', '#scoreB {font-size: 25px; font-weight: bold;font family:Sans-serif; height: 140px}'),
+        # tags$style(type='text/css', '#scoreC {font-size: 25px; font-weight: bold;font family:Sans-serif; height: 140px}'),
+        # tags$style(type='text/css', '#scoreD {font-size: 25px; font-weight: bold;font family:Sans-serif; height: 140px}'),
+        # tags$style(type='text/css', '#scoreE {font-size: 25px; font-weight: bold;font family:Sans-serif; height: 140px}'),
+        # tags$style(type='text/css', '#scoreF {font-size: 25px; font-weight: bold;font family:Sans-serif; height: 140px}'),
+        # tags$style(type='text/css', '#scoreG {font-size: 25px; font-weight: bold;font family:Sans-serif; height: 140px}'),
+        # 
+        # tags$style(type='text/css', '#timer1 {background-color:#2C3E50; font-size: 30px;
+        #                 color:white;font-weight: bold;font family:Sans-serif;text-align: center; border-radius: 100px}'),
+        # tags$style(type='text/css', '#timer2 {background-color:#2C3E50; font-size: 30px;
+        #                 color:white;font-weight: bold;font family:Sans-serif;text-align: center; border-radius: 100px}'),
+        # tags$style(type='text/css', '#timer3 {background-color:#2C3E50; font-size: 30px;
+        #                 color:white;font-weight: bold;font family:Sans-serif;text-align: center; border-radius: 100px}'),
+        # tags$style(type='text/css', '#timer4 {background-color:#2C3E50; font-size: 30px;
+        #                 color:white;font-weight: bold;font family:Sans-serif;text-align: center; border-radius: 100px}'),
+        # tags$style(type='text/css', '#timer5 {background-color:#2C3E50; font-size: 30px;
+        #                 color:white;font-weight: bold;font family:Sans-serif;text-align: center; border-radius: 100px}'),
+        # tags$style(type='text/css', '#timer6 {background-color:#2C3E50; font-size: 30px;
+        #                 color:white;font-weight: bold;font family:Sans-serif;text-align: center; border-radius: 100px}'),
+        # tags$style(type='text/css', '#timer7 {background-color:#2C3E50; font-size: 30px; Zzl19970
+        #                 color:white;font-weight: bold;font family:Sans-serif;text-align: center; border-radius: 100px}'),
+        # tags$style(type='text/css', '#timer8 {background-color:#2C3E50; font-size: 30px;
+        #                 color:white;font-weight: bold;font family:Sans-serif;text-align: center; border-radius: 100px}'),
+        # 
+        # tags$style(type='text/css', '#init {background-color:#2C3E50; font-size: 30px;
+        #                 color:white;font-weight: bold;font family:Sans-serif;text-align: center}'),
+        # tags$style(type='text/css', '#subsequent {background-color:#2C3E50; font-size: 30px;
+        #                 color:white;font-weight: bold;font family:Sans-serif;text-align: center}'),
+        # tags$style(type='text/css', '#totalScore {background-color:#2C3E50; font-size: 30px;
+        #                 color:white;font-weight: bold;font family:Sans-serif;text-align: center}'),
+        
+        
+        tabsetPanel(id = "navMain", #id for this tabsetPanel
           
-          ###First page - Direction
-          tabPanel(title = "Directions", value = "a", #work as 'page number'
-                   fluidPage(
-                     #theme = "bootstrap.css", #css theme
-                     #tags$head(tags$link(rel = "stylesheet", type = "text/css", href = "themestyle.css")), #link to your own css file
-                     
-                     #style guides for Scores, Timer, and score boxes(init, subsequent, total)
-                     tags$style(type='text/css', '#scoreA {font-size: 25px; font-weight: bold;font family:Sans-serif; height: 140px}'),
-                     tags$style(type='text/css', '#scoreB {font-size: 25px; font-weight: bold;font family:Sans-serif; height: 140px}'),
-                     tags$style(type='text/css', '#scoreC {font-size: 25px; font-weight: bold;font family:Sans-serif; height: 140px}'),
-                     tags$style(type='text/css', '#scoreD {font-size: 25px; font-weight: bold;font family:Sans-serif; height: 140px}'),
-                     tags$style(type='text/css', '#scoreE {font-size: 25px; font-weight: bold;font family:Sans-serif; height: 140px}'),
-                     tags$style(type='text/css', '#scoreF {font-size: 25px; font-weight: bold;font family:Sans-serif; height: 140px}'),
-                     tags$style(type='text/css', '#scoreG {font-size: 25px; font-weight: bold;font family:Sans-serif; height: 140px}'),
-
-                     tags$style(type='text/css', '#timer1 {background-color:#2C3E50; font-size: 30px;
-                        color:white;font-weight: bold;font family:Sans-serif;text-align: center; border-radius: 100px}'),
-                     tags$style(type='text/css', '#timer2 {background-color:#2C3E50; font-size: 30px;
-                        color:white;font-weight: bold;font family:Sans-serif;text-align: center; border-radius: 100px}'),
-                     tags$style(type='text/css', '#timer3 {background-color:#2C3E50; font-size: 30px;
-                        color:white;font-weight: bold;font family:Sans-serif;text-align: center; border-radius: 100px}'),
-                     tags$style(type='text/css', '#timer4 {background-color:#2C3E50; font-size: 30px;
-                        color:white;font-weight: bold;font family:Sans-serif;text-align: center; border-radius: 100px}'),
-                     tags$style(type='text/css', '#timer5 {background-color:#2C3E50; font-size: 30px;
-                        color:white;font-weight: bold;font family:Sans-serif;text-align: center; border-radius: 100px}'),
-                     tags$style(type='text/css', '#timer6 {background-color:#2C3E50; font-size: 30px;
-                        color:white;font-weight: bold;font family:Sans-serif;text-align: center; border-radius: 100px}'),
-                     tags$style(type='text/css', '#timer7 {background-color:#2C3E50; font-size: 30px; Zzl19970
-                        color:white;font-weight: bold;font family:Sans-serif;text-align: center; border-radius: 100px}'),
-                     tags$style(type='text/css', '#timer8 {background-color:#2C3E50; font-size: 30px;
-                        color:white;font-weight: bold;font family:Sans-serif;text-align: center; border-radius: 100px}'),
-
-                     tags$style(type='text/css', '#init {background-color:#2C3E50; font-size: 30px;
-                        color:white;font-weight: bold;font family:Sans-serif;text-align: center}'),
-                     tags$style(type='text/css', '#subsequent {background-color:#2C3E50; font-size: 30px;
-                        color:white;font-weight: bold;font family:Sans-serif;text-align: center}'),
-                     tags$style(type='text/css', '#totalScore {background-color:#2C3E50; font-size: 30px;
-                        color:white;font-weight: bold;font family:Sans-serif;text-align: center}'),
-
-
-                     wellPanel(
-                       h3("There are 6 levels in the game:"),
-                       tags$ol(
-                         tags$li("Match the distribution to mean & median."),
-                         tags$li("Match the distribution to mean & standard deviation."),
-                         tags$li("Match histogram to boxplot."),
-                         tags$li("Match the scatterplot to correlation."),
-                         tags$li("Match the application to correlation."),
-                         tags$li("Order the correlation from the highest to the lowest.")
-                       ),
-                       br(),
-                       div(style = "text-align: center", h3("Click GO! button if you are ready!")),
-                       # h4(tags$li("The score you get after the first trial and the revised score you get after
-                       #  correcting any wrong answer will be weighted to generate your final score.
-                       #    Keep in mind that both the final score and consumed time will determine whether you will be on the leaderboard!")),
-                       
-                       div(
-                         style = "text-align: center" ,
-                         bsButton(
-                           inputId = "go",
-                           label = "GO!",
-                           icon = icon("bolt"),
-                           size = "medium",
-                           style = "warning"
-                         )
-                       ),br(),
-                     )
-                   )),
-          
-          ###Second page - Level 1
-          tabPanel(title = "Level 1", value = "b",
+          ###First page - Level 1
+          tabPanel(title = "Level 1", value = "a",
             fluidPage(
-              theme = "bootstrap.css",  #css theme
-              tags$head(
-                tags$link(rel = "stylesheet", type = "text/css", href = "themestyle.css")
-              ), #link to your own css file
+              # theme = "bootstrap.css",  #css theme
+              # tags$head(
+              #   tags$link(rel = "stylesheet", type = "text/css", href = "themestyle.css")
+              # ), #link to your own css file
               
               ##First row - title of this level
               fluidRow(
@@ -192,7 +162,8 @@ shinyUI(
                     icon = icon('question', class = "iconq fa-fw"),
                     type = 'toggle',
                     value = FALSE,
-                    class = 'butt'
+                    class = 'butt',
+                    size = "large"
                   ),
                   bsButton(
                     'bt1',
@@ -200,7 +171,8 @@ shinyUI(
                     icon = icon('time', lib = 'glyphicon', class = "icont fa-fw"),
                     type = 'toggle',
                     value = FALSE,
-                    class = 'butt'
+                    class = 'butt',
+                    size = "large"
                   )
                 ),
                 column(6, conditionalPanel("input.bq1 != 0",
@@ -211,7 +183,7 @@ shinyUI(
               ),
               br(),
               
-              conditionalPanel("input.go != 0", #Show everything only after the GO button is clicked
+              conditionalPanel("input.start != 0", #Show everything only after the GO button is clicked
                 fluidPage(checkboxInput("details", "Show more details", FALSE)),
                 
                 ##Third row - text boxes
@@ -224,7 +196,7 @@ shinyUI(
                     
                     conditionalPanel("input.details != 0 ",
                                      div(style = "text-align:center",
-                                         h4(textOutput('text11')))),
+                                         p(textOutput('text11')))),
                     ),
                   
                   wellPanel(
@@ -235,7 +207,7 @@ shinyUI(
                     
                     conditionalPanel("input.details != 0 ",
                                      div(style = "text-align:center",
-                                         h4(textOutput('text222')))),
+                                         p(textOutput('text222')))),
                   ),
                   
                   wellPanel(
@@ -246,7 +218,7 @@ shinyUI(
                     
                     conditionalPanel("input.details != 0 ",
                                      div(style = "text-align:center",
-                                         h4(textOutput('text33')))),
+                                         p(textOutput('text33')))),
                   ),
                   
                   
@@ -258,7 +230,7 @@ shinyUI(
                     
                     conditionalPanel("input.details != 0 ",
                                      div(style = "text-align:center",
-                                         h4(textOutput('text44')))),
+                                         p(textOutput('text44')))),
                   )
                 ),
                 
@@ -299,30 +271,25 @@ shinyUI(
                 
                 ##Fifth row - buttons: previous, submit, re-attempt, and next
                 fluidRow(
-                  column(1,
-                    bsButton("previous7", "<<Previous", style = "primary", size = "small")
-                  ),
-                  column(1, offset = 4,
+                  column(1, offset = 5,
                          conditionalPanel("(input.drp1!='') & (input.drp2!='') & (input.drp3!='') & (input.drp4!='') ",
                       bsButton(
-                        "submitA",
-                        "Submit Answer",
-                        style = "primary",
-                        size = "small",
-                        class = "grow"
+                        inputId = "submitA",
+                        label = "Submit",
+                        style = "warning",
+                        size = "large"
                       )
                     )
                   ),
                   column(2, offset = 1, 
                          conditionalPanel("input.submitA != 0",
-                    bsButton("clearA", "Re-attempt", style = "danger", size = "small")
+                    bsButton("clearA", "Re-attempt", style = "danger", size = "large")
                   )),
-                  column(1, offset = 2,
+                  column(1, offset = 1,
                     bsButton(
-                      "next1",
-                      "Next>>",
-                      style = "primary",
-                      size = "small",
+                      inputId = "next1",
+                      label = "Next>>",
+                      size = "large",
                       disabled = TRUE
                     )
                   )
@@ -340,7 +307,7 @@ shinyUI(
                         "stop1",
                         "STOP",
                         style = "danger",
-                        size = "medium",
+                        size = "large",
                         disabled = TRUE
                       )
                     )
@@ -352,7 +319,7 @@ shinyUI(
               conditionalPanel("input.clearA != 0",
                                wellPanel(fluidPage(fluidRow(
                                  wellPanel(
-                                   h4(textOutput("warning1")),
+                                   p(textOutput("warning1")),
                                    dropUI("home1", class = "dropelement dropelementHome"),
                                    class = "wellTransparent col-lg-12"
                                  )
@@ -360,13 +327,13 @@ shinyUI(
               )
             ),
           
-          ###Third page - Level 2
-          tabPanel(title = "Level 2", value = "c",
+          ###Second page - Level 2
+          tabPanel(title = "Level 2", value = "b",
             fluidPage(
-              theme = "bootstrap.css", #css theme
-              tags$head(
-                tags$link(rel = "stylesheet", type = "text/css", href = "themestyle.css")
-              ), #link to your own css file
+              # theme = "bootstrap.css", #css theme
+              # tags$head(
+              #   tags$link(rel = "stylesheet", type = "text/css", href = "themestyle.css")
+              # ), #link to your own css file
               
               ##First row - title of this level
               fluidRow(
@@ -381,7 +348,8 @@ shinyUI(
                     '',
                     icon = icon('question', class = "iconq fa-fw"),
                     type = 'toggle',
-                    class = 'butt'
+                    class = 'butt',
+                    size = "large"
                   ),
                   
                   bsButton(
@@ -389,7 +357,8 @@ shinyUI(
                     '',
                     icon = icon('time', lib = 'glyphicon', class = "icont fa-fw"),
                     type = 'toggle',
-                    class = 'butt'
+                    class = 'butt',
+                    size = "large"
                   )
                   
                 ),
@@ -477,29 +446,27 @@ shinyUI(
                 ##Fifth row - buttons: previous, submit, re-attempt, and next
                 fluidRow(
                   column(1,
-                    bsButton("previous6", "<<Previous", style = "primary", size = "small")
+                    bsButton("previous6", "<<Previous", size = "large")
                   ),
                   column(1, offset = 4,
                     conditionalPanel("(input.drp5!='') & (input.drp6!='') & (input.drp7!='') & (input.drp8!='') ",
                       bsButton(
-                        "submitB",
-                        "Submit Answer",
-                        style = "primary",
-                        size = "small",
-                        class = "grow"
+                        inputId = "submitB",
+                        label = "Submit",
+                        style = "warning",
+                        size = "large"
                       )
                     )
                   ),
                   column(2, offset = 1, 
                          conditionalPanel("input.submitB != 0",
-                    bsButton("clearB", "Re-attempt", style = "danger", size = "small")
+                    bsButton("clearB", "Re-attempt", style = "danger", size = "large")
                   )),
-                  column(1, offset = 2,
+                  column(1, offset = 1,
                     bsButton(
-                      "next2",
-                      "Next>>",
-                      style = "primary",
-                      size = "small",
+                      inputId = "next2",
+                      label = "Next>>",
+                      size = "large",
                       disabled = TRUE
                     )
                   )
@@ -517,7 +484,7 @@ shinyUI(
                         "stop2",
                         "STOP",
                         style = "danger",
-                        size = "medium",
+                        size = "large",
                         disabled = TRUE
                       )
                     )
@@ -529,7 +496,7 @@ shinyUI(
               conditionalPanel("input.clearB != 0",
                                wellPanel(fluidPage(fluidRow(
                                  wellPanel(
-                                   h4(textOutput("warning2")),
+                                   p(textOutput("warning2")),
                                    dropUI("home1", class = "dropelement dropelementHome"),
                                    class = "wellTransparent col-lg-12"
                                  )
@@ -537,13 +504,13 @@ shinyUI(
               )
           ),
           
-          ###Fourth page - Leve 3
-          tabPanel(title = "Level 3",value = "d",
+          ###Third page - Leve 3
+          tabPanel(title = "Level 3",value = "c",
             fluidPage(
-              theme = "bootstrap.css", #css theme
-              tags$head(
-                tags$link(rel = "stylesheet", type = "text/css", href = "themestyle.css")
-              ), #link to your own css file
+              # theme = "bootstrap.css", #css theme
+              # tags$head(
+              #   tags$link(rel = "stylesheet", type = "text/css", href = "themestyle.css")
+              # ), #link to your own css file
               
               ##First row - title of this level
               fluidRow(
@@ -558,7 +525,8 @@ shinyUI(
                     '',
                     icon = icon('question', class = "iconq fa-fw"),
                     type = 'toggle',
-                    class = 'butt'
+                    class = 'butt',
+                    size = "large"
                   ),
                   
                   bsButton(
@@ -566,7 +534,8 @@ shinyUI(
                     '',
                     icon = icon('time', lib = 'glyphicon', class = "icont fa-fw"),
                     type = 'toggle',
-                    class = 'butt'
+                    class = 'butt',
+                    size = "large"
                   )
                 ),
                 column(6, conditionalPanel("input.bq3 != 0",
@@ -654,31 +623,27 @@ shinyUI(
                 ##Fifth row - buttons: previous, submit, re-attempt, and next
                 fluidRow(
                   column(1,
-                    bsButton("previous5", "<<Previous", style = "primary", size = "small")
+                    bsButton("previous5", "<<Previous", size = "large")
                   ),
                   column(1, offset = 4,
                     conditionalPanel("(input.drp13!='') & (input.drp14!='') & (input.drp15!='') & (input.drp16!='') ",
                       bsButton(
-                        "submitC",
-                        "Submit Answer",
-                        style = "primary",
-                        size = "small",
-                        class = "grow"
+                        inputId = "submitC",
+                        label = "Submit",
+                        style = "warning",
+                        size = "large"
                       )
                     )
                   ),
                   column(2, offset = 1, conditionalPanel(
                     "input.submitC != 0",
-                    bsButton("clearC", "Re-attempt", style = "danger", size = "small")
+                    bsButton("clearC", "Re-attempt", style = "danger", size = "large")
                   )),
-                  column(
-                    1,
-                    offset = 2,
+                  column(1, offset = 1,
                     bsButton(
-                      "next3",
-                      "Next>>",
-                      style = "primary",
-                      size = "small",
+                      inputId = "next3",
+                      label = "Next>>",
+                      size = "large",
                       disabled = TRUE
                     )
                   )
@@ -696,7 +661,7 @@ shinyUI(
                         "stop3",
                         "STOP",
                         style = "danger",
-                        size = "medium",
+                        size = "large",
                         disabled = TRUE
                       )
                     )
@@ -708,7 +673,7 @@ shinyUI(
               conditionalPanel("input.clearC != 0",
                                wellPanel(fluidPage(fluidRow(
                                  wellPanel(
-                                   h4(textOutput("warning3")),
+                                   p(textOutput("warning3")),
                                    dropUI("home1", class = "dropelement dropelementHome"),
                                    class = "wellTransparent col-lg-12"
                                  )
@@ -716,13 +681,13 @@ shinyUI(
               )
           ),
           
-          ###Fifth page - Leve 4
-          tabPanel(title = "Level 4",value = "e",
+          ###Fourth page - Leve 4
+          tabPanel(title = "Level 4",value = "d",
             fluidPage(
-              theme = "bootstrap.css", #css theme
-              tags$head(
-                tags$link(rel = "stylesheet", type = "text/css", href = "themestyle.css")
-              ), #link to your own css file
+              # theme = "bootstrap.css", #css theme
+              # tags$head(
+              #   tags$link(rel = "stylesheet", type = "text/css", href = "themestyle.css")
+              # ), #link to your own css file
               
               ##First row - title of this level
               fluidRow(
@@ -737,14 +702,16 @@ shinyUI(
                     '',
                     icon = icon('question', class = "iconq fa-fw"),
                     type = 'toggle',
-                    class = 'butt'
+                    class = 'butt',
+                    size = "large"
                   ),
                   bsButton(
                     'bt4',
                     '',
                     icon = icon('time', lib = 'glyphicon', class = "icont fa-fw"),
                     type = 'toggle',
-                    class = 'butt'
+                    class = 'butt',
+                    size = "large"
                   )
                 ),
                 column(6, conditionalPanel("input.bq4 != 0",
@@ -833,28 +800,26 @@ shinyUI(
                 ##Fifth row - buttons: previous, submit, re-attempt, and next
                 fluidRow(
                   column(1,
-                    bsButton("previous4", "<<Previous", style = "primary", size = "small")
+                    bsButton("previous4", "<<Previous", size = "large")
                   ),
                   column(1, offset = 4,
                     conditionalPanel("(input.drp17!='') & (input.drp18!='') & (input.drp19!='') & (input.drp20!='') ",
                       bsButton(
-                        "submitD",
-                        "Submit Answer",
-                        style = "primary",
-                        size = "small",
-                        class = "grow"
+                        inputId = "submitD",
+                        label = "Submit",
+                        style = "warning",
+                        size = "large"
                       )
                     )
                   ),
                   column(2, offset = 1, conditionalPanel("input.submitD != 0",
-                    bsButton("clearD", "Re-attempt", style = "danger", size = "small")
+                    bsButton("clearD", "Re-attempt", style = "danger", size = "large")
                   )),
-                  column(1, offset = 2,
+                  column(1, offset = 1,
                     bsButton(
-                      "next4",
-                      "Next>>",
-                      style = "primary",
-                      size = "small",
+                      inputId = "next4",
+                      label = "Next>>",
+                      size = "large",
                       disabled = TRUE
                     )
                   )
@@ -872,7 +837,7 @@ shinyUI(
                         "stop4",
                         "STOP",
                         style = "danger",
-                        size = "medium",
+                        size = "large",
                         disabled = TRUE
                       )
                     )
@@ -884,7 +849,7 @@ shinyUI(
               conditionalPanel("input.clearD != 0",
                                wellPanel(fluidPage(fluidRow(
                                  wellPanel(
-                                   h4(textOutput("warning4")),
+                                   p(textOutput("warning4")),
                                    dropUI("home1", class = "dropelement dropelementHome"),
                                    class = "wellTransparent col-lg-12"
                                  )
@@ -892,13 +857,13 @@ shinyUI(
               )
           ),
           
-          ###Sixth page - Leve 5
-          tabPanel(title = "Level 5",value = "f",
+          ###Fifth page - Leve 5
+          tabPanel(title = "Level 5",value = "e",
             fluidPage(
-              theme = "bootstrap.css", #css theme
-              tags$head(
-                tags$link(rel = "stylesheet", type = "text/css", href = "themestyle.css")
-              ), #link to your own css file
+              # theme = "bootstrap.css", #css theme
+              # tags$head(
+              #   tags$link(rel = "stylesheet", type = "text/css", href = "themestyle.css")
+              # ), #link to your own css file
               
               ##First row - title of this level
               fluidRow(
@@ -913,23 +878,23 @@ shinyUI(
                     '',
                     icon = icon('question', class = "iconq fa-fw"),
                     type = 'toggle',
-                    class = 'butt'
+                    class = 'butt',
+                    size = "large"
                   ),
                   bsButton(
                     'bt5',
                     '',
                     icon = icon('time', lib = 'glyphicon', class = "icont fa-fw"),
                     type = 'toggle',
-                    class = 'butt'
+                    class = 'butt',
+                    size = "large"
                   )
                 ),
                 column(6, conditionalPanel("input.bq5 != 0",
-                                           id =
-                                             'hint5q', textOutput('hint5'))),
+                                           id = 'hint5q', textOutput('hint5'))),
                 column(3,
                   conditionalPanel("input.bt5 != 0",
-                                   id =
-                                     'timer5h', textOutput('timer5'))
+                                   id = 'timer5h', textOutput('timer5'))
                 )
               ),
               br(),
@@ -1022,29 +987,27 @@ shinyUI(
                 ##Fifth row - buttons: previous, submit, re-attempt, and next
                 fluidRow(
                   column(1,
-                    bsButton("previous3", "<<Previous", style = "primary", size = "small")
+                    bsButton("previous3", "<<Previous", size = "large")
                   ),
                   column(1, offset = 4,
                     conditionalPanel("(input.drp21!='') & (input.drp22!='') & (input.drp23!='') & (input.drp24!='') ",
                       bsButton(
-                        "submitE",
-                        "Submit Answer",
-                        style = "primary",
-                        size = "small",
-                        class = "grow"
+                        inputId = "submitE",
+                        label = "Submit",
+                        style = "warning",
+                        size = "large"
                       )
                     )
                   ),
                   column(2, offset = 1, 
                          conditionalPanel("input.submitE != 0",
-                    bsButton("clearE", "Re-attempt", style = "danger", size = "small")
+                    bsButton("clearE", "Re-attempt", style = "danger", size = "large")
                   )),
-                  column(1, offset = 2,
+                  column(1, offset = 1,
                     bsButton(
-                      "next5",
-                      "Next>>",
-                      style = "primary",
-                      size = "small",
+                      inputId = "next5",
+                      label = "Next>>",
+                      size = "large",
                       disabled = TRUE
                     )
                   )
@@ -1062,7 +1025,7 @@ shinyUI(
                         "stop5",
                         "STOP",
                         style = "danger",
-                        size = "medium",
+                        size = "large",
                         disabled = TRUE
                       )
                     )
@@ -1074,7 +1037,7 @@ shinyUI(
               conditionalPanel("input.clearE != 0",
                                wellPanel(fluidPage(fluidRow(
                                  wellPanel(
-                                   h4(textOutput("warning5")),
+                                   p(textOutput("warning5")),
                                    dropUI("home1", class = "dropelement dropelementHome"),
                                    class = "wellTransparent col-lg-12"
                                  )
@@ -1082,13 +1045,13 @@ shinyUI(
               )
           ),
           
-          ###Seventh page - Leve 6
-          tabPanel(title = "Level 6",value = "g",
+          ###Sixth page - Leve 6
+          tabPanel(title = "Level 6",value = "f",
             fluidPage(
-              theme = "bootstrap.css",  #css theme
-              tags$head(
-                tags$link(rel = "stylesheet", type = "text/css", href = "themestyle.css")
-              ), #link to your own css file
+              # theme = "bootstrap.css",  #css theme
+              # tags$head(
+              #   tags$link(rel = "stylesheet", type = "text/css", href = "themestyle.css")
+              # ), #link to your own css file
               
               ##First row - title of this level
               fluidRow(
@@ -1103,14 +1066,16 @@ shinyUI(
                     '',
                     icon = icon('question', class = "iconq fa-fw"),
                     type = 'toggle',
-                    class = 'butt'
+                    class = 'butt',
+                    size = "large"
                   ),
                   bsButton(
                     'bt6',
                     '',
                     icon = icon('time', lib = 'glyphicon', class = "icont fa-fw"),
                     type = 'toggle',
-                    class = 'butt'
+                    class = 'butt',
+                    size = "large"
                   )
                 ),
                 column(6, conditionalPanel("input.bq6 != 0",
@@ -1195,31 +1160,28 @@ shinyUI(
                 ##Fifth row - buttons: previous, submit, re-attempt, and next
                 fluidRow(
                   column(1,
-                    bsButton("previous2", "<<Previous", style = "primary", size = "small")
+                    bsButton("previous2", "<<Previous", size = "large")
                   ),
-                  column(1,
-                    offset = 4,
+                  column(1, offset = 4,
                     conditionalPanel("(input.drp25!='') & (input.drp26!='') & (input.drp27!='') & (input.drp28!='') ",
                       bsButton(
-                        "submitF",
-                        "Submit Answer",
-                        style = "primary",
-                        size = "small",
-                        class = "grow"
+                        inputId = "submitF",
+                        label = "Submit Answer",
+                        style = "warning",
+                        size = "large"
                       )
                     )
                   ),
                   column(2, offset = 1,
                          conditionalPanel("input.submitF != 0",
-                    bsButton("clearF", "Re-attempt", style = "danger", size = "small")
+                    bsButton("clearF", "Re-attempt", style = "danger", size = "large")
                   )),
-                  column(1, offset = 2,
+                  column(1, offset = 1,
                     bsButton(
-                      "finish",
-                      "FINISH>>",
-                      style = "danger",
+                      inputId = "finish",
+                      label = "FINISH>>",
                       disabled = TRUE,
-                      size = "small"
+                      size = "large"
                     )
                   )
                 ),
@@ -1238,7 +1200,7 @@ shinyUI(
               conditionalPanel("input.clearF != 0",
                                wellPanel(fluidPage(fluidRow(
                                  wellPanel(
-                                   h4(textOutput("warning6")),
+                                   p(textOutput("warning6")),
                                    dropUI("home1", class = "dropelement dropelementHome"),
                                    class = "wellTransparent col-lg-12"
                                  )
@@ -1247,7 +1209,7 @@ shinyUI(
           ),
           
           ###Last page - Scores
-          tabPanel(title = "Score", value = "h",
+          tabPanel(title = "Score", value = "g",
             h1("Congratulations! You finished the game."),
             fluidRow(column(3, offset = 9, textOutput("timer8"))),
             br(),
@@ -1262,7 +1224,7 @@ shinyUI(
               br(),
               #            fluidRow(
               #              wellPanel(
-              #                wellPanel(textInput("name",h4("Please type in your initials or nickname to submit the score:"),placeholder = "Initials",width = 600),class = "col-lg-8 col-md-9 col-sm-10 col-xs-9"),
+              #                wellPanel(textInput("name",p("Please type in your initials or nickname to submit the score:"),placeholder = "Initials",width = 600),class = "col-lg-8 col-md-9 col-sm-10 col-xs-9"),
               #                wellPanel(div(style = "position:absolute; top:60px",bsButton("check","Submit",style = "warning",size = "large")),class = "col-lg-2 col-md-2 col-sm-1 col-xs-1"),style = "height:200px")
               #            ),
               #           # htmlOutput("badge"),
@@ -1321,13 +1283,6 @@ shinyUI(
           "Hoffer, A. (2016), shinyDND: Shiny Drag-n-Drop. (v0.1.0),
             [R Package]. Available from
             https://cran.r-project.org/web/packages/shinyDND/index.html"
-        ),
-        p(
-          #shinyV8
-          class = "hangingindent",
-          "Ooms, J. (2020), V8: Embedded JavaScript and WebAssembly Engine for R.
-            (v3.1.0), [R Package]. Available from
-            https://cran.r-project.org/web/packages/V8/index.html"
         )
       )
     )
