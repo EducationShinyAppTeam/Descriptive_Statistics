@@ -18,7 +18,7 @@ shinyUI(
       class = "dropdown",
       tags$a(href = "https://shinyapps.science.psu.edu/",
              icon("home", lib = "font-awesome"))
-    )
+    )          
   ),
   dashboardSidebar(
     width = 250,
