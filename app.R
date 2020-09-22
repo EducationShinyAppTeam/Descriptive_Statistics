@@ -275,20 +275,20 @@ ui <- list(
                 column(
                   width = 2,
                   bsButton(
-                    inputId = "submitL1",
-                    label = "Submit",
+                    inputId = "reattemptL1",
+                    label = "Reattempt",
                     size = "large",
-                    style = "default"
+                    style = "danger"
                   )
                 ),
                 column(
                   width = 2,
                   offset = 4,
                   bsButton(
-                    inputId = "reattemptL1",
-                    label = "Reattempt",
+                    inputId = "submitL1",
+                    label = "Submit",
                     size = "large",
-                    style = "danger"
+                    style = "default"
                   )
                 ),
                 column(
@@ -948,6 +948,16 @@ ui <- list(
                   textOutput("finalScore")
                 )
               )
+            )
+          ),
+          br(),
+          div(
+            style = "text-align: right;",
+            bsButton(
+              inputId = "endGame",
+              label = "End Game",
+              size = "large",
+              style = "danger"
             )
           )
         ),
