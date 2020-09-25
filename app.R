@@ -25,6 +25,7 @@ questionBank <- questionBank %>%
   dplyr::group_by(level) %>%
   dplyr::group_split()
 ## Access levels of bank by questionBank[[#]], where # is the level number
+maxScores <- c(8, 8, 16, 20, 24, 24)
 
 # Old
 bankA = read.csv("Level1.csv")
@@ -188,12 +189,28 @@ ui <- list(
                 br(),
                 "Check the 'Show more details' box if you wish to see values for
                 the ", tags$em("sample standard deviation"), " and ",
-                tags$em("interquartile range"), "."
+                tags$em("interquartile range"), ". Click the Hint button to
+                display a hint."
               ),
               checkboxInput(
                 inputId = "extraDetailsL1",
                 label = "Show more details",
                 value = FALSE
+              ),
+              fluidRow(
+                column(
+                  width = 2,
+                  bsButton(
+                    inputId = "hintL1",
+                    label = "Hint",
+                    style = "default",
+                    size = "large"
+                  )
+                ),
+                column(
+                  width = 10,
+                  uiOutput("hintTextL1")
+                )
               ),
               br(),
               fluidRow(
@@ -263,7 +280,7 @@ ui <- list(
                   )
                 ),
                 column(
-                  width = 1,
+                  width = 2,
                   bsButton(
                     inputId = "submitL1",
                     label = "Submit",
@@ -272,12 +289,16 @@ ui <- list(
                   )
                 ),
                 column(
-                  width = 4,
+                  width = 3,
                   p("Press Submit to score each attempt.")
                 ),
                 column(
                   width = 2,
-                  offset = 3,
+                  offset = 1,
+                  uiOutput("moveOnL1")
+                ),
+                column(
+                  width = 2,
                   bsButton(
                     inputId = "nextL1",
                     label = "Next >>",
@@ -2692,7 +2713,7 @@ server <- function(input, output, session) {
     }
   })
 
-  ## Level 1 Buttons ----
+  ## Level 1 Actions ----
   observeEvent(input$submitL1, {
     attempts$level1 <- isolate(attempts$level1) + 1
     matches <- input$rank1Hists == input$rank1Values
@@ -2700,13 +2721,60 @@ server <- function(input, output, session) {
       output[[paste0("feedbackL1P", i)]] <- boastUtils::renderIcon(
         icon = ifelse(matches[i], "correct", "incorrect")
       )
+      if (attempts$level1 == 1) {
+        initScore$level1 <- sum(3 * as.integer(matches) - 1)
+      } else {
+        subqScore$level1 <- sum(3 * as.integer(matches) - 1)
+      }
+      if (initScore$level1 == maxScores[1]) {subqScore$level1 <- maxScores[1]}
+    }
+    output$scoreL1 <- renderUI({
+      paste("Your Score:", ifelse(attempts$level1 == 1,
+                                  initScore$level1,
+                                  subqScore$level1))
+    })
+  })
+
+  observeEvent(subqScore$level1, {
+    if(isolate(subqScore$level1) == maxScores[1]) {
+      updateButton(
+        session = session,
+        inputId = "nextL1",
+        disabled = FALSE
+      )
+      updateButton(
+        session = session,
+        inputId = "submitL1",
+        disabled = TRUE
+      )
+      output$moveOnL1 <- renderUI({
+        "Congrats! You can move to the next level."
+      })
     }
   })
 
-  output$chosen <- renderPrint(input$selected)
-  output$test1 <- renderPrint(paste("Match:", input$rank1Hists == input$rank1Values))
+  observeEvent(input$hintL1, {
+    if(input$hintL1 %% 2 == 1){
+      output$hintTextL1 <- renderUI({
+        "The mean and median are the same for symmetric histograms while the mean
+      is typically larger for right (positively) skewed histograms and the median is typically
+      larger for left (negatively) skewed histograms."
+      })
+    } else {
+      output$hintTextL1 <- renderUI({NULL})
+    }
+  })
+
+  observeEvent(input$nextL1, {
+    updateTabsetPanel(
+      session = session,
+      inputId = "gameLevels",
+      selected = "Level 2"
+    )
+  })
 
 
+  ## OLD CODE ----
 
   ## Show/Hide Tabs ----
   ### Commenting out for now
