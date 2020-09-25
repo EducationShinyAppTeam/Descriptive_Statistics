@@ -7,6 +7,7 @@ library(boastUtils)
 library(shinyDND) # for drag and drop
 library(shinyWidgets)
 library(sortable)
+library(dplyr)
 
 ## App Meta Data-------------------------------------------------------------
 APP_TITLE  <<- "Descriptive Statistics"
@@ -19,6 +20,13 @@ APP_DESCP  <<- paste(
 
 # Define global constants and functions ----
 # read question csv files
+questionBank <- read.csv(file = "questionBank.csv", stringsAsFactors = FALSE)
+questionBank <- questionBank %>%
+  dplyr::group_by(level) %>%
+  dplyr::group_split()
+## Access levels of bank by questionBank[[#]], where # is the level number
+
+# Old
 bankA = read.csv("Level1.csv")
 bankA = data.frame(lapply(bankA, as.character), stringsAsFactors = FALSE)
 bankB = read.csv("Level2.csv")
@@ -48,18 +56,24 @@ ui <- list(
       titleWidth = 250,
       title = "Descriptive Statistics",
       tags$li(class = "dropdown",
-              actionLink("info",icon("info",class = "myClass"))),
+              actionLink("info", icon("info", class = "myClass"))),
+      tags$li(
+        class = "dropdown",
+        tags$a(target = "_blank", icon("comments"),
+               href = "https://pennstate.qualtrics.com/jfe/form/SV_7TLIkFtJEJ7fEPz?appName=Descriptive_Statistics"
+        )
+      ),
       tags$li(
         class = "dropdown",
         tags$a(href = "https://shinyapps.science.psu.edu/",
-               icon("home", lib = "font-awesome"))
+               icon("home"))
       )
     ),
     ## Sidebar ----
     dashboardSidebar(
       width = 250,
       sidebarMenu(
-        id = 'tabs',
+        id = "pages",
         menuItem("Overview", tabName = "overview", icon = icon("tachometer-alt")),
         menuItem("Game-NEW", tabName = "game0", icon = icon("gamepad")),
         menuItem("Game-OLD", tabName = "game", icon = icon("gamepad")),
@@ -144,20 +158,16 @@ ui <- list(
                 inputId = "timer",
                 label = "Show Timer",
                 icon = icon("stopwatch"),
-                type = "toggle",
-                value = FALSE,
                 size = "large"
               )
             ),
             column(
-              width = 4,
-              offset = 6,
+              width = 5,
+              offset = 5,
               uiOutput(
                 outputId = "timerMessage",
                 style = "text-align: right;"
-              ),
-              p(style = "text-align: right;",
-                "timer message here")
+              )
             )
           ),
           br(),
@@ -175,6 +185,7 @@ ui <- list(
                 for the ", tags$em("sample median"), " and ",
                 tags$em("sample arithmetic mean"), " for each data set.",
                 br(),
+                br(),
                 "Check the 'Show more details' box if you wish to see values for
                 the ", tags$em("sample standard deviation"), " and ",
                 tags$em("interquartile range"), "."
@@ -188,54 +199,12 @@ ui <- list(
               fluidRow(
                 column(
                   width = 6,
-                  rank_list(
-                    input_id = "rank1Hists",
-                    text = "Drag the histograms into the same order as the values.",
-                    labels = list(
-                      "a" = img(src = "right1.PNG", width = "75%"),
-                      "b" = img(src = "left1.PNG", width = "75%"),
-                      "c" = img(src = "normal1.PNG", width = "75%"),
-                      "d" = img(src = "uniform1.PNG", width = "75%")
-                    )
-                  )
+                  uiOutput("mainColL1")
                 ),
                 column(
                   width = 6,
-                  rank_list(
-                    input_id = "rank1Values",
-                    text = "Drag the values into the same order as the
-                    histograms.",
-                    labels = list(
-                      "a" = div(
-                        h4("Data Set A", align = "center"),
-                        p(bankA[1, "mean"],
-                          br(),
-                          bankA[1, "sd"]
-                        )
-                      ),
-                      "b" = div(
-                        h4("Data Set B", align = "center"),
-                        p(bankA[4, "mean"],
-                          br(),
-                          bankA[4, "sd"]
-                        )
-                      ),
-                      "c" = div(
-                        h4("Data Set C", align = "center"),
-                        p(bankA[7, "mean"],
-                          br(),
-                          bankA[7, "sd"]
-                        )
-                      ),
-                      "d" = div(
-                        h4("Data Set D", align = "center"),
-                        p(bankA[10, "mean"],
-                          br(),
-                          bankA[10, "sd"]
-                        )
-                      )
-                    )
-                  )
+                  offset = 0,
+                  uiOutput("secondaryColL1")
                 )
               ),
               verbatimTextOutput("test1"),
@@ -246,21 +215,41 @@ ui <- list(
                   p("Feedback:")
                 ),
                 column(
-                  width = 2,
-                  p("1st Pair Mark")
+                  width = 1,
+                  p("1st Pair:")
+                ),
+                column(
+                  width = 1,
+                  uiOutput("feedbackL1P1")
+                ),
+                column(
+                  width = 1,
+                  p("2nd Pair:")
+                ),
+                column(
+                  width = 1,
+                  uiOutput("feedbackL1P2")
+                ),
+                column(
+                  width = 1,
+                  p("3rd Pair:")
+                ),
+                column(
+                  width = 1,
+                  uiOutput("feedbackL1P3")
+                ),
+                column(
+                  width = 1,
+                  p("4th Pair:")
+                ),
+                column(
+                  width = 1,
+                  uiOutput("feedbackL1P4")
                 ),
                 column(
                   width = 2,
-                  p("2nd Pair Mark")
-                ),
-                column(
-                  width = 2,
-                  p("3rd Pair Mark")
-                ),
-                column(
-                  width = 2,
-                  p("4th Pair Mark")
-                ),
+                  uiOutput("scoreL1")
+                )
               ),
               fluidRow(
                 column(
@@ -269,21 +258,12 @@ ui <- list(
                     inputId = "previousL1",
                     label = "<< Previous",
                     size = "large",
-                    style = "default"
+                    style = "default",
+                    disabled = TRUE
                   )
                 ),
                 column(
-                  width = 2,
-                  bsButton(
-                    inputId = "reattemptL1",
-                    label = "Reattempt",
-                    size = "large",
-                    style = "danger"
-                  )
-                ),
-                column(
-                  width = 2,
-                  offset = 4,
+                  width = 1,
                   bsButton(
                     inputId = "submitL1",
                     label = "Submit",
@@ -292,12 +272,18 @@ ui <- list(
                   )
                 ),
                 column(
+                  width = 4,
+                  p("Press Submit to score each attempt.")
+                ),
+                column(
                   width = 2,
+                  offset = 3,
                   bsButton(
                     inputId = "nextL1",
                     label = "Next >>",
                     size = "large",
-                    style = "default"
+                    style = "default",
+                    disabled = TRUE
                   )
                 )
               )
@@ -862,25 +848,45 @@ ui <- list(
               br(),
               fluidRow(
                 column(
-                  width = 2,
+                  width = 1,
                   p("Feedback:")
                 ),
                 column(
                   width = 2,
-                  p("1st Pair Mark")
+                  p("Press Submit Message")
                 ),
                 column(
-                  width = 2,
-                  p("2nd Pair Mark")
+                  width = 1,
+                  p("1st Pair:")
                 ),
                 column(
-                  width = 2,
-                  p("3rd Pair Mark")
+                  width = 1,
+                  p("mark")
                 ),
                 column(
-                  width = 2,
-                  p("4th Pair Mark")
+                  width = 1,
+                  p("2nd Pair:")
                 ),
+                column(
+                  width = 1,
+                  p("mark")
+                ),
+                column(
+                  width = 1,
+                  p("3rd Pair:")
+                ),
+                column(
+                  width = 1,
+                  p("mark")
+                ),
+                column(
+                  width = 1,
+                  p("4th Pair:")
+                ),
+                column(
+                  width = 1,
+                  p("mark")
+                )
               ),
               fluidRow(
                 column(
@@ -2489,14 +2495,98 @@ ui <- list(
 
 # Define the Server ----
 server <- function(input, output, session) {
-  output$chosen <- renderPrint(input$selected)
-  output$test1 <- renderPrint(paste("Match:", input$rank1Hists == input$rank1Values))
+  ## Create Reactive Values ----
+  gameInProgress <- reactiveVal(FALSE)
+  time <- reactiveValues(
+    inc = 0,
+    min = 0,
+    timer = reactiveTimer(1000),
+    started = FALSE
+  )
+  initScore <- reactiveValues(
+    level1 = 0, level2 = 0, level3 = 0,
+    level4 = 0, level5 = 0, level6 = 0
+  )
+  subqScore <- reactiveValues(
+    level1 = 0, level2 = 0, level3 = 0,
+    level4 = 0, level5 = 0, level6 = 0
+  )
+  selectedQs <- reactiveValues(
+    level1 = NULL, level2 = NULL, level3 = NULL,
+    level4 = NULL, level5 = NULL, level6 = NULL
+  )
+  attempts <- reactiveValues(
+    level1 = 0, level2 = 0, level3 = 0,
+    level4 = 0, level5 = 0, level6 = 0
+  )
 
-  # Information button ----
+
+  ## Timer Operation ----
+  observe({
+    time$timer()
+    if(isolate(time$started)) {
+      time$inc <- isolate(time$inc) + 1
+      if(time$inc > 1 && time$inc %% 60 == 0) {
+        time$min <- isolate(time$min) + 1
+      }
+    }
+  })
+
+  ## Display Timer ----
+  observeEvent(input$timer, {
+    if (input$timer %% 2 == 1) {
+      if (time$min == 0) {
+        output$timerMessage <- renderUI(
+          paste("You've used ", time$inc, "seconds.")
+        )
+      } else {
+        output$timerMessage <- renderUI(
+          paste("You've used ", time$min, "minutes and ",
+                (time$inc %% 60), "seconds.")
+        )
+      }
+
+      updateButton(
+        session = session,
+        inputId = "timer",
+        value = TRUE,
+        label = "Hide Timer"
+      )
+    } else {
+      output$timerMessage <- renderUI(NULL)
+      updateButton(
+        session = session,
+        inputId = "timer",
+        value = FALSE,
+        label = "Show Timer"
+      )
+    }
+  })
+
+  ## Generate Questions for all levels ----
+  observeEvent(input$pages, {
+    if (input$pages == "game0" && !gameInProgress()) {
+      time$started <- TRUE
+      for (i in 1:(length(questionBank) - 1)) {
+        selectedQs[[paste0("level", i)]] <- questionBank[[i]] %>%
+          dplyr::ungroup() %>%
+          dplyr::group_by(filters) %>%
+          dplyr::slice_sample(n = 1)
+      }
+      selectedQs$level6 <- questionBank[[6]] %>%
+        dplyr::filter(filters == sample(
+          x = c("groupA", "groupB", "groupC", "groupD"),
+          size = 1)
+        )
+      gameInProgress(TRUE)
+    }
+  })
+
+  ## Information button ----
   observeEvent(input$info, {
     sendSweetAlert(
       session = session,
-      title = "Instructions",
+      title = "Instructions--UPDATE ME",
       text = tags$ol(
         tags$li("You can check time and hint by clicking the boxes"),
         tags$li("Drag and drop A, B, C, D into the drop box."),
@@ -2511,17 +2601,124 @@ server <- function(input, output, session) {
     )
   })
 
+  ## Set up Level 1 ----
+  output$mainColL1 <- renderUI({
+    hist1 <- list(
+      "a" = img(src = selectedQs$level1$mainColumn[1],
+                width = "100%",
+                alt = selectedQs$level1$mainAltText[1]),
+      "b" = img(src = selectedQs$level1$mainColumn[2],
+                width = "100%",
+                alt = selectedQs$level1$mainAltText[2]),
+      "c" = img(src = selectedQs$level1$mainColumn[3],
+                width = "100%",
+                alt = selectedQs$level1$mainAltText[3]),
+      "d" = img(src = selectedQs$level1$mainColumn[4],
+                width = "100%",
+                alt = selectedQs$level1$mainAltText[4])
+    )
+    sortable::rank_list(
+      input_id = "rank1Hists",
+      text = "Drag the histograms into the same order as the values.",
+      labels = sample(hist1, size = length(hist1))
+    )
+  })
+
+  output$secondaryColL1 <- renderUI({
+    if (input$extraDetailsL1) {
+      sortable::rank_list(
+        input_id = "rank1Values",
+        text = "Drag the values into the same order as the
+                    histograms.",
+        labels = list(
+          "a" = div(
+            h4("Data Set A", align = "center"),
+            p(selectedQs$level1$secondColumn[1],
+              br(),
+              selectedQs$level1$extraText[1]
+            )
+          ),
+          "b" = div(
+            h4("Data Set B", align = "center"),
+            p(selectedQs$level1$secondColumn[2],
+              br(),
+              selectedQs$level1$extraText[2]
+            )
+          ),
+          "c" = div(
+            h4("Data Set C", align = "center"),
+            p(selectedQs$level1$secondColumn[3],
+              br(),
+              selectedQs$level1$extraText[3]
+            )
+          ),
+          "d" = div(
+            h4("Data Set D", align = "center"),
+            p(selectedQs$level1$secondColumn[4],
+              br(),
+              selectedQs$level1$extraText[4]
+            )
+          )
+        )
+      )
+    } else {
+      sortable::rank_list(
+        input_id = "rank1Values",
+        text = "Drag the values into the same order as the
+                    histograms.",
+        labels = list(
+          "a" = div(
+            h4("Data Set A", align = "center"),
+            p(selectedQs$level1$secondColumn[1]
+            )
+          ),
+          "b" = div(
+            h4("Data Set B", align = "center"),
+            p(selectedQs$level1$secondColumn[2]
+            )
+          ),
+          "c" = div(
+            h4("Data Set C", align = "center"),
+            p(selectedQs$level1$secondColumn[3]
+            )
+          ),
+          "d" = div(
+            h4("Data Set D", align = "center"),
+            p(selectedQs$level1$secondColumn[4]
+            )
+          )
+        )
+      )
+    }
+  })
+
+  ## Level 1 Buttons ----
+  observeEvent(input$submitL1, {
+    attempts$level1 <- isolate(attempts$level1) + 1
+    matches <- input$rank1Hists == input$rank1Values
+    for(i in 1:4){
+      output[[paste0("feedbackL1P", i)]] <- boastUtils::renderIcon(
+        icon = ifelse(matches[i], "correct", "incorrect")
+      )
+    }
+  })
+
+  output$chosen <- renderPrint(input$selected)
+  output$test1 <- renderPrint(paste("Match:", input$rank1Hists == input$rank1Values))
+
+
+
   ## Show/Hide Tabs ----
   ### Commenting out for now
-  # ### Show pages by buttons like 'next', 'previous'.
+  ### Show pages by buttons like 'next', 'previous'.
   # observe({
   #   hide(selector = "#navMain li a[data-value=a]")
   # })
   # observeEvent(input$start, {
   #   show(selector = "#navMain li a[data-value=a]")
   # })
-  # observeEvent(input$tabs, {
-  #   if (input$tabs == "game"){
+  # observeEvent(input$pages, {
+  #   if (input$pages == "game"){
   #     show(selector = "#navMain li a[data-value=a]")
   #   }
   # })
@@ -2566,7 +2763,7 @@ server <- function(input, output, session) {
   observeEvent(input$start, {
     updateTabItems(
       session = session,
-      inputId = "tabs",
+      inputId = "pages",
       selected = "game"
     )
     ### This was listed lower down and isn't necessary
@@ -2695,18 +2892,11 @@ server <- function(input, output, session) {
     )
   })
 
-  ## Timer ----
-  ### Define timer
-  time <- reactiveValues(inc = 0, timer = reactiveTimer(1000), started = FALSE)
-  observe({
-    time$timer()
-    if(isolate(time$started))
-      time$inc <- isolate(time$inc) + 1
-  })
+
 
   ### When user click submit, timer stops and rerun on next level
   observeEvent(input$start, {time$started <- TRUE})
-  observeEvent(input$tabs, {if (input$tabs == "game") {time$started < -TRUE}})
+  observeEvent(input$pages, {if (input$pages == "game") {time$started < -TRUE}})
   observeEvent(input$submitA, {time$started <- FALSE})
   observeEvent(input$submitB, {time$started <- FALSE})
   observeEvent(input$submitC, {time$started <- FALSE})
