@@ -55,29 +55,29 @@ shinyUI(
       tabItem(
         tabName = "overview", 
         h1("Descriptive Statistics"), 
-        p("This app is designed to help you better understand the concept
+        p("This app is designed to help you better understand concepts
           of Descriptive Statistics."), 
         br(), 
         h2("Levels"), 
         tags$ul(
-          tags$li("Level 1: Match the mean & median to histogram"), 
+          tags$li("Level 1: Match the mean & median to the histogram"), 
           tags$li("Level 2: Match the mean & standard deviation
-                  to density curve"), 
-          tags$li("Level 3: Match the boxplot to histogram"), 
-          tags$li("Level 4: Match the correlation to scatterplot"), 
-          tags$li("Level 5: Match the application to density curve"), 
+                  to the density curve"), 
+          tags$li("Level 3: Match the boxplot to the histogram"), 
+          tags$li("Level 4: Match the correlation to the scatterplot"), 
+          tags$li("Level 5: Match the application to the density curve"), 
           tags$li("Level 6: Order the correlation from the highest
                   to the lowest.")
         ), 
         h2("Instructions"), 
         tags$ol(
-          tags$li("You can check time and hint by clicking the boxes"), 
-          tags$li("Drag and drop A, B, C, D into the drop box."), 
+          tags$li("You can check time and get hints by clicking the boxes"), 
+          tags$li("Drag and drop A, B, C, and D into the appropriate drop boxes."), 
           tags$li("Submit your answer only after finishing all the questions."), 
           tags$li("You will need to click 'Reattempt' button to try again."), 
           tags$li("You have to use 'Penalty Box' to correct a wrong answer."), 
-          tags$li("You can stop and check your score any level, once you get
-                  every question correct."), 
+          tags$li("You can stop and check your score at any level,
+                  once you get every question correct."), 
           tags$li("You may go to the next level only when you correct
                   any wrong answer.")
         ), 
