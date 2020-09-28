@@ -163,7 +163,7 @@ ui <- list(
               br(),
               h3("Level 1: Histograms, Sample Arithmetic Mean, and Sample Median"),
               p("Rearrange the histograms and/or values of the data sets by
-                clicking and draging on either so that they are in the same order.
+                clicking and dragging on either so that they are in the same order.
                 We've provided the values
                 for the ", tags$em("sample median"), " and ",
                 tags$em("sample arithmetic mean"), " for each data set.",
@@ -297,7 +297,7 @@ ui <- list(
               h3("Level 2: Density Curves, Sample Arithmteic Mean, and Sample
                     Standard Deviation"),
               p("Rearrange the density curves and/or values of the data sets by
-                clicking and draging on either so that they are in the same order.
+                clicking and dragging on either so that they are in the same order.
                 We've provided the values
                 for the ", tags$em("sample arithmetic mean"), " and ",
                 tags$em("sample standard deviation"), " for each data set.",
@@ -421,7 +421,7 @@ ui <- list(
               br(),
               h3("Level 3: Histograms and Box Plots"),
               p("Rearrange the histograms and/or box plots by
-                clicking and draging on either so that they are in the same order.",
+                clicking and dragging on either so that they are in the same order.",
                 br(),
                 br(),
                 "Click the Hint button to display a hint."
@@ -542,7 +542,7 @@ ui <- list(
               br(),
               h3("Level 4: Scatterplots and Correlation"),
               p("Rearrange the scatterplots and/or the correlation values by
-                clicking and draging on either so that they are in the same order.",
+                clicking and dragging on either so that they are in the same order.",
                 br(),
                 br(),
                 "Click the Hint button to display a hint."
@@ -663,7 +663,7 @@ ui <- list(
               br(),
               h3("Level 5: Shapes of Distributions and Situations"),
               p("Rearrange the shape descriptions of distributions and/or the descriptions
-                of situations by clicking and draging on either so that they are in the same order.",
+                of situations by clicking and dragging on either so that they are in the same order.",
                 br(),
                 br(),
                 "Click the Hint button to display a hint."
