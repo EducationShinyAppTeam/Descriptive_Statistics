@@ -7,6 +7,7 @@ library(shinyWidgets)
 library(sortable)
 library(dplyr)
 library(DT)
+library(fontawesome)
 
 ## App Meta Data-------------------------------------------------------------
 APP_TITLE  <<- "Descriptive Statistics"
@@ -98,6 +99,9 @@ ui <- list(
             tags$li("You may move to the next level only when you get all correct."),
             tags$li("You may end the game at any time.")
           ),
+          p("You can expand any of the pictures to get a closer look by clicking
+            on the magnifying glass,", fontawesome::fa("search") ,", with each
+            one."),
           br(),
           div(
             style = "text-align: center;",
@@ -1081,17 +1085,21 @@ server <- function(input, output, session) {
   output$mainColL1 <- renderUI({
     hist1 <- list(
       "a" = img(src = selectedQs$level1$mainColumn[1],
-                width = "90%",
-                alt = selectedQs$level1$mainAltText[1]),
+                width = "50%",
+                alt = selectedQs$level1$mainAltText[1],
+                class = "expandable"),
       "b" = img(src = selectedQs$level1$mainColumn[2],
-                width = "90%",
-                alt = selectedQs$level1$mainAltText[2]),
+                width = "50%",
+                alt = selectedQs$level1$mainAltText[2],
+                class = "expandable"),
       "c" = img(src = selectedQs$level1$mainColumn[3],
-                width = "90%",
-                alt = selectedQs$level1$mainAltText[3]),
+                width = "50%",
+                alt = selectedQs$level1$mainAltText[3],
+                class = "expandable"),
       "d" = img(src = selectedQs$level1$mainColumn[4],
-                width = "90%",
-                alt = selectedQs$level1$mainAltText[4])
+                width = "50%",
+                alt = selectedQs$level1$mainAltText[4],
+                class = "expandable")
     )
     sortable::rank_list(
       input_id = "rank1Hists",
@@ -1247,17 +1255,21 @@ server <- function(input, output, session) {
   output$mainColL2 <- renderUI({
     dens2 <- list(
       "a" = img(src = selectedQs$level2$mainColumn[1],
-                width = "90%",
-                alt = selectedQs$level2$mainAltText[1]),
+                width = "50%",
+                alt = selectedQs$level2$mainAltText[1],
+                class = "expandable"),
       "b" = img(src = selectedQs$level2$mainColumn[2],
-                width = "90%",
-                alt = selectedQs$level2$mainAltText[2]),
+                width = "50%",
+                alt = selectedQs$level2$mainAltText[2],
+                class = "expandable"),
       "c" = img(src = selectedQs$level2$mainColumn[3],
-                width = "90%",
-                alt = selectedQs$level2$mainAltText[3]),
+                width = "50%",
+                alt = selectedQs$level2$mainAltText[3],
+                class = "expandable"),
       "d" = img(src = selectedQs$level2$mainColumn[4],
-                width = "90%",
-                alt = selectedQs$level2$mainAltText[4])
+                width = "50%",
+                alt = selectedQs$level2$mainAltText[4],
+                class = "expandable")
     )
     sortable::rank_list(
       input_id = "rank2Density",
@@ -1383,17 +1395,21 @@ server <- function(input, output, session) {
   output$mainColL3 <- renderUI({
     hist3 <- list(
       "a" = img(src = selectedQs$level3$mainColumn[1],
-                width = "90%",
-                alt = selectedQs$level3$mainAltText[1]),
+                width = "50%",
+                alt = selectedQs$level3$mainAltText[1],
+                class = "expandable"),
       "b" = img(src = selectedQs$level3$mainColumn[2],
-                width = "90%",
-                alt = selectedQs$level3$mainAltText[2]),
+                width = "50%",
+                alt = selectedQs$level3$mainAltText[2],
+                class = "expandable"),
       "c" = img(src = selectedQs$level3$mainColumn[3],
-                width = "90%",
-                alt = selectedQs$level3$mainAltText[3]),
+                width = "50%",
+                alt = selectedQs$level3$mainAltText[3],
+                class = "expandable"),
       "d" = img(src = selectedQs$level3$mainColumn[4],
-                width = "90%",
-                alt = selectedQs$level3$mainAltText[4])
+                width = "50%",
+                alt = selectedQs$level3$mainAltText[4],
+                class = "expandable")
     )
     sortable::rank_list(
       input_id = "rank3Hists",
@@ -1409,17 +1425,21 @@ server <- function(input, output, session) {
                     histograms.",
       labels = list(
         "a" = img(src = selectedQs$level3$secondColumn[1],
-                  width = "100%",
-                  alt = selectedQs$level3$secondAltText[1]),
+                  width = "60%",
+                  alt = selectedQs$level3$secondAltText[1],
+                  class = "expandable"),
         "b" = img(src = selectedQs$level3$secondColumn[2],
-                  width = "100%",
-                  alt = selectedQs$level3$secondAltText[2]),
+                  width = "60%",
+                  alt = selectedQs$level3$secondAltText[2],
+                  class = "expandable"),
         "c" = img(src = selectedQs$level3$secondColumn[3],
-                  width = "100%",
-                  alt = selectedQs$level3$secondAltText[3]),
+                  width = "60%",
+                  alt = selectedQs$level3$secondAltText[3],
+                  class = "expandable"),
         "d" = img(src = selectedQs$level3$secondColumn[4],
-                  width = "100%",
-                  alt = selectedQs$level3$secondAltText[4])
+                  width = "60%",
+                  alt = selectedQs$level3$secondAltText[4],
+                  class = "expandable")
       )
     )
   })
@@ -1512,17 +1532,21 @@ server <- function(input, output, session) {
   output$mainColL4 <- renderUI({
     scatter4 <- list(
       "a" = img(src = selectedQs$level4$mainColumn[1],
-                width = "90%",
-                alt = selectedQs$level4$mainAltText[1]),
+                width = "50%",
+                alt = selectedQs$level4$mainAltText[1],
+                class = "expandable"),
       "b" = img(src = selectedQs$level4$mainColumn[2],
-                width = "90%",
-                alt = selectedQs$level4$mainAltText[2]),
+                width = "50%",
+                alt = selectedQs$level4$mainAltText[2],
+                class = "expandable"),
       "c" = img(src = selectedQs$level4$mainColumn[3],
-                width = "90%",
-                alt = selectedQs$level4$mainAltText[3]),
+                width = "50%",
+                alt = selectedQs$level4$mainAltText[3],
+                class = "expandable"),
       "d" = img(src = selectedQs$level4$mainColumn[4],
-                width = "90%",
-                alt = selectedQs$level4$mainAltText[4])
+                width = "50%",
+                alt = selectedQs$level4$mainAltText[4],
+                class = "expandable")
     )
     sortable::rank_list(
       input_id = "rank4Scatter",
