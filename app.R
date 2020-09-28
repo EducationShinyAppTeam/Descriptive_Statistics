@@ -165,9 +165,9 @@ ui <- list(
                 tags$em("sample arithmetic mean"), " for each data set.",
                 br(),
                 br(),
-                "Check the 'Show more details' box if you wish to see values for
-                the ", tags$em("sample standard deviation"), " and ",
-                tags$em("interquartile range"), ". Click the Hint button to
+                "To see the values of the", tags$em("sample standard deviation"),
+                " and ", tags$em("interquartile range"), "click the 'Show more
+                details' box. Click the Hint button to
                 display a hint."
               ),
               checkboxInput(
