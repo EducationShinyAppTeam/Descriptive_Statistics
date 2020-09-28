@@ -84,8 +84,8 @@ ui <- list(
                     Standard Deviation"),
             tags$li("Level 3: Histograms and Box Plots"),
             tags$li("Level 4: Scatterplots and Correlation"),
-            tags$li("Level 5: Types of Distributions"),
-            tags$li("Level 6: Correlation Applications")
+            tags$li("Level 5: Shapes of Distributions and Situations"),
+            tags$li("Level 6: Ranking Correlation Situations")
           ),
           h2("Instructions"),
           tags$ol(
@@ -126,10 +126,10 @@ ui <- list(
             div(class = "updated", "Last Update: 9/25/2020 by NJH.")
           )
         ),
-        ### New Game Tab ----
+        ### Game Tab ----
         tabItem(
           tabName = "game",
-          h2("Descriptive Statistics Drag-and-Drop Game"),
+          h2("Descriptive Statistics Reordering Game"),
           fluidRow(
             column(
               width = 2,
@@ -157,7 +157,7 @@ ui <- list(
             tabPanel(
               title = "Level 1",
               br(),
-              h3("Level 1: Sample Arithmetic Mean and Sample Median"),
+              h3("Level 1: Histograms, Sample Arithmetic Mean, and Sample Median"),
               p("Rearrange the histograms and/or values of the data sets by
                 clicking and draging on either so that they are in the same order.
                 We've provided the values
@@ -290,7 +290,8 @@ ui <- list(
             tabPanel(
               title = "Level 2",
               br(),
-              h3("Level 2: Sample Arithmetic Mean and Standard Deviation"),
+              h3("Level 2: Density Curves, Sample Arithmteic Mean, and Sample
+                    Standard Deviation"),
               p("Rearrange the density curves and/or values of the data sets by
                 clicking and draging on either so that they are in the same order.
                 We've provided the values
@@ -656,7 +657,7 @@ ui <- list(
             tabPanel(
               title = "Level 5",
               br(),
-              h3("Level 5: Types of Distributions"),
+              h3("Level 5: Shapes of Distributions and Situations"),
               p("Rearrange the shape descriptions of distributions and/or the descriptions
                 of situations by clicking and draging on either so that they are in the same order.",
                 br(),
@@ -777,7 +778,7 @@ ui <- list(
             tabPanel(
               title = "Level 6",
               br(),
-              h3("Level 6: Correlation Applications"),
+              h3("Level 6: Ranking Correlation Situations"),
               p("Rearrange the situations by clicking and dragging on them so that the highest
                 correlation comes first (e.g., +1) and the lowest correlation comes last (e.g., -1).",
                 br(),
@@ -1061,16 +1062,16 @@ server <- function(input, output, session) {
   observeEvent(input$info, {
     sendSweetAlert(
       session = session,
-      title = "Instructions--UPDATE ME",
+      title = "Instructions",
       text = tags$ol(
-        tags$li("You can check time and hint by clicking the boxes"),
-        tags$li("Drag and drop A, B, C, D into the drop box."),
-        tags$li("Submit your answer only after finishing all the questions."),
-        tags$li("You will need to click 'Reattempt' button to try again."),
-        tags$li("You can stop and check your score any level,
-                once you get every question correct."),
-        tags$li("You may go to the next level only
-                when you correct any wrong answer.")
+        tags$li("You can check time and hint by clicking the appropriate buttons."),
+        tags$li("Rearrange the options so that the two columns are in the
+                    same order OR, for a single column, the order requested."),
+        tags$li("Click the submit button to grade your ordering."),
+        tags$li("If you have any incorrect, continue reordering and press
+                    Submit to update the feedback."),
+        tags$li("You may move to the next level only when you get all correct."),
+        tags$li("You may end the game at any time.")
       ),
       type = "info"
     )
@@ -1080,16 +1081,16 @@ server <- function(input, output, session) {
   output$mainColL1 <- renderUI({
     hist1 <- list(
       "a" = img(src = selectedQs$level1$mainColumn[1],
-                width = "100%",
+                width = "90%",
                 alt = selectedQs$level1$mainAltText[1]),
       "b" = img(src = selectedQs$level1$mainColumn[2],
-                width = "100%",
+                width = "90%",
                 alt = selectedQs$level1$mainAltText[2]),
       "c" = img(src = selectedQs$level1$mainColumn[3],
-                width = "100%",
+                width = "90%",
                 alt = selectedQs$level1$mainAltText[3]),
       "d" = img(src = selectedQs$level1$mainColumn[4],
-                width = "100%",
+                width = "90%",
                 alt = selectedQs$level1$mainAltText[4])
     )
     sortable::rank_list(
@@ -1227,24 +1228,39 @@ server <- function(input, output, session) {
     )
   })
 
+  ### Clear feedback on reattempts
+  observeEvent(input$rank1Hists, {
+    for(i in 1:4){
+      output[[paste0("feedbackL1P", i)]] <- boastUtils::renderIcon()
+    }
+    output$scoreL1 <- renderUI({NULL})
+  })
+
+  observeEvent(input$rank1Values, {
+    for(i in 1:4){
+      output[[paste0("feedbackL1P", i)]] <- boastUtils::renderIcon()
+    }
+    output$scoreL1 <- renderUI({NULL})
+  })
+
   ## Set up Level 2 ----
   output$mainColL2 <- renderUI({
     dens2 <- list(
       "a" = img(src = selectedQs$level2$mainColumn[1],
-                width = "100%",
+                width = "90%",
                 alt = selectedQs$level2$mainAltText[1]),
       "b" = img(src = selectedQs$level2$mainColumn[2],
-                width = "100%",
+                width = "90%",
                 alt = selectedQs$level2$mainAltText[2]),
       "c" = img(src = selectedQs$level2$mainColumn[3],
-                width = "100%",
+                width = "90%",
                 alt = selectedQs$level2$mainAltText[3]),
       "d" = img(src = selectedQs$level2$mainColumn[4],
-                width = "100%",
+                width = "90%",
                 alt = selectedQs$level2$mainAltText[4])
     )
     sortable::rank_list(
-      input_id = "rank2density",
+      input_id = "rank2Density",
       text = "Drag the density curves into the same order as the values.",
       labels = sample(dens2, size = length(dens2))
     )
@@ -1283,7 +1299,7 @@ server <- function(input, output, session) {
   ## Level 2 Actions ----
   observeEvent(input$submitL2, {
     attempts$level2 <- isolate(attempts$level2) + 1
-    matches <- input$rank2density == input$rank2Values
+    matches <- input$rank2Density == input$rank2Values
     for(i in 1:4){
       output[[paste0("feedbackL2P", i)]] <- boastUtils::renderIcon(
         icon = ifelse(matches[i], "correct", "incorrect")
@@ -1348,24 +1364,39 @@ server <- function(input, output, session) {
     )
   })
 
+  ### Clear feedback on reattempts
+  observeEvent(input$rank2Density, {
+    for(i in 1:4){
+      output[[paste0("feedbackL2P", i)]] <- boastUtils::renderIcon()
+    }
+    output$scoreL2 <- renderUI({NULL})
+  })
+
+  observeEvent(input$rank2Values, {
+    for(i in 1:4){
+      output[[paste0("feedbackL2P", i)]] <- boastUtils::renderIcon()
+    }
+    output$scoreL2 <- renderUI({NULL})
+  })
+
   ## Set up Level 3 ----
   output$mainColL3 <- renderUI({
     hist3 <- list(
       "a" = img(src = selectedQs$level3$mainColumn[1],
-                width = "100%",
+                width = "90%",
                 alt = selectedQs$level3$mainAltText[1]),
       "b" = img(src = selectedQs$level3$mainColumn[2],
-                width = "100%",
+                width = "90%",
                 alt = selectedQs$level3$mainAltText[2]),
       "c" = img(src = selectedQs$level3$mainColumn[3],
-                width = "100%",
+                width = "90%",
                 alt = selectedQs$level3$mainAltText[3]),
       "d" = img(src = selectedQs$level3$mainColumn[4],
-                width = "100%",
+                width = "90%",
                 alt = selectedQs$level3$mainAltText[4])
     )
     sortable::rank_list(
-      input_id = "rank3hist",
+      input_id = "rank3Hists",
       text = "Drag the histograms into the same order as the box plots.",
       labels = sample(hist3, size = length(hist3))
     )
@@ -1373,7 +1404,7 @@ server <- function(input, output, session) {
 
   output$secondaryColL3 <- renderUI({
     sortable::rank_list(
-      input_id = "rank3boxes",
+      input_id = "rank3Boxes",
       text = "Drag the box plots into the same order as the
                     histograms.",
       labels = list(
@@ -1396,7 +1427,7 @@ server <- function(input, output, session) {
   ## Level 3 Actions ----
   observeEvent(input$submitL3, {
     attempts$level3 <- isolate(attempts$level3) + 1
-    matches <- input$rank3hist == input$rank3boxes
+    matches <- input$rank3Hists == input$rank3Boxes
     for(i in 1:4){
       output[[paste0("feedbackL3P", i)]] <- boastUtils::renderIcon(
         icon = ifelse(matches[i], "correct", "incorrect")
@@ -1462,24 +1493,39 @@ server <- function(input, output, session) {
     )
   })
 
+  ### Clear feedback on reattempts
+  observeEvent(input$rank3Hists, {
+    for(i in 1:4){
+      output[[paste0("feedbackL3P", i)]] <- boastUtils::renderIcon()
+    }
+    output$scoreL3 <- renderUI({NULL})
+  })
+
+  observeEvent(input$rank3Boxes, {
+    for(i in 1:4){
+      output[[paste0("feedbackL3P", i)]] <- boastUtils::renderIcon()
+    }
+    output$scoreL3 <- renderUI({NULL})
+  })
+
   ## Set up Level 4 ----
   output$mainColL4 <- renderUI({
     scatter4 <- list(
       "a" = img(src = selectedQs$level4$mainColumn[1],
-                width = "100%",
+                width = "90%",
                 alt = selectedQs$level4$mainAltText[1]),
       "b" = img(src = selectedQs$level4$mainColumn[2],
-                width = "100%",
+                width = "90%",
                 alt = selectedQs$level4$mainAltText[2]),
       "c" = img(src = selectedQs$level4$mainColumn[3],
-                width = "100%",
+                width = "90%",
                 alt = selectedQs$level4$mainAltText[3]),
       "d" = img(src = selectedQs$level4$mainColumn[4],
-                width = "100%",
+                width = "90%",
                 alt = selectedQs$level4$mainAltText[4])
     )
     sortable::rank_list(
-      input_id = "rank4scatter",
+      input_id = "rank4Scatter",
       text = "Drag the scatterplots into the same order as the values.",
       labels = sample(scatter4, size = length(scatter4))
     )
@@ -1518,7 +1564,7 @@ server <- function(input, output, session) {
   ## Level 4 Actions ----
   observeEvent(input$submitL4, {
     attempts$level4 <- isolate(attempts$level4) + 1
-    matches <- input$rank4scatter == input$rank4Values
+    matches <- input$rank4Scatter == input$rank4Values
     for(i in 1:4){
       output[[paste0("feedbackL4P", i)]] <- boastUtils::renderIcon(
         icon = ifelse(matches[i], "correct", "incorrect")
@@ -1576,6 +1622,29 @@ server <- function(input, output, session) {
     )
   })
 
+  observeEvent(input$previousL4, {
+    updateTabsetPanel(
+      session = session,
+      inputId = "gameLevels",
+      selected = "Level 3"
+    )
+  })
+
+  ### Clear feedback on reattempts
+  observeEvent(input$rank4Scatter, {
+    for(i in 1:4){
+      output[[paste0("feedbackL4P", i)]] <- boastUtils::renderIcon()
+    }
+    output$scoreL4 <- renderUI({NULL})
+  })
+
+  observeEvent(input$rank4Values, {
+    for(i in 1:4){
+      output[[paste0("feedbackL4P", i)]] <- boastUtils::renderIcon()
+    }
+    output$scoreL4 <- renderUI({NULL})
+  })
+
   ## Set up Level 5 ----
   output$mainColL5 <- renderUI({
     desc5 <- list(
@@ -1605,7 +1674,7 @@ server <- function(input, output, session) {
       )
     )
     sortable::rank_list(
-      input_id = "rank5desc",
+      input_id = "rank5Desc",
       text = "Drag the shape descriptions into the same order as the situations.",
       labels = sample(desc5, size = length(desc5))
     )
@@ -1613,7 +1682,7 @@ server <- function(input, output, session) {
 
   output$secondaryColL5 <- renderUI({
     sortable::rank_list(
-      input_id = "rank5situs",
+      input_id = "rank5Situs",
       text = "Drag the situations into the same order as the
                     shape descriptions.",
       labels = list(
@@ -1648,7 +1717,7 @@ server <- function(input, output, session) {
   ## Level 5 Actions ----
   observeEvent(input$submitL5, {
     attempts$level5 <- isolate(attempts$level5) + 1
-    matches <- input$rank5desc == input$rank5situs
+    matches <- input$rank5Desc == input$rank5Situs
     for(i in 1:4){
       output[[paste0("feedbackL5P", i)]] <- boastUtils::renderIcon(
         icon = ifelse(matches[i], "correct", "incorrect")
@@ -1706,6 +1775,29 @@ server <- function(input, output, session) {
     )
   })
 
+  observeEvent(input$previousL5, {
+    updateTabsetPanel(
+      session = session,
+      inputId = "gameLevels",
+      selected = "Level 4"
+    )
+  })
+
+  ### Clear feedback on reattempts
+  observeEvent(input$rank5Desc, {
+    for(i in 1:4){
+      output[[paste0("feedbackL5P", i)]] <- boastUtils::renderIcon()
+    }
+    output$scoreL5 <- renderUI({NULL})
+  })
+
+  observeEvent(input$rank5Situs, {
+    for(i in 1:4){
+      output[[paste0("feedbackL5P", i)]] <- boastUtils::renderIcon()
+    }
+    output$scoreL5 <- renderUI({NULL})
+  })
+
   ## Set up Level 6 ----
   output$mainColL6 <- renderUI({
     situ6 <- list(
@@ -1735,7 +1827,7 @@ server <- function(input, output, session) {
       )
     )
     sortable::rank_list(
-      input_id = "rank6situ",
+      input_id = "rank6Situ",
       text = "Drag the situations so that the highest correlation comes first and lowest comes last.",
       labels = sample(situ6, size = length(situ6))
     )
@@ -1744,7 +1836,7 @@ server <- function(input, output, session) {
   ## Level 6 Actions ----
   observeEvent(input$submitL6, {
     attempts$level6 <- isolate(attempts$level6) + 1
-    matches <- input$rank6situ == selectedQs$level6$secondColumn
+    matches <- input$rank6Situ == selectedQs$level6$secondColumn
     for(i in 1:4){
       output[[paste0("feedbackL6P", i)]] <- boastUtils::renderIcon(
         icon = ifelse(matches[i], "correct", "incorrect")
@@ -1801,6 +1893,22 @@ server <- function(input, output, session) {
     )
   })
 
+  observeEvent(input$previousL6, {
+    updateTabsetPanel(
+      session = session,
+      inputId = "gameLevels",
+      selected = "Level 5"
+    )
+  })
+
+  ### Clear feedback on reattempts
+  observeEvent(input$rank6Situ, {
+    for(i in 1:4){
+      output[[paste0("feedbackL6P", i)]] <- boastUtils::renderIcon()
+    }
+    output$scoreL6 <- renderUI({NULL})
+  })
+
   ## Final Scores Page ----
   observeEvent(input$gameLevels, {
     if(input$gameLevels == "Final Scores") {
@@ -1819,8 +1927,13 @@ server <- function(input, output, session) {
 
   output$finalScores <- DT::renderDT(
     expr = data.frame(
-      row.names = c("Level 1", "Level 2", "Level 3",
-                    "Level 4", "Level 5", "Level 6"),
+      row.names = c("Level 1: Histograms, Sample Arithmetic Mean, and Sample Median",
+                    "Level 2: Density Curves, Sample Arithmteic Mean, and Sample
+                    Standard Deviation",
+                    "Level 3: Histograms and Box Plots",
+                    "Level 4: Scatterplots and Correlation",
+                    "Level 5: Shapes of Distributions and Situations",
+                    "Level 6: Ranking Correlation Situations"),
       Initial = c(initScore$level1, initScore$level2, initScore$level3,
                           initScore$level4, initScore$level5, initScore$level6),
       Final = c(subqScore$level1, subqScore$level2, subqScore$level3,
