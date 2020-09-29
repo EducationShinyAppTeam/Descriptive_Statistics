@@ -64,12 +64,6 @@ ui <- list(
     ),
     ## Body ----
     dashboardBody(
-      tags$head(
-        tags$link(rel = "stylesheet", type = "text/css",
-                  href = "https://educationshinyappteam.github.io/Style_Guide/theme/boast.css"),
-        tags$link(rel = "stylesheet", type = "text/css",
-                  href = "https://educationshinyappteam.github.io/Style_Guide/theme/dragStyleYellow.css")
-      ),
       tabItems(
         ### First tab - Overview ----
         tabItem(
@@ -127,7 +121,7 @@ ui <- list(
             br(),
             br(),
             br(),
-            div(class = "updated", "Last Update: 9/25/2020 by NJH.")
+            div(class = "updated", "Last Update: 9/29/2020 by NJH.")
           )
         ),
         ### Game Tab ----
@@ -214,7 +208,7 @@ ui <- list(
                 ),
                 column(
                   width = 1,
-                  p("1st Pair:")
+                  p("1st Positions:")
                 ),
                 column(
                   width = 1,
@@ -222,7 +216,7 @@ ui <- list(
                 ),
                 column(
                   width = 1,
-                  p("2nd Pair:")
+                  p("2nd Positions:")
                 ),
                 column(
                   width = 1,
@@ -230,7 +224,7 @@ ui <- list(
                 ),
                 column(
                   width = 1,
-                  p("3rd Pair:")
+                  p("3rd Positions:")
                 ),
                 column(
                   width = 1,
@@ -238,7 +232,7 @@ ui <- list(
                 ),
                 column(
                   width = 1,
-                  p("4th Pair:")
+                  p("4th Positions:")
                 ),
                 column(
                   width = 1,
@@ -340,7 +334,7 @@ ui <- list(
                 ),
                 column(
                   width = 1,
-                  p("1st Pair:")
+                  p("1st Positions:")
                 ),
                 column(
                   width = 1,
@@ -348,7 +342,7 @@ ui <- list(
                 ),
                 column(
                   width = 1,
-                  p("2nd Pair:")
+                  p("2nd Positions:")
                 ),
                 column(
                   width = 1,
@@ -356,7 +350,7 @@ ui <- list(
                 ),
                 column(
                   width = 1,
-                  p("3rd Pair:")
+                  p("3rd Positions:")
                 ),
                 column(
                   width = 1,
@@ -364,7 +358,7 @@ ui <- list(
                 ),
                 column(
                   width = 1,
-                  p("4th Pair:")
+                  p("4th Positions:")
                 ),
                 column(
                   width = 1,
@@ -461,7 +455,7 @@ ui <- list(
                 ),
                 column(
                   width = 1,
-                  p("1st Pair:")
+                  p("1st Positions:")
                 ),
                 column(
                   width = 1,
@@ -469,7 +463,7 @@ ui <- list(
                 ),
                 column(
                   width = 1,
-                  p("2nd Pair:")
+                  p("2nd Positions:")
                 ),
                 column(
                   width = 1,
@@ -477,7 +471,7 @@ ui <- list(
                 ),
                 column(
                   width = 1,
-                  p("3rd Pair:")
+                  p("3rd Positions:")
                 ),
                 column(
                   width = 1,
@@ -485,7 +479,7 @@ ui <- list(
                 ),
                 column(
                   width = 1,
-                  p("4th Pair:")
+                  p("4th Positions:")
                 ),
                 column(
                   width = 1,
@@ -582,7 +576,7 @@ ui <- list(
                 ),
                 column(
                   width = 1,
-                  p("1st Pair:")
+                  p("1st Positions:")
                 ),
                 column(
                   width = 1,
@@ -590,7 +584,7 @@ ui <- list(
                 ),
                 column(
                   width = 1,
-                  p("2nd Pair:")
+                  p("2nd Positions:")
                 ),
                 column(
                   width = 1,
@@ -598,7 +592,7 @@ ui <- list(
                 ),
                 column(
                   width = 1,
-                  p("3rd Pair:")
+                  p("3rd Positions:")
                 ),
                 column(
                   width = 1,
@@ -606,7 +600,7 @@ ui <- list(
                 ),
                 column(
                   width = 1,
-                  p("4th Pair:")
+                  p("4th Positions:")
                 ),
                 column(
                   width = 1,
@@ -703,7 +697,7 @@ ui <- list(
                 ),
                 column(
                   width = 1,
-                  p("1st Pair:")
+                  p("1st Positions:")
                 ),
                 column(
                   width = 1,
@@ -711,7 +705,7 @@ ui <- list(
                 ),
                 column(
                   width = 1,
-                  p("2nd Pair:")
+                  p("2nd Positions:")
                 ),
                 column(
                   width = 1,
@@ -719,7 +713,7 @@ ui <- list(
                 ),
                 column(
                   width = 1,
-                  p("3rd Pair:")
+                  p("3rd Positions:")
                 ),
                 column(
                   width = 1,
@@ -727,7 +721,7 @@ ui <- list(
                 ),
                 column(
                   width = 1,
-                  p("4th Pair:")
+                  p("4th Positions:")
                 ),
                 column(
                   width = 1,
@@ -817,7 +811,7 @@ ui <- list(
                 ),
                 column(
                   width = 1,
-                  p("1st:")
+                  p("1st Position:")
                 ),
                 column(
                   width = 1,
@@ -825,7 +819,7 @@ ui <- list(
                 ),
                 column(
                   width = 1,
-                  p("2nd:")
+                  p("2nd Position:")
                 ),
                 column(
                   width = 1,
@@ -833,7 +827,7 @@ ui <- list(
                 ),
                 column(
                   width = 1,
-                  p("3rd:")
+                  p("3rd Position:")
                 ),
                 column(
                   width = 1,
@@ -841,7 +835,7 @@ ui <- list(
                 ),
                 column(
                   width = 1,
-                  p("4th:")
+                  p("4th Position:")
                 ),
                 column(
                   width = 1,
@@ -966,7 +960,11 @@ ui <- list(
             "Xie, Y., Cheng, J., and Tan, X. (2020),
             DT: A Wrapper of the JavaScript Library 'DataTables', R package.
             Available from https://CRAN.R-project.org/package=DT"
-          )
+          ),
+          br(),
+          br(),
+          br(),
+          boastUtils::copyrightInfo()
         )
       )
     )
