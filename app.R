@@ -7,7 +7,6 @@ library(shinyWidgets)
 library(sortable)
 library(dplyr)
 library(DT)
-library(fontawesome)
 
 ## App Meta Data-------------------------------------------------------------
 APP_TITLE  <<- "Descriptive Statistics"
@@ -94,8 +93,9 @@ ui <- list(
             tags$li("You may end the game at any time.")
           ),
           p("You can expand any of the pictures to get a closer look by clicking
-            on the magnifying glass,", fontawesome::fa("search") ,", with each
-            one."),
+            on the magnifying glass with each one."),
+          p("Note for Apple Safari Users: you might need to double click on the
+            images/drag boxes in order to rearrange them."),
           br(),
           div(
             style = "text-align: center;",
@@ -800,9 +800,33 @@ ui <- list(
                 )
               ),
               br(),
-              div(
-                style = "text-align: center;",
-                uiOutput("mainColL6")
+              fluidRow(
+                column(
+                  width = 9,
+                  div(
+                    style = "text-align: center;",
+                    uiOutput("mainColL6")
+                  )
+                ),
+                column(
+                  width = 3,
+                  div(
+                    style = "text-aling: center;",
+                    class = "largerFont",
+                    br(),
+                    br(),
+                    br(),
+                    br(),
+                    p("Highest Correlation"),
+                    br(),
+                    br(),
+                    HTML('<i class="fas fa-sort-amount-down fa-7x" ></i>'),
+                    br(),
+                    br(),
+                    br(),
+                    p("Lowest Correlation")
+                  )
+                )
               ),
               br(),
               fluidRow(
