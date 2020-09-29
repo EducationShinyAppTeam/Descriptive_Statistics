@@ -117,7 +117,8 @@ ui <- list(
           on some programming issues. Daehoon Gwak made updates in July 2020.",
             br(),
             "Neil Hatfield did a redesign in September 2020 based on Daehoon's
-            work.",
+            work. Thank you to Bob Carey for creating the code for the expandable
+            images.",
             br(),
             br(),
             br(),
