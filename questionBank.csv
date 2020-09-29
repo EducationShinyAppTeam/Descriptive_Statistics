@@ -1,4 +1,4 @@
-﻿level,mainColumn,mainAltText,secondColumn,secondAltText,extraText,filters
+level,mainColumn,mainAltText,secondColumn,secondAltText,extraText,filters
 level1,level1/right1.PNG,right skewed histogram going from zero to just over 3; peaks at zero,Mean = 1.00; Median = 0.69,,SD = 1.00; IQR = 1.09,right
 level1,level1/right2.PNG,right skewed histogram going from zero to just over 3; peaks just before 0.5,Mean = 1.00; Median = 0.84,,SD = 0.71; IQR = 0.86,right
 level1,level1/right3.PNG,right skewed histogram going from zero to just over 3; peaks around 0.8,Mean = 0.99; Median = 0.95,,SD = 0.38; IQR = 1.11,right
@@ -92,19 +92,19 @@ level5,Bell shaped,,Weights of cartons of large eggs at a grocery store ,,,norma
 level5,Bell shaped,,Packages of pretzels handed out for the planes leaving JFK airport tomorrow. ,,,normal
 level5,Bell shaped,,Number of seconds until your digital clock advances to the next minute when you wake up,,,normal
 level5,Bell shaped,,Distance to next mile marker on turnpike for all the cars that break down this year ,,,normal
-level6,The correlation between the number of pages and the thickness of the books in the Penn State Library.                                    ,,a,,,groupA
-level6,The correlation between the incomes of two randomly chosen people in Pennsylvania.                                                       ,,b,,,groupA
-level6,The correlation between the weight of the car and the gas mileage for the cars registered in Pennsylvania.                               ,,c,,,groupA
-level6,The correlation between the score on the midterm and the number of questions missed for the students in a statistics class at Penn State.,,d,,,groupA
-level6,The correlation between the wealth of a married person and the wealth of their spouse for all the married couples in New York.     ,,a,,,groupB
-level6,The correlation between the square footage of the house and the square footage of the carpeting in the house for homes in New York.,,b,,,groupB
-level6,The correlation between the length of the movie and its box office receipts for the movies played at a 16 theater complex.         ,,c,,,groupB
-level6,The correlation between the year a car was manufactured and the odometer reading for all the cars registered in New York.          ,,d,,,groupB
-level6,The correlation between the grams of sugar and the number of calories per serving for all of the brands of cereal sold at a supermarket.         ,,a,,,groupC
-level6,The correlation the price of the house and the zipcode of the house for the homes in California.                                                 ,,b,,,groupC
-level6,The correlation the number of days absent from class the first half of the semester and the grade on the final exam for students in a math class.,,c,,,groupC
-level6,The correlation between the weight of the infant and the length of time they stay at the hospital after birth.                                   ,,d,,,groupC
-level6,The correlation between their height in inches and their height in centimeters for the customers at a restaurant.                                                  ,,a,,,groupD
-level6,The correlation between the price of the dinner and the tips left by customers at a restaurant.                                                                    ,,b,,,groupD
-level6,The correlation between the number of hours playing video games and the number of hours of sleep for the students in a statistics class.                           ,,c,,,groupD
-level6,The correlation between the amount of rice eaten by the older person and the amount eaten by the younger person for couples sharing a bowl of rice at a restaurant.,,d,,,groupD
+level6,The correlation between the number of pages and the thickness of the books in the Penn State Library.                                    ,,1,,,groupA
+level6,The correlation between the incomes of two randomly chosen people in Pennsylvania.                                                       ,,2,,,groupA
+level6,The correlation between the weight of the car and the gas mileage for the cars registered in Pennsylvania.                               ,,3,,,groupA
+level6,The correlation between the score on the midterm and the number of questions missed for the students in a statistics class at Penn State.,,4,,,groupA
+level6,The correlation between the wealth of a married person and the wealth of their spouse for all the married couples in New York.     ,,1,,,groupB
+level6,The correlation between the square footage of the house and the square footage of the carpeting in the house for homes in New York.,,2,,,groupB
+level6,The correlation between the length of the movie and its box office receipts for the movies played at a 16 theater complex.         ,,3,,,groupB
+level6,The correlation between the year a car was manufactured and the odometer reading for all the cars registered in New York.          ,,4,,,groupB
+level6,The correlation between the grams of sugar and the number of calories per serving for all of the brands of cereal sold at a supermarket.         ,,1,,,groupC
+level6,The correlation the price of the house and the zipcode of the house for the homes in California.                                                 ,,2,,,groupC
+level6,The correlation the number of days absent from class the first half of the semester and the grade on the final exam for students in a math class.,,3,,,groupC
+level6,The correlation between the weight of the infant and the length of time they stay at the hospital after birth.                                   ,,4,,,groupC
+level6,The correlation between their height in inches and their height in centimeters for the customers at a restaurant.                                                  ,,1,,,groupD
+level6,The correlation between the price of the dinner and the tips left by customers at a restaurant.                                                                    ,,2,,,groupD
+level6,The correlation between the number of hours playing video games and the number of hours of sleep for the students in a statistics class.                           ,,3,,,groupD
+level6,The correlation between the amount of rice eaten by the older person and the amount eaten by the younger person for couples sharing a bowl of rice at a restaurant.,,4,,,groupD

@@ -26,7 +26,6 @@ questionBank <- questionBank %>%
 ## Access levels of bank by questionBank[[#]], where # is the level number
 maxScores <- c(8, 8, 16, 20, 24, 24)
 
-
 # Define the UI ----
 ui <- list(
   dashboardPage(
@@ -1023,6 +1022,25 @@ server <- function(input, output, session) {
     level4 = 0, level5 = 0, level6 = 0
   )
 
+  ## Store xAPI statement ----
+  storeLevelSubmit <- function(description, answered, success, context) {
+    
+    stmt <- boastUtils::generateStatement(
+      session,
+      verb = "answered",
+      object = "shiny-tab-game",
+      description = description,
+      interactionType = "matching",
+      response = answered,
+      success = success,
+      extensions = list(
+        ref = "https://educationshinyappteam.github.io/BOAST/xapi/result/extensions/context",
+        value = context
+      )
+    )
+    
+    boastUtils::storeStatement(session, stmt)
+  }
 
   ## Timer Operation ----
   observe({
@@ -1107,19 +1125,19 @@ server <- function(input, output, session) {
   ## Set up Level 1 ----
   output$mainColL1 <- renderUI({
     hist1 <- list(
-      "a" = img(src = selectedQs$level1$mainColumn[1],
+      "1" = img(src = selectedQs$level1$mainColumn[1],
                 width = "50%",
                 alt = selectedQs$level1$mainAltText[1],
                 class = "expandable"),
-      "b" = img(src = selectedQs$level1$mainColumn[2],
+      "2" = img(src = selectedQs$level1$mainColumn[2],
                 width = "50%",
                 alt = selectedQs$level1$mainAltText[2],
                 class = "expandable"),
-      "c" = img(src = selectedQs$level1$mainColumn[3],
+      "3" = img(src = selectedQs$level1$mainColumn[3],
                 width = "50%",
                 alt = selectedQs$level1$mainAltText[3],
                 class = "expandable"),
-      "d" = img(src = selectedQs$level1$mainColumn[4],
+      "4" = img(src = selectedQs$level1$mainColumn[4],
                 width = "50%",
                 alt = selectedQs$level1$mainAltText[4],
                 class = "expandable")
@@ -1138,28 +1156,28 @@ server <- function(input, output, session) {
         text = "Drag the values into the same order as the
                     histograms.",
         labels = list(
-          "a" = div(
+          "1" = div(
             h4("Data Set A", align = "center"),
             p(selectedQs$level1$secondColumn[1],
               br(),
               selectedQs$level1$extraText[1]
             )
           ),
-          "b" = div(
+          "2" = div(
             h4("Data Set B", align = "center"),
             p(selectedQs$level1$secondColumn[2],
               br(),
               selectedQs$level1$extraText[2]
             )
           ),
-          "c" = div(
+          "3" = div(
             h4("Data Set C", align = "center"),
             p(selectedQs$level1$secondColumn[3],
               br(),
               selectedQs$level1$extraText[3]
             )
           ),
-          "d" = div(
+          "4" = div(
             h4("Data Set D", align = "center"),
             p(selectedQs$level1$secondColumn[4],
               br(),
@@ -1174,22 +1192,22 @@ server <- function(input, output, session) {
         text = "Drag the values into the same order as the
                     histograms.",
         labels = list(
-          "a" = div(
+          "1" = div(
             h4("Data Set A", align = "center"),
             p(selectedQs$level1$secondColumn[1]
             )
           ),
-          "b" = div(
+          "2" = div(
             h4("Data Set B", align = "center"),
             p(selectedQs$level1$secondColumn[2]
             )
           ),
-          "c" = div(
+          "3" = div(
             h4("Data Set C", align = "center"),
             p(selectedQs$level1$secondColumn[3]
             )
           ),
-          "d" = div(
+          "4" = div(
             h4("Data Set D", align = "center"),
             p(selectedQs$level1$secondColumn[4]
             )
@@ -1203,6 +1221,7 @@ server <- function(input, output, session) {
   observeEvent(input$submitL1, {
     attempts$level1 <- isolate(attempts$level1) + 1
     matches <- input$rank1Hists == input$rank1Values
+    
     for(i in 1:4){
       output[[paste0("feedbackL1P", i)]] <- boastUtils::renderIcon(
         icon = ifelse(matches[i], "correct", "incorrect")
@@ -1219,6 +1238,28 @@ server <- function(input, output, session) {
                                   initScore$level1,
                                   subqScore$level1))
     })
+    
+    ### Build xAPI Statement ----
+    answered <- jsonlite::toJSON(
+      list(
+        "hists" = input$rank1Hists,
+        "values" = input$rank1Values
+      ), auto_unbox = TRUE
+    )
+    
+    context <- jsonlite::toJSON(
+      list(
+        "hists" = selectedQs$level1$mainAltText[as.numeric(input$rank1Hists)],
+        "values" = selectedQs$level1$secondColumn[as.numeric(input$rank1Values)]
+      ), auto_unbox = TRUE
+    )
+    
+    storeLevelSubmit(
+       description = "Level 1: Histograms, Sample Arithmetic Mean, and Sample Median",
+       answered = answered,
+       success = !any(matches == FALSE),
+       context = context
+    )
   })
 
   observeEvent(subqScore$level1, {
@@ -1277,19 +1318,19 @@ server <- function(input, output, session) {
   ## Set up Level 2 ----
   output$mainColL2 <- renderUI({
     dens2 <- list(
-      "a" = img(src = selectedQs$level2$mainColumn[1],
+      "1" = img(src = selectedQs$level2$mainColumn[1],
                 width = "50%",
                 alt = selectedQs$level2$mainAltText[1],
                 class = "expandable"),
-      "b" = img(src = selectedQs$level2$mainColumn[2],
+      "2" = img(src = selectedQs$level2$mainColumn[2],
                 width = "50%",
                 alt = selectedQs$level2$mainAltText[2],
                 class = "expandable"),
-      "c" = img(src = selectedQs$level2$mainColumn[3],
+      "3" = img(src = selectedQs$level2$mainColumn[3],
                 width = "50%",
                 alt = selectedQs$level2$mainAltText[3],
                 class = "expandable"),
-      "d" = img(src = selectedQs$level2$mainColumn[4],
+      "4" = img(src = selectedQs$level2$mainColumn[4],
                 width = "50%",
                 alt = selectedQs$level2$mainAltText[4],
                 class = "expandable")
@@ -1307,22 +1348,22 @@ server <- function(input, output, session) {
       text = "Drag the values into the same order as the
                     density curves.",
       labels = list(
-        "a" = div(
+        "1" = div(
           h4("Data Set A", align = "center"),
           p(selectedQs$level2$secondColumn[1]
           )
         ),
-        "b" = div(
+        "2" = div(
           h4("Data Set B", align = "center"),
           p(selectedQs$level2$secondColumn[2]
           )
         ),
-        "c" = div(
+        "3" = div(
           h4("Data Set C", align = "center"),
           p(selectedQs$level2$secondColumn[3]
           )
         ),
-        "d" = div(
+        "4" = div(
           h4("Data Set D", align = "center"),
           p(selectedQs$level2$secondColumn[4]
           )
@@ -1351,6 +1392,28 @@ server <- function(input, output, session) {
                                   initScore$level2,
                                   subqScore$level2))
     })
+    
+    ### Build xAPI Statement ----
+    answered <- jsonlite::toJSON(
+      list(
+        "density" = input$rank2Density,
+        "values" = input$rank2Values
+      ), auto_unbox = TRUE
+    )
+    
+    context <- jsonlite::toJSON(
+      list(
+        "density" = selectedQs$level2$mainAltText[as.numeric(input$rank2Density)],
+        "values" = selectedQs$level2$secondColumn[as.numeric(input$rank2Values)]
+      ), auto_unbox = TRUE
+    )
+    
+    storeLevelSubmit(
+      description = "Level 2: Density Curves, Sample Arithmteic Mean, and Sample Standard Deviation",
+      answered = answered,
+      success = !any(matches == FALSE),
+      context = context
+    )
   })
 
   observeEvent(subqScore$level2, {
@@ -1417,19 +1480,19 @@ server <- function(input, output, session) {
   ## Set up Level 3 ----
   output$mainColL3 <- renderUI({
     hist3 <- list(
-      "a" = img(src = selectedQs$level3$mainColumn[1],
+      "1" = img(src = selectedQs$level3$mainColumn[1],
                 width = "50%",
                 alt = selectedQs$level3$mainAltText[1],
                 class = "expandable"),
-      "b" = img(src = selectedQs$level3$mainColumn[2],
+      "2" = img(src = selectedQs$level3$mainColumn[2],
                 width = "50%",
                 alt = selectedQs$level3$mainAltText[2],
                 class = "expandable"),
-      "c" = img(src = selectedQs$level3$mainColumn[3],
+      "3" = img(src = selectedQs$level3$mainColumn[3],
                 width = "50%",
                 alt = selectedQs$level3$mainAltText[3],
                 class = "expandable"),
-      "d" = img(src = selectedQs$level3$mainColumn[4],
+      "4" = img(src = selectedQs$level3$mainColumn[4],
                 width = "50%",
                 alt = selectedQs$level3$mainAltText[4],
                 class = "expandable")
@@ -1447,19 +1510,19 @@ server <- function(input, output, session) {
       text = "Drag the box plots into the same order as the
                     histograms.",
       labels = list(
-        "a" = img(src = selectedQs$level3$secondColumn[1],
+        "1" = img(src = selectedQs$level3$secondColumn[1],
                   width = "60%",
                   alt = selectedQs$level3$secondAltText[1],
                   class = "expandable"),
-        "b" = img(src = selectedQs$level3$secondColumn[2],
+        "2" = img(src = selectedQs$level3$secondColumn[2],
                   width = "60%",
                   alt = selectedQs$level3$secondAltText[2],
                   class = "expandable"),
-        "c" = img(src = selectedQs$level3$secondColumn[3],
+        "3" = img(src = selectedQs$level3$secondColumn[3],
                   width = "60%",
                   alt = selectedQs$level3$secondAltText[3],
                   class = "expandable"),
-        "d" = img(src = selectedQs$level3$secondColumn[4],
+        "4" = img(src = selectedQs$level3$secondColumn[4],
                   width = "60%",
                   alt = selectedQs$level3$secondAltText[4],
                   class = "expandable")
@@ -1487,6 +1550,28 @@ server <- function(input, output, session) {
                                   initScore$level3,
                                   subqScore$level3))
     })
+    
+    ### Build xAPI Statement ----
+    answered <- jsonlite::toJSON(
+      list(
+        "hists" = input$rank3Hists,
+        "boxes" = input$rank3Boxes
+      ), auto_unbox = TRUE
+    )
+    
+    context <- jsonlite::toJSON(
+      list(
+        "hists" = selectedQs$level3$mainAltText[as.numeric(input$rank3Hists)],
+        "boxes" = selectedQs$level3$secondAltText[as.numeric(input$rank3Boxes)]
+      ), auto_unbox = TRUE
+    )
+    
+    storeLevelSubmit(
+      description = "Level 3: Histograms and Box Plots",
+      answered = answered,
+      success = !any(matches == FALSE),
+      context = context
+    )
   })
 
   observeEvent(subqScore$level3, {
@@ -1554,19 +1639,19 @@ server <- function(input, output, session) {
   ## Set up Level 4 ----
   output$mainColL4 <- renderUI({
     scatter4 <- list(
-      "a" = img(src = selectedQs$level4$mainColumn[1],
+      "1" = img(src = selectedQs$level4$mainColumn[1],
                 width = "50%",
                 alt = selectedQs$level4$mainAltText[1],
                 class = "expandable"),
-      "b" = img(src = selectedQs$level4$mainColumn[2],
+      "2" = img(src = selectedQs$level4$mainColumn[2],
                 width = "50%",
                 alt = selectedQs$level4$mainAltText[2],
                 class = "expandable"),
-      "c" = img(src = selectedQs$level4$mainColumn[3],
+      "3" = img(src = selectedQs$level4$mainColumn[3],
                 width = "50%",
                 alt = selectedQs$level4$mainAltText[3],
                 class = "expandable"),
-      "d" = img(src = selectedQs$level4$mainColumn[4],
+      "4" = img(src = selectedQs$level4$mainColumn[4],
                 width = "50%",
                 alt = selectedQs$level4$mainAltText[4],
                 class = "expandable")
@@ -1584,22 +1669,22 @@ server <- function(input, output, session) {
       text = "Drag the values into the same order as the
                     scatterplots.",
       labels = list(
-        "a" = div(
+        "1" = div(
           h4("Data Set A", align = "center"),
           p(selectedQs$level4$secondColumn[1]
           )
         ),
-        "b" = div(
+        "2" = div(
           h4("Data Set B", align = "center"),
           p(selectedQs$level4$secondColumn[2]
           )
         ),
-        "c" = div(
+        "3" = div(
           h4("Data Set C", align = "center"),
           p(selectedQs$level4$secondColumn[3]
           )
         ),
-        "d" = div(
+        "4" = div(
           h4("Data Set D", align = "center"),
           p(selectedQs$level4$secondColumn[4]
           )
@@ -1628,6 +1713,28 @@ server <- function(input, output, session) {
                                   initScore$level4,
                                   subqScore$level4))
     })
+    
+    ### Build xAPI Statement ----
+    answered <- jsonlite::toJSON(
+      list(
+        "scatterplots" = input$rank4Scatter,
+        "values" = input$rank4Values
+      ), auto_unbox = TRUE
+    )
+    
+    context <- jsonlite::toJSON(
+      list(
+        "scatterplots" = selectedQs$level4$mainAltText[as.numeric(input$rank4Scatter)],
+        "values" = selectedQs$level4$secondColumn[as.numeric(input$rank4Values)]
+      ), auto_unbox = TRUE
+    )
+    
+    storeLevelSubmit(
+      description = "Level 4: Scatterplots and Correlation",
+      answered = answered,
+      success = !any(matches == FALSE),
+      context = context
+    )
   })
 
   observeEvent(subqScore$level4, {
@@ -1695,25 +1802,25 @@ server <- function(input, output, session) {
   ## Set up Level 5 ----
   output$mainColL5 <- renderUI({
     desc5 <- list(
-      "a" = div(
+      "1" = div(
         style = "text-align: center;",
         class = "largerFont",
         p(selectedQs$level5$mainColumn[1]
         )
       ),
-      "b" = div(
+      "2" = div(
         style = "text-align: center;",
         class = "largerFont",
         p(selectedQs$level5$mainColumn[2]
         )
       ),
-      "c" = div(
+      "3" = div(
         style = "text-align: center;",
         class = "largerFont",
         p(selectedQs$level5$mainColumn[3]
         )
       ),
-      "d" = div(
+      "4" = div(
         style = "text-align: center;",
         class = "largerFont",
         p(selectedQs$level5$mainColumn[4]
@@ -1733,25 +1840,25 @@ server <- function(input, output, session) {
       text = "Drag the situations into the same order as the
                     shape descriptions.",
       labels = list(
-        "a" = div(
+        "1" = div(
           style = "text-align: center;",
           class = "largerFont",
           p(selectedQs$level5$secondColumn[1]
           )
         ),
-        "b" = div(
+        "2" = div(
           style = "text-align: center;",
           class = "largerFont",
           p(selectedQs$level5$secondColumn[2]
           )
         ),
-        "c" = div(
+        "3" = div(
           style = "text-align: center;",
           class = "largerFont",
           p(selectedQs$level5$secondColumn[3]
           )
         ),
-        "d" = div(
+        "4" = div(
           style = "text-align: center;",
           class = "largerFont",
           p(selectedQs$level5$secondColumn[4]
@@ -1781,6 +1888,28 @@ server <- function(input, output, session) {
                                   initScore$level5,
                                   subqScore$level5))
     })
+    
+    ### Build xAPI Statement ----
+    answered <- jsonlite::toJSON(
+      list(
+        "descriptions" = input$rank5Desc,
+        "situations" = input$rank5Situs
+      ), auto_unbox = TRUE
+    )
+    
+    context <- jsonlite::toJSON(
+      list(
+        "descriptions" = selectedQs$level5$mainColumn[as.numeric(input$rank5Desc)],
+        "situations" = selectedQs$level5$secondColumn[as.numeric(input$rank5Situs)]
+      ), auto_unbox = TRUE
+    )
+    
+    storeLevelSubmit(
+      description = "Level 5: Shapes of Distributions and Situations",
+      answered = answered,
+      success = !any(matches == FALSE),
+      context = context
+    )
   })
 
   observeEvent(subqScore$level5, {
@@ -1848,25 +1977,25 @@ server <- function(input, output, session) {
   ## Set up Level 6 ----
   output$mainColL6 <- renderUI({
     situ6 <- list(
-      "a" = div(
+      "1" = div(
         style = "text-align: center;",
         class = "largerFont",
         p(selectedQs$level6$mainColumn[1]
         )
       ),
-      "b" = div(
+      "2" = div(
         style = "text-align: center;",
         class = "largerFont",
         p(selectedQs$level6$mainColumn[2]
         )
       ),
-      "c" = div(
+      "3" = div(
         style = "text-align: center;",
         class = "largerFont",
         p(selectedQs$level6$mainColumn[3]
         )
       ),
-      "d" = div(
+      "4" = div(
         style = "text-align: center;",
         class = "largerFont",
         p(selectedQs$level6$mainColumn[4]
@@ -1900,6 +2029,27 @@ server <- function(input, output, session) {
                                   initScore$level6,
                                   subqScore$level6))
     })
+    
+    ### Build xAPI Statement ----
+    answered <- jsonlite::toJSON(
+      list(
+        "situations" = input$rank6Situ,
+        "values" = selectedQs$level6$secondColumn
+      ), auto_unbox = TRUE
+    )
+    
+    context <- jsonlite::toJSON(
+      list(
+        "situations" = selectedQs$level6$mainColumn[as.numeric(input$rank6Situ)]
+      ), auto_unbox = TRUE
+    )
+    
+    storeLevelSubmit(
+      description = "Level 6: Ranking Correlation Situations",
+      answered = answered,
+      success = !any(matches == FALSE),
+      context = context
+    )
   })
 
   observeEvent(subqScore$level6, {
@@ -1960,6 +2110,17 @@ server <- function(input, output, session) {
   observeEvent(input$gameLevels, {
     if(input$gameLevels == "Final Scores") {
       time$started <- FALSE
+      
+      ### Store xAPI statement ----
+      stmt <- boastUtils::generateStatement(
+        session,
+        verb = "completed",
+        object = "shiny-tab-game",
+        description = "Final Scores",
+        success = ifelse(subqScore$level6 > 0, TRUE, FALSE)
+      )
+      
+      boastUtils::storeStatement(session, stmt)
     }
   })
 
