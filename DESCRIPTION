@@ -1,0 +1,27 @@
+Title: Descriptive Statistics
+ShortName: Counting Techniques
+Date: 2021-09-28
+Lifecycle: maturing
+Authors@R: c(
+    person(given = "Sitong", family = "Liu", role = c("aut", "cre")),
+    person(given = "Zhiliang", family = "Zhang", role = c("aut")),
+    person(given = "Jiajun", family = "Gao", role = c("aut")),
+    person(given = "Caihui", family = "Xiao", role = c("ctb")),
+    person(given = "Yuxin", family = "Zhang", role = c("ctb")),
+    person(given = "Daehoon", family = "Gwak", role = c("aut")),
+    person(given = "Dennis", family = "Pearl", role = c("aut")),
+    person(given = "Neil", family = "Hatfield", role = c("aut"), email = "neil.hatfield@psu.edu"),
+    person(given = "Robert", family = "Carey", role = c("ctb"))
+  )
+Chapter: Data Description
+Description: This app is designed for the game app, which is to help user better understand the concept of Descriptive Statistics.
+LearningObjectives: c(
+    "TBA",
+    "TBA"
+  )
+DisplayMode: Normal
+URL: https://psu-eberly.shinyapps.io/Descriptive_Statistics
+BugReports: https://github.com/EducationShinyAppTeam/Descriptive_Statistics/issues
+License: CC-BY-NC-SA-4.0
+Tags: simulation
+Type: Shiny

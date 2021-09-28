@@ -8,15 +8,6 @@ library(sortable)
 library(dplyr)
 library(DT)
 
-## App Meta Data-------------------------------------------------------------
-APP_TITLE  <<- "Descriptive Statistics"
-APP_DESCP  <<- paste(
-  "Description of the app",
-  "This app is designed for the game app, which is to help user better
- understand the concept of Descriptive Statistics."
-)
-## End App Meta Data---------------------------------------------------------
-
 # Define global constants and functions ----
 # read question csv files
 questionBank <- read.csv(file = "questionBank.csv", stringsAsFactors = FALSE)
@@ -38,9 +29,7 @@ ui <- list(
               actionLink("info", icon("info", class = "myClass"))),
       tags$li(
         class = "dropdown",
-        tags$a(target = "_blank", icon("comments"),
-               href = "https://pennstate.qualtrics.com/jfe/form/SV_7TLIkFtJEJ7fEPz?appName=Descriptive_Statistics"
-        )
+        boastUtils::surveyLink(name = "Descriptive_Statistics")
       ),
       tags$li(
         class = "dropdown",
@@ -57,8 +46,10 @@ ui <- list(
         menuItem("Game", tabName = "game", icon = icon("gamepad")),
         menuItem("References", tabName = "References", icon = icon("leanpub"))
       ),
-      tags$div(class = "sidebar-logo",
-               boastUtils::psu_eberly_logo("reversed"))
+      tags$div(
+        class = "sidebar-logo",
+        boastUtils::sidebarFooter()
+      )
     ),
     ## Body ----
     dashboardBody(
@@ -110,18 +101,22 @@ ui <- list(
           br(),
           h2("Acknowledgements"),
           p(
-            "This app was originally developed and coded by Sitong Liu.
-          The app was further updated by Zhiliang Zhang and Jiajun Gao
-          in June 2018. A special thanks to Caihui Xiao and Yuxin Zhang for help
-          on some programming issues. Daehoon Gwak made updates in July 2020.",
+            "This app was originally developed and coded by Sitong Liu. The app 
+            was further updated by Zhiliang Zhang and Jiajun Gao n June 2018. A 
+            special thanks to Caihui Xiao and Yuxin Zhang for help on some
+            programming issues. Daehoon Gwak made updates in July 2020.",
             br(),
             "Neil Hatfield did a redesign in September 2020 based on Daehoon's
             work. Thank you to Bob Carey for creating the code for the expandable
             images.",
             br(),
             br(),
+            "Cite this app as:",
             br(),
-            div(class = "updated", "Last Update: 9/29/2020 by NJH.")
+            boastUtils::citeApp(),
+            br(),
+            br(),
+            div(class = "updated", "Last Update: 9/28/2021 by NJH.")
           )
         ),
         ### Game Tab ----
@@ -248,8 +243,9 @@ ui <- list(
                   width = 2,
                   bsButton(
                     inputId = "previousL1",
-                    label = "<< Previous",
+                    label = "Previous",
                     size = "large",
+                    icon = icon("backward"),
                     style = "default",
                     disabled = TRUE
                   )
@@ -276,7 +272,8 @@ ui <- list(
                   width = 2,
                   bsButton(
                     inputId = "nextL1",
-                    label = "Next >>",
+                    label = "Next",
+                    icon = icon("forward"),
                     size = "large",
                     style = "default",
                     disabled = TRUE
@@ -374,7 +371,8 @@ ui <- list(
                   width = 2,
                   bsButton(
                     inputId = "previousL2",
-                    label = "<< Previous",
+                    label = "Previous",
+                    icon = icon("backward"),
                     size = "large",
                     style = "default"
                   )
@@ -401,7 +399,8 @@ ui <- list(
                   width = 2,
                   bsButton(
                     inputId = "nextL2",
-                    label = "Next >>",
+                    label = "Next",
+                    icon = icon("forward"),
                     size = "large",
                     style = "default",
                     disabled = TRUE
@@ -495,7 +494,8 @@ ui <- list(
                   width = 2,
                   bsButton(
                     inputId = "previousL3",
-                    label = "<< Previous",
+                    label = "Previous",
+                    icon = icon("backward"),
                     size = "large",
                     style = "default"
                   )
@@ -522,7 +522,8 @@ ui <- list(
                   width = 2,
                   bsButton(
                     inputId = "nextL3",
-                    label = "Next >>",
+                    label = "Next",
+                    icon = icon("forward"),
                     size = "large",
                     style = "default",
                     disabled = TRUE
@@ -616,7 +617,8 @@ ui <- list(
                   width = 2,
                   bsButton(
                     inputId = "previousL4",
-                    label = "<< Previous",
+                    label = "Previous",
+                    icon = icon("backward"),
                     size = "large",
                     style = "default"
                   )
@@ -643,7 +645,8 @@ ui <- list(
                   width = 2,
                   bsButton(
                     inputId = "nextL4",
-                    label = "Next >>",
+                    label = "Next",
+                    icon = icon("forward"),
                     size = "large",
                     style = "default",
                     disabled = TRUE
@@ -737,7 +740,8 @@ ui <- list(
                   width = 2,
                   bsButton(
                     inputId = "previousL5",
-                    label = "<< Previous",
+                    label = "Previous",
+                    icon = icon("backward"),
                     size = "large",
                     style = "default"
                   )
@@ -764,7 +768,8 @@ ui <- list(
                   width = 2,
                   bsButton(
                     inputId = "nextL5",
-                    label = "Next >>",
+                    label = "Next",
+                    icon = icon("forward"),
                     size = "large",
                     style = "default",
                     disabled = TRUE
@@ -810,9 +815,8 @@ ui <- list(
                 column(
                   width = 3,
                   div(
-                    style = "text-aling: center;",
+                    style = "text-align: center;",
                     class = "largerFont",
-                    br(),
                     br(),
                     br(),
                     br(),
@@ -875,7 +879,8 @@ ui <- list(
                   width = 2,
                   bsButton(
                     inputId = "previousL6",
-                    label = "<< Previous",
+                    label = "Previous",
+                    icon = icon("backward"),
                     size = "large",
                     style = "default"
                   )
@@ -902,7 +907,8 @@ ui <- list(
                   width = 2,
                   bsButton(
                     inputId = "nextL6",
-                    label = "Next >>",
+                    label = "Next",
+                    icon = icon("forward"),
                     size = "large",
                     style = "default",
                     disabled = TRUE
@@ -1263,7 +1269,7 @@ server <- function(input, output, session) {
   })
 
   observeEvent(subqScore$level1, {
-    if(isolate(subqScore$level1) == maxScores[1]) {
+    if (isolate(subqScore$level1) == maxScores[1]) {
       updateButton(
         session = session,
         inputId = "nextL1",
